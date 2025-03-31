@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  rank         String
+  affiliation  String
+  name         String
+  dateEnlisted DateTime
+  votes        Vote[]
+  warrants     Warrant[]
+}
+
+model Role {
+  id       String    @id @default(uuid())
+  title    String
+  warrants Warrant[]
+}
+
+model Vote {
+  id     String   @id @default(uuid())
+  date   DateTime
+  userId String
+  user   User     @relation(fields: [userId], references: [id])
+}
+
+model Warrant {
+  id     String   @id @default(uuid())
+  date   DateTime
+  userId String
+  user   User     @relation(fields: [userId], references: [id])
+  roleId String
+  role   Role     @relation(fields: [roleId], references: [id])
+}
