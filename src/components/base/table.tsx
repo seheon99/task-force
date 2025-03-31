@@ -1,8 +1,10 @@
 'use client'
 
 import clsx from 'clsx'
-import type React from 'react'
 import { createContext, useContext, useState } from 'react'
+
+import type React from 'react'
+
 import { Link } from './link'
 
 const TableContext = createContext<{ bleed: boolean; dense: boolean; grid: boolean; striped: boolean }>({
