@@ -1,6 +1,5 @@
-import { sample } from "es-toolkit";
+import { sampleSize } from "es-toolkit";
 
-import { AffiliationBadge } from "@/components";
 import {
   Heading,
   Table,
@@ -19,26 +18,20 @@ export default async function Home() {
   const roles = await prisma.role.findMany();
 
   return (
-    <div>
-      <Heading>Cleaning TF</Heading>
+    <div className="flex flex-col gap-4 p-4">
+      <Heading className="mt-8 mb-2">Cleaning TF</Heading>
       <Table striped>
         <TableHead>
           <TableRow>
-            <TableHeader>소속</TableHeader>
-            <TableHeader>계급</TableHeader>
             <TableHeader>이름</TableHeader>
             <TableHeader>역할</TableHeader>
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.map((user) => (
+          {sampleSize(users, roles.length).map((user, index) => (
             <TableRow key={user.id}>
-              <TableCell className="">
-                <AffiliationBadge affiliation={user.affiliation} />
-              </TableCell>
-              <TableCell className="">{user.rank}</TableCell>
               <TableCell className="">{user.name}</TableCell>
-              <TableCell className="">{sample(roles).title}</TableCell>
+              <TableCell className="">{roles[index].title}</TableCell>
             </TableRow>
           ))}
         </TableBody>
