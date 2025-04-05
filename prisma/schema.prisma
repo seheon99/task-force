@@ -12,32 +12,42 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(uuid())
-  rank         String
-  name         String
-  dateEnlisted DateTime
-  votes        Vote[]
-  warrants     Warrant[]
+  id         String       @id @default(uuid())
+  rank       String
+  name       String
+  enlistedAt DateTime
+  Task       Task[]
+  RandomSeed RandomSeed[]
 }
 
 model Role {
-  id       String    @id @default(uuid())
-  title    String
-  warrants Warrant[]
+  id   String @id @default(uuid())
+  name String
+  Task Task[]
 }
 
-model Vote {
-  id     String   @id @default(uuid())
-  date   DateTime
-  userId String
-  user   User     @relation(fields: [userId], references: [id])
+model Order {
+  id         String       @id @default(uuid())
+  actedAt    DateTime
+  Task       Task[]
+  RandomSeed RandomSeed[]
 }
 
-model Warrant {
-  id     String   @id @default(uuid())
-  date   DateTime
-  userId String
-  user   User     @relation(fields: [userId], references: [id])
-  roleId String
-  role   Role     @relation(fields: [roleId], references: [id])
+model RandomSeed {
+  id      String @id @default(uuid())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+  number  Int
+}
+
+model Task {
+  id      String @id @default(uuid())
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id])
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  roleId  String
+  role    Role   @relation(fields: [roleId], references: [id])
 }
