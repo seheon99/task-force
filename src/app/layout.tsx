@@ -1,12 +1,12 @@
 import {
   ArrowRightStartOnRectangleIcon,
   CalendarIcon,
+  ChevronDownIcon,
   Cog8ToothIcon,
   UserIcon,
 } from "@heroicons/react/16/solid";
 
 import {
-  Avatar,
   Dropdown,
   DropdownButton,
   DropdownDivider,
@@ -67,7 +67,8 @@ export default function RootLayout({
               <NavbarSection>
                 <Dropdown>
                   <DropdownButton as={NavbarItem}>
-                    <Avatar initials="Y" square />
+                    유세헌
+                    <ChevronDownIcon />
                   </DropdownButton>
                   <DropdownMenu className="min-w-64" anchor="bottom end">
                     <DropdownItem href="/my-profile">
