@@ -11,8 +11,13 @@ export function VoteDialog({
 }: Omit<React.ComponentPropsWithoutRef<typeof Dialog>, "children">) {
   const [seed, setSeed] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      onFocus={() => inputRef.current?.focus()}
+    >
       <DialogTitle>난수 만들기</DialogTitle>
       <DialogBody>
         <div className="flex justify-center gap-[1rem]">
@@ -31,7 +36,6 @@ export function VoteDialog({
           ))}
         </div>
         <input
-          autoFocus
           ref={inputRef}
           className="h-0 w-0 opacity-0"
           name="seed"
