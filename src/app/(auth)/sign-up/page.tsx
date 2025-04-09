@@ -1,3 +1,11 @@
+"use client";
+
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import useSWRMutation from "swr/mutation";
+
+import { createUser } from "@/actions";
 import {
   Button,
   Field,
@@ -8,17 +16,62 @@ import {
   Text,
   TextLink,
 } from "@/components/base";
+import { firebaseAuth } from "@/utilities";
+
+async function signUp(
+  url: string,
+  {
+    arg: { name, email, password, enlistedAt },
+  }: {
+    arg: { name: string; email: string; password: string; enlistedAt: Date };
+  }
+) {
+  try {
+    const {
+      user: { uid },
+    } = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+    const user = await createUser({ id: uid, name, email, enlistedAt });
+    return user;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export default function SignUpPage() {
+  const [isLoading, setIsLoading] = useState(false);
+  const { trigger } = useSWRMutation("/sign-up", signUp);
+  const router = useRouter();
+
   return (
     <form
-      action="#"
-      method="POST"
+      action={async (formData) => {
+        setIsLoading(true);
+
+        const name = formData.get("name") as string;
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+        const enlistedAt = formData.get("enlistedAt") as string;
+
+        if (!name || !email || !password || !enlistedAt) {
+          setIsLoading(false);
+          return;
+        }
+
+        const user = await trigger({
+          name,
+          email,
+          password,
+          enlistedAt: new Date(enlistedAt),
+        });
+        if (user) {
+          router.push("/");
+        }
+      }}
       className="grid w-full max-w-sm grid-cols-1 gap-8"
     >
       <Heading>로그인</Heading>
       <Field>
-        <Label>군번</Label>
+        <Label>이메일</Label>
         <Input type="email" name="email" />
       </Field>
       <Field>
@@ -30,14 +83,14 @@ export default function SignUpPage() {
         <Input type="password" name="passwordConfirm" />
       </Field>
       <Field>
+        <Label>이름</Label>
+        <Input type="text" name="name" />
+      </Field>
+      <Field>
         <Label>입대일</Label>
         <Input type="date" name="enlistedAt" />
       </Field>
-      <Field>
-        <Label>전역일</Label>
-        <Input type="date" name="secededAt" />
-      </Field>
-      <Button type="submit" className="w-full">
+      <Button type="submit" className="w-full" disabled={isLoading}>
         회원가입
       </Button>
       <Text>
