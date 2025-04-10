@@ -9,52 +9,15 @@ datasource db {
 }
 
 model User {
-  id         String       @id @default(uuid())
-  email      String
-  rank       String
-  name       String
-  enlistedAt DateTime
-  Task       Task[]
-  RandomSeed RandomSeed[]
-  Exempt     Exempt[]
-}
-
-model Role {
-  id   String @id @default(uuid())
-  name String
-  Task Task[]
-}
-
-model Order {
-  id         String       @id @default(uuid())
-  actedAt    DateTime
-  Task       Task[]
-  RandomSeed RandomSeed[]
-}
-
-model RandomSeed {
-  id      String @id @default(uuid())
-  userId  String
-  user    User   @relation(fields: [userId], references: [id])
-  orderId String
-  order   Order  @relation(fields: [orderId], references: [id])
-  number  Int
-}
-
-model Task {
-  id      String @id @default(uuid())
-  orderId String
-  order   Order  @relation(fields: [orderId], references: [id])
-  userId  String
-  user    User   @relation(fields: [userId], references: [id])
-  roleId  String
-  role    Role   @relation(fields: [roleId], references: [id])
-}
-
-model ExemptExcuse {
-  id     String   @id @default(uuid())
-  reason String
-  Exempt Exempt[]
+  id           String        @id @default(uuid())
+  email        String
+  rank         String
+  name         String
+  enlistedAt   DateTime
+  tasks        Task[]
+  randomSeeds  RandomSeed[]
+  exempts      Exempt[]
+  participants Participant[]
 }
 
 model Exempt {
@@ -65,4 +28,52 @@ model Exempt {
   user      User         @relation(fields: [userId], references: [id])
   excuseId  String
   excuse    ExemptExcuse @relation(fields: [excuseId], references: [id])
+}
+
+model ExemptExcuse {
+  id      String   @id @default(uuid())
+  reason  String
+  exempts Exempt[]
+}
+
+model Mission {
+  id           String        @id @default(uuid())
+  title        String
+  description  String
+  roles        Role[]
+  participants Participant[]
+  RandomSeed   RandomSeed[]
+}
+
+model Role {
+  id        String  @id @default(uuid())
+  name      String
+  missionId String
+  mission   Mission @relation(fields: [missionId], references: [id])
+  tasks     Task[]
+}
+
+model Task {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id])
+}
+
+model Participant {
+  id        String  @id @default(uuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  missionId String
+  mission   Mission @relation(fields: [missionId], references: [id])
+}
+
+model RandomSeed {
+  id        String  @id @default(uuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  missionId String
+  mission   Mission @relation(fields: [missionId], references: [id])
+  number    Int
 }
