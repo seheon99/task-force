@@ -7,10 +7,9 @@ import {
   Cog8ToothIcon,
   UserIcon,
 } from "@heroicons/react/16/solid";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 import {
+  Button,
   Dropdown,
   DropdownButton,
   DropdownDivider,
@@ -22,26 +21,22 @@ import {
 import { useUser } from "@/hooks/use-user";
 
 export function UserDropdown() {
-  const { data, isLoading } = useUser();
-
-  const router = useRouter();
-
-  useEffect(() => {
-    if (data === null) {
-      router.replace("/sign-in");
-    }
-  }, [data, router]);
+  const { data: user, isLoading } = useUser();
 
   return (
     <Dropdown>
-      <DropdownButton
-        as={NavbarItem}
-        disabled={isLoading}
-        className="w-24 h-8 flex items-center justify-end"
-      >
-        {data?.name}
-        <ChevronDownIcon />
-      </DropdownButton>
+      {user ? (
+        <DropdownButton
+          as={NavbarItem}
+          disabled={isLoading}
+          className="w-24 h-8 flex items-center justify-end"
+        >
+          {user.name}
+          <ChevronDownIcon />
+        </DropdownButton>
+      ) : (
+        <Button plain>로그인</Button>
+      )}
       <DropdownMenu className="min-w-64" anchor="bottom end">
         <DropdownItem href="/my-profile">
           <UserIcon />

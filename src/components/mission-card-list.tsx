@@ -13,10 +13,14 @@ export function MissionCardList() {
           Loading...
         </div>
       )}
-      {user?.participants.map(({ mission }) => (
-        <MissionCard key={mission.id} id={mission.id} />
-      ))}
-      <MissionCreateButton />
+      {user && (
+        <>
+          {user?.participants.map(({ mission }) => (
+            <MissionCard key={mission.id} id={mission.id} />
+          ))}
+          <MissionCreateButton />
+        </>
+      )}
     </div>
   );
 }
