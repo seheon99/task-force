@@ -1,12 +1,15 @@
 "use client";
 
-import useSWR from "swr";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import useSWR, { mutate } from "swr";
 
 import { getUser } from "@/actions/get-user";
-import { firebaseAuth } from "@/utilities";
+import { firebaseApp, firebaseAuth } from "@/utilities";
+
+onAuthStateChanged(firebaseAuth, () => mutate(SWR_KEY_ME));
 
 async function fetchUser() {
-  const firebaseUser = firebaseAuth.currentUser;
+  const firebaseUser = getAuth(firebaseApp).currentUser;
   if (!firebaseUser) {
     return null;
   }

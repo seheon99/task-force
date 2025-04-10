@@ -1,9 +1,12 @@
 "use client";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {
+  browserSessionPersistence,
+  setPersistence,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
-import { mutate } from "swr";
 
 import {
   Button,
@@ -15,7 +18,6 @@ import {
   Text,
   TextLink,
 } from "@/components/base";
-import { SWR_KEY_ME } from "@/hooks";
 import { firebaseAuth } from "@/utilities";
 
 import type { FirebaseError } from "firebase/app";
@@ -29,13 +31,13 @@ export default function SignInPage() {
       if (!isLoading) {
         setIsLoading(true);
         try {
+          await setPersistence(firebaseAuth, browserSessionPersistence);
           const userCredential = await signInWithEmailAndPassword(
             firebaseAuth,
             email,
             password
           );
           if (userCredential.user.uid) {
-            mutate(SWR_KEY_ME);
             router.replace("/");
           }
         } catch (error) {
