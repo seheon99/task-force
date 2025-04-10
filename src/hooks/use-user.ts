@@ -15,6 +15,8 @@ async function fetchUser() {
   return user;
 }
 
+export const SWR_KEY_ME = "SWR_ME";
+
 export function useUser() {
-  return useSWR("/user/me", fetchUser);
+  return useSWR(SWR_KEY_ME, fetchUser);
 }
