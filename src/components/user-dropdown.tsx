@@ -8,6 +8,7 @@ import {
   UserIcon,
 } from "@heroicons/react/16/solid";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import {
   Dropdown,
@@ -25,9 +26,11 @@ export function UserDropdown() {
 
   const router = useRouter();
 
-  if (data === null) {
-    router.replace("/sign-in");
-  }
+  useEffect(() => {
+    if (data === null) {
+      router.replace("/sign-in");
+    }
+  }, [data, router]);
 
   return (
     <Dropdown>
