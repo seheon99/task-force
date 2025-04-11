@@ -35,7 +35,9 @@ export function UserDropdown() {
           <ChevronDownIcon />
         </DropdownButton>
       ) : (
-        <Button plain>로그인</Button>
+        <Button plain href="/sign-in">
+          로그인
+        </Button>
       )}
       <DropdownMenu className="min-w-64" anchor="bottom end">
         <DropdownItem href="/my-profile">
