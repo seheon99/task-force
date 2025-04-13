@@ -8,9 +8,10 @@ RUN rm -rf /var/lib/apt/lists/* /var/cache/apk/*
 RUN corepack enable pnpm
 
 COPY package.json pnpm-lock.yaml ./
-COPY next.config.mjs postcss.config.mjs tailwind.config.ts tsconfig.json ./
+COPY next.config.ts postcss.config.mjs tsconfig.json ./
 
 COPY ./prisma ./prisma
+COPY ./public ./public
 COPY ./src ./src
 COPY ./.env ./.env
 
