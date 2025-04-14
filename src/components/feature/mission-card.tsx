@@ -3,7 +3,6 @@ import {
   ShieldExclamationIcon,
 } from "@heroicons/react/16/solid";
 
-import { VoteButton } from "@/components";
 import {
   Badge,
   Button,
@@ -19,6 +18,7 @@ import {
   TableRow,
   Text,
 } from "@/components/base";
+import { VoteButton } from "@/components/feature";
 import { useMission, useUser } from "@/hooks";
 
 import type { Mission } from "@prisma";

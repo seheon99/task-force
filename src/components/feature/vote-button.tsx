@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useState } from "react";
 
 import { VoteDialog } from "./";
-import { Button } from "./base";
+import { Button } from "../base";
 
 export function VoteButton({
   className,
