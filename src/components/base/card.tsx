@@ -10,7 +10,7 @@ export function Card({
       className={clsx(
         className,
         "divide-y divide-zinc-200 overflow-hidden rounded-lg bg-white shadow-sm",
-        "dark:divide-zinc-700 dark:bg-zinc-800 dark:ring-1 dark:ring-white/10"
+        "dark:divide-zinc-700 dark:bg-zinc-800 dark:ring-1 dark:ring-white/10",
       )}
       {...props}
     >
