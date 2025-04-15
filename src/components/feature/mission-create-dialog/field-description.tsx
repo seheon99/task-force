@@ -17,8 +17,10 @@ export function FieldDescription() {
         })}
         invalid={!!form?.formState.errors.description}
       />
-      {form?.formState.errors.title && (
-        <ErrorMessage>{form?.formState.errors.title.message}</ErrorMessage>
+      {form?.formState.errors.description && (
+        <ErrorMessage>
+          {form?.formState.errors.description.message}
+        </ErrorMessage>
       )}
     </Field>
   );
