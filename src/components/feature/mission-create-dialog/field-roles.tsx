@@ -23,7 +23,7 @@ export function FieldRoles({
         value={role}
         onChange={(e) => setRole(e.target.value)}
         onKeyUp={(e) => {
-          if ((role.length && e.code === "Enter") || e.code === "NumpadEnter") {
+          if (role.length && (e.code === "Enter" || e.code === "NumpadEnter")) {
             setRoles((v) => [...v, { id: now(), name: role }]);
             setRole("");
           }
