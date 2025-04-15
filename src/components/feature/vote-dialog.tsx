@@ -3,7 +3,13 @@
 import clsx from "clsx";
 import { useRef, useState } from "react";
 
-import { Button, Dialog, DialogActions, DialogBody, DialogTitle } from "./base";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogBody,
+  DialogTitle,
+} from "../base";
 
 export function VoteDialog({
   open,

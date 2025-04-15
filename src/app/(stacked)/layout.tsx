@@ -1,4 +1,3 @@
-import { UserDropdown } from "@/components";
 import {
   Heading,
   Navbar,
@@ -14,6 +13,7 @@ import {
   StackedLayout,
   Strong,
 } from "@/components/base";
+import { UserDropdown } from "@/components/feature";
 
 const navItems = [
   { label: "시뮬레이션", url: "/simulation" },
