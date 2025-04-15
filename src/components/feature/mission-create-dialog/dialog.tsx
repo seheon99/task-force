@@ -66,7 +66,14 @@ export function MissionCreateDialog({
   return (
     <FormContext.Provider value={form}>
       <Dialog open={open} onClose={close}>
-        <form onSubmit={handleSubmit(submit)}>
+        <form
+          onSubmit={handleSubmit(submit)}
+          onKeyDown={(e) =>
+            e.code === "Enter" || e.code === "NumpadEnter"
+              ? e.preventDefault()
+              : null
+          }
+        >
           <DialogTitle>새 미션 만들기</DialogTitle>
           <DialogDescription>
             {sample([
