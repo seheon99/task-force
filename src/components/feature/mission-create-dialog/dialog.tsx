@@ -38,6 +38,7 @@ export function MissionCreateDialog({
   open: boolean;
   onClose: () => void;
 }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [roles, setRoles] = useState<{ id: number; name: string }[]>([]);
   const [members, setMembers] = useState<User[]>([]);
 
@@ -51,13 +52,19 @@ export function MissionCreateDialog({
 
   const submit = useCallback<SubmitHandler<Inputs>>(
     async ({ title, description }) => {
-      const { id: missionId } = await createMission({ title, description });
-      await Promise.all([
-        ...roles.map(({ name }) => createRole({ missionId, name })),
-        ...members.map(({ id: userId }) =>
-          createParticipant({ userId, missionId })
-        ),
-      ]);
+      setIsLoading(true);
+      try {
+        const { id: missionId } = await createMission({ title, description });
+        await Promise.all([
+          ...roles.map(({ name }) => createRole({ missionId, name })),
+          ...members.map(({ id: userId }) =>
+            createParticipant({ userId, missionId })
+          ),
+        ]);
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
+      }
       close();
     },
     [close, members, roles]
@@ -95,7 +102,9 @@ export function MissionCreateDialog({
             <Button plain onClick={close}>
               취소
             </Button>
-            <Button type="submit">만들기</Button>
+            <Button type="submit" disabled={isLoading}>
+              만들기
+            </Button>
           </DialogActions>
         </form>
       </Dialog>
