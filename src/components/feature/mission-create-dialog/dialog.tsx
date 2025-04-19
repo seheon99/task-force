@@ -1,10 +1,9 @@
 "use client";
 
 import { sample } from "es-toolkit";
-import { createContext, useCallback, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { createMission, createParticipant, createRole } from "@/actions";
 import {
   Button,
   Dialog,
@@ -15,6 +14,7 @@ import {
   FieldGroup,
   Fieldset,
 } from "@/components/base";
+import { useMissionsMustation, useUser } from "@/hooks";
 import { User } from "@prisma";
 
 import type { SubmitHandler, UseFormReturn } from "react-hook-form";
@@ -38,9 +38,13 @@ export function MissionCreateDialog({
   open: boolean;
   onClose: () => void;
 }) {
+  const { data: user } = useUser();
+
   const [isLoading, setIsLoading] = useState(false);
   const [roles, setRoles] = useState<{ id: number; name: string }[]>([]);
   const [members, setMembers] = useState<User[]>([]);
+
+  const { trigger: createMission } = useMissionsMustation();
 
   const form = useForm<Inputs>();
   const { handleSubmit, reset } = form;
@@ -54,21 +58,26 @@ export function MissionCreateDialog({
     async ({ title, description }) => {
       setIsLoading(true);
       try {
-        const { id: missionId } = await createMission({ title, description });
-        await Promise.all([
-          ...roles.map(({ name }) => createRole({ missionId, name })),
-          ...members.map(({ id: userId }) =>
-            createParticipant({ userId, missionId })
-          ),
-        ]);
+        await createMission({
+          title,
+          description,
+          roles: roles.map((r) => r.name),
+          members,
+        });
       } catch (error) {
         console.error(error);
         setIsLoading(false);
       }
       close();
     },
-    [close, members, roles]
+    [close, createMission, members, roles]
   );
+
+  useEffect(() => {
+    if (user) {
+      setMembers((prev) => [...prev.filter((u) => u.id !== user.id), user]);
+    }
+  }, [user]);
 
   return (
     <FormContext.Provider value={form}>
