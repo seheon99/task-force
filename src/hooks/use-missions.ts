@@ -4,7 +4,8 @@ import useSWR from "swr";
 
 import { getMissions } from "@/actions";
 import { useUser } from "@/hooks";
-import { User } from "@prisma";
+
+import type { User } from "@prisma";
 
 async function fetchMissions([, uid]: [typeof SWR_KEY_MISSIONS, User["id"]]) {
   const missions = await getMissions({ uid });
