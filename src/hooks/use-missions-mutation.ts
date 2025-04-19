@@ -31,7 +31,7 @@ async function create(
   ]);
 }
 
-export function useMissionsMustation() {
+export function useMissionsMutation() {
   const { data: user } = useUser();
   return useSWRMutation(SWR_KEY_MISSIONS(user?.id), create);
 }
