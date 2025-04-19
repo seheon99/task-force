@@ -14,7 +14,7 @@ import {
   FieldGroup,
   Fieldset,
 } from "@/components/base";
-import { useMissionsMustation, useUser } from "@/hooks";
+import { useMissionsMutation, useUser } from "@/hooks";
 import { User } from "@prisma";
 
 import type { SubmitHandler, UseFormReturn } from "react-hook-form";
@@ -44,7 +44,7 @@ export function MissionCreateDialog({
   const [roles, setRoles] = useState<{ id: number; name: string }[]>([]);
   const [members, setMembers] = useState<User[]>([]);
 
-  const { trigger: createMission } = useMissionsMustation();
+  const { trigger: createMission } = useMissionsMutation();
 
   const form = useForm<Inputs>();
   const { handleSubmit, reset } = form;
@@ -64,11 +64,11 @@ export function MissionCreateDialog({
           roles: roles.map((r) => r.name),
           members,
         });
+        close();
       } catch (error) {
         console.error(error);
         setIsLoading(false);
       }
-      close();
     },
     [close, createMission, members, roles]
   );
