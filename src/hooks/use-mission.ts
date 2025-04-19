@@ -11,8 +11,8 @@ async function fetchMission([, id]: [string, Mission["id"]]) {
   return mission;
 }
 
-export const SWR_KEY_MISSION = "SWR_MISSION";
+export const SWR_KEY_MISSION = (id: Mission["id"]) => ["SWR_MISSION", id];
 
 export function useMission({ id }: { id: Mission["id"] }) {
-  return useSWR([SWR_KEY_MISSION, id], fetchMission);
+  return useSWR(SWR_KEY_MISSION(id), fetchMission);
 }
