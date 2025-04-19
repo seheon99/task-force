@@ -70,10 +70,11 @@ model Participant {
 }
 
 model RandomSeed {
-  id        String  @id @default(uuid())
+  id        String   @id @default(uuid())
   userId    String
-  user      User    @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   missionId String
-  mission   Mission @relation(fields: [missionId], references: [id])
+  mission   Mission  @relation(fields: [missionId], references: [id])
   number    Int
+  createdAt DateTime @default(now())
 }

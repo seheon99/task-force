@@ -1,18 +1,10 @@
 "use client";
 
-import useSWR from "swr";
-
-import { getMission } from "@/actions";
+import { useMissions } from "@/hooks/use-missions";
 
 import type { Mission } from "@prisma";
 
-async function fetchMission([, id]: [string, Mission["id"]]) {
-  const mission = await getMission({ id });
-  return mission;
-}
-
-export const SWR_KEY_MISSION = (id: Mission["id"]) => ["SWR_MISSION", id];
-
 export function useMission({ id }: { id: Mission["id"] }) {
-  return useSWR(SWR_KEY_MISSION(id), fetchMission);
+  const swr = useMissions();
+  return { ...swr, data: swr.data?.find((m) => m.id === id) };
 }
