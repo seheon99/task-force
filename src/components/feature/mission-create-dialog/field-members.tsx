@@ -1,7 +1,7 @@
 "use client";
 
 import { XMarkIcon } from "@heroicons/react/16/solid";
-import { union } from "es-toolkit";
+import { unionBy } from "es-toolkit";
 import { useState } from "react";
 
 import {
@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/base";
-import { useUsers } from "@/hooks";
+import { useUser, useUsers } from "@/hooks";
 import { User } from "@prisma";
 
 export function FieldMembers({
@@ -31,6 +31,7 @@ export function FieldMembers({
 }) {
   const [member, setMember] = useState<User | null>(null);
 
+  const { data: user } = useUser();
   const { data: users } = useUsers();
 
   return (
@@ -58,7 +59,7 @@ export function FieldMembers({
           onClick={() => {
             if (member) {
               setMember(null);
-              setMembers((members) => union(members, [member]));
+              setMembers((members) => unionBy(members, [member], (x) => x.id));
             }
           }}
         >
@@ -87,11 +88,15 @@ export function FieldMembers({
                   <div className="-mx-3 -my-1.5 sm:-mx-2.5">
                     <Button
                       plain
-                      onClick={() =>
+                      onClick={() => {
+                        if (member.id === user?.id) {
+                          console.error("자기 자신을 삭제할 수 없습니다.");
+                          return;
+                        }
                         setMembers((members) =>
                           members.filter((m) => m.id !== member.id)
-                        )
-                      }
+                        );
+                      }}
                     >
                       <XMarkIcon />
                     </Button>
