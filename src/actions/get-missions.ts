@@ -1,3 +1,5 @@
+"use server";
+
 import { prisma } from "@/utilities";
 import { User } from "@prisma";
 
