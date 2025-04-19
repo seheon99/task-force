@@ -1,10 +1,9 @@
 "use client";
 
 import { sample } from "es-toolkit";
-import { createContext, useCallback, useState } from "react";
+import { createContext, useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import { createMission, createParticipant, createRole } from "@/actions";
 import {
   Button,
   Dialog,
@@ -15,6 +14,7 @@ import {
   FieldGroup,
   Fieldset,
 } from "@/components/base";
+import { useMissionsMutation, useUser } from "@/hooks";
 import { User } from "@prisma";
 
 import type { SubmitHandler, UseFormReturn } from "react-hook-form";
@@ -38,8 +38,13 @@ export function MissionCreateDialog({
   open: boolean;
   onClose: () => void;
 }) {
+  const { data: user } = useUser();
+
+  const [isLoading, setIsLoading] = useState(false);
   const [roles, setRoles] = useState<{ id: number; name: string }[]>([]);
   const [members, setMembers] = useState<User[]>([]);
+
+  const { trigger: createMission } = useMissionsMutation();
 
   const form = useForm<Inputs>();
   const { handleSubmit, reset } = form;
@@ -51,17 +56,28 @@ export function MissionCreateDialog({
 
   const submit = useCallback<SubmitHandler<Inputs>>(
     async ({ title, description }) => {
-      const { id: missionId } = await createMission({ title, description });
-      await Promise.all([
-        ...roles.map(({ name }) => createRole({ missionId, name })),
-        ...members.map(({ id: userId }) =>
-          createParticipant({ userId, missionId })
-        ),
-      ]);
-      close();
+      setIsLoading(true);
+      try {
+        await createMission({
+          title,
+          description,
+          roles: roles.map((r) => r.name),
+          members,
+        });
+        close();
+      } catch (error) {
+        console.error(error);
+        setIsLoading(false);
+      }
     },
-    [close, members, roles]
+    [close, createMission, members, roles]
   );
+
+  useEffect(() => {
+    if (user) {
+      setMembers((prev) => [...prev.filter((u) => u.id !== user.id), user]);
+    }
+  }, [user]);
 
   return (
     <FormContext.Provider value={form}>
@@ -95,7 +111,9 @@ export function MissionCreateDialog({
             <Button plain onClick={close}>
               취소
             </Button>
-            <Button type="submit">만들기</Button>
+            <Button type="submit" disabled={isLoading}>
+              만들기
+            </Button>
           </DialogActions>
         </form>
       </Dialog>

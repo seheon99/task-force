@@ -1,11 +1,11 @@
 "use client";
 
-import { useUser } from "@/hooks";
+import { useMissions } from "@/hooks";
 
 import { MissionCard, MissionCreateButton } from "./";
 
 export function MissionCardList() {
-  const { isLoading, data: user } = useUser();
+  const { data: missions, isLoading } = useMissions();
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {isLoading && (
@@ -13,10 +13,10 @@ export function MissionCardList() {
           Loading...
         </div>
       )}
-      {user && (
+      {missions && (
         <>
-          {user?.participants.map(({ mission }) => (
-            <MissionCard key={mission.id} id={mission.id} />
+          {missions?.map(({ id }) => (
+            <MissionCard key={id} id={id} />
           ))}
           <MissionCreateButton />
         </>
