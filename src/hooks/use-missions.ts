@@ -7,7 +7,11 @@ import { useUser } from "@/hooks";
 
 import type { User } from "@prisma";
 
-async function fetchMissions([, uid]: [typeof SWR_KEY_MISSIONS, User["id"]]) {
+async function fetchMissions([, uid]: ReturnType<typeof SWR_KEY_MISSIONS>) {
+  if (!uid) {
+    return [];
+  }
+
   const missions = await getMissions({ uid });
   return missions;
 }
