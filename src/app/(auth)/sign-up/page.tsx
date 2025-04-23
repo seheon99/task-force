@@ -1,6 +1,7 @@
 "use client";
 
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import useSWRMutation from "swr/mutation";
@@ -15,6 +16,7 @@ import {
   Strong,
   Text,
   TextLink,
+  toast,
 } from "@/components/base";
 import { firebaseAuth } from "@/utilities";
 
@@ -27,13 +29,26 @@ async function signUp(
   }
 ) {
   try {
-    const {
-      user: { uid },
-    } = await createUserWithEmailAndPassword(firebaseAuth, email, password);
-    const user = await createUser({ id: uid, name, email, enlistedAt });
+    const { user: firebaseUser } = await createUserWithEmailAndPassword(
+      firebaseAuth,
+      email,
+      password
+    );
+    await updateProfile(firebaseUser, {
+      displayName: name,
+    });
+    const user = await createUser({
+      id: firebaseUser.uid,
+      name,
+      email,
+      enlistedAt,
+    });
     return user;
   } catch (error) {
-    console.error(error);
+    toast.error({
+      title: "회원가입 실패",
+      description: `(${(error as FirebaseError).code})`,
+    });
   }
 }
 
