@@ -53,8 +53,9 @@ export default function SignInPage() {
             if ((error as FirebaseError).code === "auth/invalid-credential") {
               toast.error({
                 title: "로그인 실패",
-                description:
-                  "가입하지 않은 아이디이거나 잘못된 비밀번호입니다.",
+                description: `가입하지 않은 아이디이거나 잘못된 비밀번호입니다. (${
+                  (error as FirebaseError).code
+                })`,
               });
             }
           }
