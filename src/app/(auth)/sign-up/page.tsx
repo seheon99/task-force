@@ -101,7 +101,7 @@ export default function SignUpPage() {
       className="grid w-full max-w-sm grid-cols-1 gap-8"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <Heading>로그인</Heading>
+      <Heading>회원가입</Heading>
       <Field>
         <Label>이름</Label>
         <Input
