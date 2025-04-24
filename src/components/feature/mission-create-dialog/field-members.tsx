@@ -49,7 +49,7 @@ export function FieldMembers({
               <ComboboxLabel>
                 {u.rank} {u.name}
               </ComboboxLabel>
-              <ComboboxDescription>{u.email}</ComboboxDescription>
+              <ComboboxDescription>{u.soldierId}</ComboboxDescription>
             </ComboboxOption>
           )}
         </Combobox>
@@ -83,7 +83,9 @@ export function FieldMembers({
               <TableRow key={member.id}>
                 <TableCell>{member.rank}</TableCell>
                 <TableCell>{member.name}</TableCell>
-                <TableCell className="text-zinc-500">{member.email}</TableCell>
+                <TableCell className="text-zinc-500">
+                  {member.soldierId}
+                </TableCell>
                 <TableCell>
                   <div className="-mx-3 -my-1.5 sm:-mx-2.5">
                     <Button
