@@ -10,9 +10,10 @@ datasource db {
 
 model User {
   id           String        @id @default(uuid())
-  email        String
-  rank         String
+  soldierId    String
   name         String
+  rank         String
+  birthday     DateTime
   enlistedAt   DateTime
   tasks        Task[]
   randomSeeds  RandomSeed[]

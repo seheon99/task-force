@@ -21,6 +21,7 @@ import {
   TextLink,
   toast,
 } from "@/components/base";
+import { emailDomain } from "@/constants";
 import { firebaseAuth } from "@/utilities";
 
 import type { FirebaseError } from "firebase/app";
@@ -30,14 +31,14 @@ export default function SignInPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const onSubmit = useCallback<SubmitHandler<Inputs>>(
-    async ({ email, password }) => {
+    async ({ soldierId, password }) => {
       if (!isLoading) {
         setIsLoading(true);
         try {
           await setPersistence(firebaseAuth, browserSessionPersistence);
           const userCredential = await signInWithEmailAndPassword(
             firebaseAuth,
-            email,
+            `${soldierId}@${emailDomain}`,
             password
           );
           if (userCredential.user.uid) {
@@ -79,13 +80,15 @@ export default function SignInPage() {
     >
       <Heading>로그인</Heading>
       <Field>
-        <Label>이메일</Label>
+        <Label>군번</Label>
         <Input
-          type="email"
-          invalid={!!errors.email}
-          {...register("email", { required: "이메일을 입력해주세요" })}
+          type="text"
+          invalid={!!errors.soldierId}
+          {...register("soldierId", { required: "군번을 입력해주세요" })}
         />
-        {errors.email && <ErrorMessage>{errors.email.message}</ErrorMessage>}
+        {errors.soldierId && (
+          <ErrorMessage>{errors.soldierId.message}</ErrorMessage>
+        )}
       </Field>
       <Field>
         <Label>비밀번호</Label>
@@ -112,6 +115,6 @@ export default function SignInPage() {
 }
 
 type Inputs = {
-  email: string;
+  soldierId: string;
   password: string;
 };

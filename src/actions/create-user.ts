@@ -4,17 +4,19 @@ import { prisma } from "@/utilities";
 
 export async function createUser({
   id,
-  email,
+  soldierId,
   name,
+  birthday,
   enlistedAt,
 }: {
   id: string;
-  email: string;
+  soldierId: string;
   name: string;
+  birthday: Date;
   enlistedAt: Date;
 }) {
   const user = await prisma.user.create({
-    data: { id, email, rank: "이병", name, enlistedAt },
+    data: { id, soldierId, rank: "이병", name, birthday, enlistedAt },
   });
   return user;
 }
