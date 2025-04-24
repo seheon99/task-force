@@ -1,6 +1,6 @@
 "use client";
 
-import { PlusIcon } from "@heroicons/react/16/solid";
+import { DocumentPlusIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
 
 import { MissionCreateDialog } from "./";
@@ -12,10 +12,15 @@ export function MissionCreateButton() {
     <>
       <Button
         outline
-        className="min-h-40 border-2 border-dashed"
+        className="min-h-40 border-2 border-dashed flex-col items-center"
         onClick={() => setOpen((v) => !v)}
       >
-        <PlusIcon className="size-16" />
+        <div className="size-12">
+          <DocumentPlusIcon className="text-gray-400" />
+        </div>
+        <span className="mt-2 block text-sm font-semibold text-gray-900">
+          새로운 협동과제 만들기
+        </span>
       </Button>
       <MissionCreateDialog open={open} onClose={() => setOpen(false)} />
     </>
