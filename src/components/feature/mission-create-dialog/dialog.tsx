@@ -90,7 +90,7 @@ export function MissionCreateDialog({
               : null
           }
         >
-          <DialogTitle>새 미션 만들기</DialogTitle>
+          <DialogTitle>새 협동과제 만들기</DialogTitle>
           <DialogDescription>
             {sample([
               "하기 싫지만 누군가는 해야 하는 일",
