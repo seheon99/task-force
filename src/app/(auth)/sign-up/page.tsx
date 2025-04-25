@@ -51,10 +51,19 @@ async function signUp(
     });
     return user;
   } catch (error) {
-    toast.error({
-      title: "회원가입 실패",
-      description: `(${(error as FirebaseError).code})`,
-    });
+    if (error instanceof FirebaseError) {
+      toast.error({
+        title: "회원가입 실패",
+        description: `(${error.code}) ${error.message}`,
+      });
+    } else {
+      toast.error({
+        title: "회원가입 실패",
+        description: `알 수 없는 오류가 발생했습니다. (${JSON.stringify(
+          error
+        )})`,
+      });
+    }
   }
 }
 
@@ -75,22 +84,17 @@ export default function SignUpPage() {
       if (isLoading) {
         return;
       }
+
       setIsLoading(true);
-      try {
-        const user = await trigger(props);
-        if (user) {
-          toast.success({
-            title: "회원가입 성공",
-            description: `${user.name}님 환영합니다`,
-          });
-          router.push("/");
-        }
-      } catch (error) {
-        setIsLoading(false);
-        toast.error({
-          title: "회원가입 실패",
-          description: (error as FirebaseError).code,
+      const user = await trigger(props);
+      if (user) {
+        toast.success({
+          title: "회원가입 성공",
+          description: `${user.name}님 환영합니다`,
         });
+        router.push("/");
+      } else {
+        setIsLoading(false);
       }
     },
     [isLoading, router, trigger]
