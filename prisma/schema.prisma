@@ -19,6 +19,7 @@ model User {
   randomSeeds  RandomSeed[]
   exempts      Exempt[]
   participants Participant[]
+  Member       Member[]
 }
 
 model Exempt {
@@ -38,12 +39,16 @@ model ExemptExcuse {
 }
 
 model Mission {
-  id           String        @id @default(uuid())
-  title        String
-  description  String
-  roles        Role[]
-  participants Participant[]
-  RandomSeed   RandomSeed[]
+  id            String        @id @default(uuid())
+  title         String
+  description   String
+  readinessTime String // HH:MM:SS.sss
+  operationTime String // HH:MM:SS.sss
+  teamId        String
+  team          Team          @relation(fields: [teamId], references: [id])
+  roles         Role[]
+  participants  Participant[]
+  RandomSeed    RandomSeed[]
 }
 
 model Role {
@@ -78,4 +83,20 @@ model RandomSeed {
   mission   Mission  @relation(fields: [missionId], references: [id])
   number    Int
   createdAt DateTime @default(now())
+}
+
+model Team {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  Member      Member[]
+  Mission     Mission[]
+}
+
+model Member {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id])
 }
