@@ -33,38 +33,22 @@ async function signUp(
     arg: Inputs;
   }
 ) {
-  try {
-    const { user: firebaseUser } = await createUserWithEmailAndPassword(
-      firebaseAuth,
-      `${soldierId}@${emailDomain}`,
-      password
-    );
-    await updateProfile(firebaseUser, {
-      displayName: name,
-    });
-    const user = await createUser({
-      id: firebaseUser.uid,
-      soldierId,
-      name,
-      birthday: new Date(birthday),
-      enlistedAt: new Date(enlistedAt),
-    });
-    return user;
-  } catch (error) {
-    if (error instanceof FirebaseError) {
-      toast.error({
-        title: "회원가입 실패",
-        description: `(${error.code}) ${error.message}`,
-      });
-    } else {
-      toast.error({
-        title: "회원가입 실패",
-        description: `알 수 없는 오류가 발생했습니다. (${JSON.stringify(
-          error
-        )})`,
-      });
-    }
-  }
+  const { user: firebaseUser } = await createUserWithEmailAndPassword(
+    firebaseAuth,
+    `${soldierId}@${emailDomain}`,
+    password
+  );
+  await updateProfile(firebaseUser, {
+    displayName: name,
+  });
+  const user = await createUser({
+    id: firebaseUser.uid,
+    soldierId,
+    name,
+    birthday: new Date(birthday),
+    enlistedAt: new Date(enlistedAt),
+  });
+  return user;
 }
 
 export default function SignUpPage() {
@@ -86,15 +70,27 @@ export default function SignUpPage() {
       }
 
       setIsLoading(true);
-      const user = await trigger(props);
-      if (user) {
+      try {
+        const user = await trigger(props);
         toast.success({
           title: "회원가입 성공",
           description: `${user.name}님 환영합니다`,
         });
         router.push("/");
-      } else {
-        setIsLoading(false);
+      } catch (error) {
+        if (error instanceof FirebaseError) {
+          toast.error({
+            title: "회원가입 실패",
+            description: `(${error.code}) ${error.message}`,
+          });
+        } else {
+          toast.error({
+            title: "회원가입 실패",
+            description: `알 수 없는 오류가 발생했습니다. (${JSON.stringify(
+              error
+            )})`,
+          });
+        }
       }
     },
     [isLoading, router, trigger]
