@@ -2,7 +2,8 @@
 
 import { useMissions } from "@/hooks";
 
-import { MissionCard, MissionCreateButton } from "./";
+import { MissionCard } from "./mission-card";
+import { MissionCreateButton } from "./mission-create-button";
 
 export function MissionCardList() {
   const { data: missions } = useMissions();
