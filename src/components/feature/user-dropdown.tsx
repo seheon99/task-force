@@ -4,7 +4,6 @@ import {
   ArrowRightStartOnRectangleIcon,
   CalendarIcon,
   ChevronDownIcon,
-  Cog8ToothIcon,
   UserGroupIcon,
   UserIcon,
 } from "@heroicons/react/16/solid";
@@ -41,22 +40,17 @@ export function UserDropdown() {
         </Button>
       )}
       <DropdownMenu className="min-w-64" anchor="bottom end">
-        <DropdownItem href="/my-profile">
+        <DropdownItem href="/settings/profile">
           <UserIcon />
           <DropdownLabel>내 정보</DropdownLabel>
         </DropdownItem>
-        <DropdownItem href="/team">
+        <DropdownItem href="/settings/organizations">
           <UserGroupIcon />
           <DropdownLabel>내 소속</DropdownLabel>
         </DropdownItem>
-        <DropdownItem href="/exempt">
+        <DropdownItem href="/settings/exempts">
           <CalendarIcon />
           <DropdownLabel>열외 관리</DropdownLabel>
-        </DropdownItem>
-        <DropdownDivider />
-        <DropdownItem href="/settings">
-          <Cog8ToothIcon />
-          <DropdownLabel>설정</DropdownLabel>
         </DropdownItem>
         <DropdownDivider />
         <DropdownItem href="/logout">
