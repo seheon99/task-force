@@ -19,7 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/base";
-import { useUser, useUsers } from "@/hooks";
+import { useUser, useUsers } from "@/swr";
 import { User } from "@prisma";
 
 export function FieldMembers({

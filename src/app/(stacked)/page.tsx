@@ -2,7 +2,7 @@
 
 import { TextLink } from "@/components/base";
 import { MissionCardList } from "@/components/feature";
-import { useUser } from "@/hooks";
+import { useUser } from "@/swr";
 
 export default function Home() {
   const { data: user } = useUser();

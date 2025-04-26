@@ -19,7 +19,7 @@ import {
   Text,
 } from "@/components/base";
 import { VoteButton } from "@/components/feature";
-import { useMission, useUser } from "@/hooks";
+import { useMission, useUser } from "@/swr";
 
 import type { Mission } from "@prisma";
 

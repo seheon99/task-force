@@ -1,6 +1,6 @@
 "use client";
 
-import { useMissions } from "@/hooks";
+import { useMissions } from "@/swr";
 
 import { MissionCard } from "./mission-card";
 import { MissionCreateButton } from "./mission-create-button";

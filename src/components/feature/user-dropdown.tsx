@@ -18,7 +18,7 @@ import {
   DropdownMenu,
   NavbarItem,
 } from "@/components/base";
-import { useUser } from "@/hooks/use-user";
+import { useUser } from "@/swr/use-user";
 
 export function UserDropdown() {
   const { data: user, isLoading } = useUser();
