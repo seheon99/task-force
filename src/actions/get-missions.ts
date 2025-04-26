@@ -9,6 +9,7 @@ export async function getMissions({ uid }: { uid: User["id"] }) {
   );
   return await prisma.mission.findMany({
     include: {
+      team: true,
       participants: {
         include: {
           user: {
