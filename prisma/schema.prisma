@@ -64,11 +64,11 @@ model Mission {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  teamId       String
-  team         Team          @relation(fields: [teamId], references: [id])
-  roles        Role[]
-  participants Participant[]
-  RandomSeed   RandomSeed[]
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  roles          Role[]
+  participants   Participant[]
+  RandomSeed     RandomSeed[]
 }
 
 model Role {
@@ -124,7 +124,7 @@ model RandomSeed {
   mission   Mission @relation(fields: [missionId], references: [id])
 }
 
-model Team {
+model Organization {
   id          String @id @default(uuid())
   name        String
   description String
@@ -144,8 +144,8 @@ model Member {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id])
-  teamId String
-  team   Team   @relation(fields: [teamId], references: [id])
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
 }
