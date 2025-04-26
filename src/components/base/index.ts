@@ -24,6 +24,7 @@ export * from "./sidebar";
 export * from "./stacked-layout";
 export * from "./switch";
 export * from "./table";
+export * from "./tabs";
 export * from "./text";
 export * from "./textarea";
 export * from "./toast";
