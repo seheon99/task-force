@@ -1,12 +1,13 @@
 "use server";
 
+import { Temporal } from "temporal-polyfill";
+
 import { prisma } from "@/utilities";
 import { User } from "@prisma";
 
 export async function getMissions({ uid }: { uid: User["id"] }) {
-  const yesterday = new Date(
-    new Date(new Date().setDate(new Date().getDate() - 1)).setHours(0, 0, 0, 0)
-  );
+  const today = Temporal.Now.plainDateISO();
+  const yesterday = today.subtract({ days: 1 });
   return await prisma.mission.findMany({
     include: {
       organization: true,
@@ -17,7 +18,7 @@ export async function getMissions({ uid }: { uid: User["id"] }) {
               randomSeeds: {
                 where: {
                   createdAt: {
-                    gte: yesterday,
+                    gte: yesterday.toString(),
                   },
                 },
               },
@@ -27,10 +28,10 @@ export async function getMissions({ uid }: { uid: User["id"] }) {
                 },
                 where: {
                   startedAt: {
-                    lte: new Date(),
+                    lte: today.toString(),
                   },
                   endedAt: {
-                    gte: new Date(),
+                    gte: today.toString(),
                   },
                 },
               },
