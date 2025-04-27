@@ -1,4 +1,4 @@
-import { Tab, Tabs } from "@/components/base";
+import { Divider, Tab, Tabs } from "@/components/base";
 import {
   ExemptsSettings,
   OrganizationsSettings,
@@ -44,6 +44,7 @@ export default async function SettingsPage({
           </Tab>
         ))}
       </Tabs>
+      <Divider className="mb-8" />
       {currentTab && <currentTab.Component />}
     </main>
   );
