@@ -18,7 +18,7 @@ export async function getMissions({ uid }: { uid: User["id"] }) {
               randomSeeds: {
                 where: {
                   createdAt: {
-                    gte: yesterday.toString(),
+                    gte: new Date(yesterday.toString()),
                   },
                 },
               },
@@ -28,10 +28,10 @@ export async function getMissions({ uid }: { uid: User["id"] }) {
                 },
                 where: {
                   startedAt: {
-                    lte: today.toString(),
+                    lte: new Date(today.toString()),
                   },
                   endedAt: {
-                    gte: today.toString(),
+                    gte: new Date(today.toString()),
                   },
                 },
               },
