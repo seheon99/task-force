@@ -14,9 +14,9 @@ export function Tab({
     <li
       className={clsx(
         current
-          ? "border-zinc-500 text-zinc-600"
-          : "border-transparent text-zinc-500 hover:border-zinc-300 hover:text-zinc-700",
-        "not-sm:w-full border-b-2 px-1 py-4 text-center text-sm font-medium"
+          ? "text-zinc-700 not-dark:bg-zinc-100 dark:text-zinc-100"
+          : "text-zinc-500 hover:text-zinc-700",
+        "rounded-md px-3 py-2 text-sm font-medium",
       )}
     >
       <Link href={href} aria-current={current}>
@@ -39,7 +39,7 @@ export function Tabs({
     >
       <ul
         role="list"
-        className="flex min-w-full flex-none gap-x-6 px-4 text-sm/6 font-semibold text-gray-400 sm:px-6 lg:px-8"
+        className="flex min-w-full flex-none gap-x-6 text-sm/6 font-semibold text-zinc-400"
       >
         {children}
       </ul>
