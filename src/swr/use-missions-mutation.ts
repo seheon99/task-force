@@ -20,13 +20,13 @@ async function create(
       roles: Role["name"][];
       members: User[];
     };
-  }
+  },
 ) {
   const { id: missionId } = await createMission({ title, description });
   await Promise.all([
     ...roles.map((name) => createRole({ missionId, name })),
     ...members.map(({ id: userId }) =>
-      createParticipant({ userId, missionId })
+      createParticipant({ userId, missionId }),
     ),
   ]);
 }
