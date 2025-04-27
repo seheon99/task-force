@@ -1,17 +1,17 @@
-import { Tabs } from "@/components/base";
+import { Tab, Tabs } from "@/components/base";
 
-const tabs = [
+const tabItems = [
   {
     id: "profile",
-    displayName: "프로필",
+    label: "프로필",
     href: "/settings/profile",
   },
   {
     id: "organizations",
-    displayName: "소속",
+    label: "소속",
     href: "/settings/organizations",
   },
-  { id: "exempts", displayName: "열외", href: "/settings/exempts" },
+  { id: "exempts", label: "열외", href: "/settings/exempts" },
 ];
 
 export default async function SettingsPage({
@@ -22,7 +22,13 @@ export default async function SettingsPage({
   const { category } = await params;
   return (
     <div>
-      <Tabs currentTab={category} tabs={tabs} />
+      <Tabs>
+        {tabItems.map((tab) => (
+          <Tab key={tab.id} href={tab.href} current={tab.id === category}>
+            {tab.label}
+          </Tab>
+        ))}
+      </Tabs>
     </div>
   );
 }
