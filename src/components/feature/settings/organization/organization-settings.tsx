@@ -20,7 +20,7 @@ import { useOrganizations, useUser } from "@/swr";
 import { LeaveOrganizationButton } from "./leave-organization-button";
 import { NewTeamButton } from "./new-team-button";
 
-export function OrganizationsSettings() {
+export function OrganizationSettings() {
   const { data: user } = useUser();
   const { data: organizations, isLoading } = useOrganizations();
 

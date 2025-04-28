@@ -15,7 +15,7 @@ import {
   TableRow,
 } from "@/components/base";
 
-export function ExemptsSettings() {
+export function ExemptSettings() {
   return (
     <div>
       <div className="flex justify-between">
