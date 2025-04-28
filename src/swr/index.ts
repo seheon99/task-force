@@ -1,3 +1,4 @@
+export * from "./use-member";
 export * from "./use-mission";
 export * from "./use-missions-mutation";
 export * from "./use-missions";

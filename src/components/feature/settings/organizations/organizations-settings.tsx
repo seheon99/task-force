@@ -12,6 +12,8 @@ import {
 } from "@/components/base";
 import { useOrganizations } from "@/swr";
 
+import { LeaveOrganizationButton } from "./leave-organization-button";
+
 export function OrganizationsSettings() {
   const { data: organizations } = useOrganizations();
 
@@ -48,9 +50,7 @@ export function OrganizationsSettings() {
                 <Button outline className="text-sm">
                   설정
                 </Button>
-                <Button outline className="text-sm !text-red-500">
-                  나가기
-                </Button>
+                <LeaveOrganizationButton organization={org} />
               </TableCell>
             </TableRow>
           ))}
