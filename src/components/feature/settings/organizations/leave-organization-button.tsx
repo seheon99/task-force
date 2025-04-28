@@ -8,6 +8,7 @@ import {
   DialogActions,
   DialogDescription,
   DialogTitle,
+  toast,
 } from "@/components/base";
 import { useMemberDelete, useMemberLazy } from "@/swr";
 
@@ -64,10 +65,20 @@ export function LeaveOrganizationButton({
           <Button
             color="red"
             disabled={isLoadingMember}
-            onClick={() => {
+            onClick={async () => {
               if (member) {
-                deleteMember({ memberId: member.id });
-                setIsOpen(false);
+                try {
+                  await deleteMember({ memberId: member.id });
+                  setIsOpen(false);
+                } catch (error) {
+                  toast.error({
+                    title: "떠나기 실패",
+                    description:
+                      error instanceof Error
+                        ? error.message
+                        : `알 수 없는 오류가 발생했습니다. (${error})`,
+                  });
+                }
               }
             }}
           >
