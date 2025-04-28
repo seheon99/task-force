@@ -8,13 +8,21 @@ export async function getOrganizations({ userId }: { userId: User["id"] }) {
   return await prisma.organization.findMany({
     include: {
       _count: {
-        select: { Member: true, Mission: true },
+        select: {
+          Member: {
+            where: {
+              deletedAt: null,
+            },
+          },
+          Mission: { where: { deletedAt: null } },
+        },
       },
     },
     where: {
       Member: {
         some: {
           userId,
+          deletedAt: null,
         },
       },
     },
