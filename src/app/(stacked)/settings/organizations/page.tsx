@@ -1,5 +1,5 @@
-import { OrganizationSettings } from "@/components/feature";
+import { OrganizationsSettings } from "@/components/feature";
 
-export default function OrganizationSettingsPage() {
-  return <OrganizationSettings />;
+export default function OrganizationsSettingsPage() {
+  return <OrganizationsSettings />;
 }
