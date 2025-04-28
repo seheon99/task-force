@@ -3,8 +3,8 @@
 import { DocumentPlusIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
 
-import { MissionCreateDialog } from "./";
-import { Button } from "../base";
+import { MissionCreateDialog } from "..";
+import { Button } from "../../base";
 
 export function MissionCreateButton() {
   const [open, setOpen] = useState(false);

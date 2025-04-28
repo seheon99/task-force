@@ -14,7 +14,7 @@ import {
   FieldGroup,
   Fieldset,
 } from "@/components/base";
-import { useMissionsMutation, useUser } from "@/hooks";
+import { useMissionsMutation, useUser } from "@/swr";
 import { User } from "@prisma";
 
 import type { SubmitHandler, UseFormReturn } from "react-hook-form";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useMissions } from "@/hooks/use-missions";
+import { useMissions } from "@/swr";
 
 import type { Mission } from "@prisma";
 

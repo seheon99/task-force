@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body>
+      <body className="w-screen overflow-x-hidden">
         {children}
         <Toaster />
       </body>

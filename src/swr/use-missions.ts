@@ -3,7 +3,7 @@
 import useSWR from "swr";
 
 import { getMissions } from "@/actions";
-import { useUser } from "@/hooks";
+import { useUser } from "@/swr";
 
 import type { User } from "@prisma";
 

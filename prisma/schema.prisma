@@ -9,53 +9,88 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(uuid())
-  soldierId    String
-  name         String
-  rank         String
-  birthday     DateTime
-  enlistedAt   DateTime
+  id         String   @id @default(uuid())
+  soldierId  String
+  name       String
+  rank       String
+  birthday   DateTime
+  enlistedAt DateTime
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
   tasks        Task[]
   randomSeeds  RandomSeed[]
   exempts      Exempt[]
   participants Participant[]
+  Member       Member[]
 }
 
 model Exempt {
-  id        String       @id @default(uuid())
+  id        String   @id @default(uuid())
   startedAt DateTime
   endedAt   DateTime
-  userId    String
-  user      User         @relation(fields: [userId], references: [id])
-  excuseId  String
-  excuse    ExemptExcuse @relation(fields: [excuseId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  userId   String
+  user     User         @relation(fields: [userId], references: [id])
+  excuseId String
+  excuse   ExemptExcuse @relation(fields: [excuseId], references: [id])
 }
 
 model ExemptExcuse {
-  id      String   @id @default(uuid())
-  reason  String
+  id     String @id @default(uuid())
+  reason String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
   exempts Exempt[]
 }
 
 model Mission {
-  id           String        @id @default(uuid())
-  title        String
-  description  String
-  roles        Role[]
-  participants Participant[]
-  RandomSeed   RandomSeed[]
+  id            String @id @default(uuid())
+  title         String
+  description   String
+  readinessTime String
+  operationTime String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  roles          Role[]
+  participants   Participant[]
+  RandomSeed     RandomSeed[]
 }
 
 model Role {
-  id        String  @id @default(uuid())
-  name      String
+  id   String @id @default(uuid())
+  name String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
   missionId String
   mission   Mission @relation(fields: [missionId], references: [id])
   tasks     Task[]
 }
 
 model Task {
-  id     String @id @default(uuid())
+  id String @id @default(uuid())
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
   userId String
   user   User   @relation(fields: [userId], references: [id])
   roleId String
@@ -63,7 +98,12 @@ model Task {
 }
 
 model Participant {
-  id        String  @id @default(uuid())
+  id String @id @default(uuid())
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
   userId    String
   user      User    @relation(fields: [userId], references: [id])
   missionId String
@@ -71,11 +111,41 @@ model Participant {
 }
 
 model RandomSeed {
-  id        String   @id @default(uuid())
+  id     String @id @default(uuid())
+  number Int
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
   missionId String
-  mission   Mission  @relation(fields: [missionId], references: [id])
-  number    Int
-  createdAt DateTime @default(now())
+  mission   Mission @relation(fields: [missionId], references: [id])
+}
+
+model Organization {
+  id          String @id @default(uuid())
+  name        String
+  description String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  Member  Member[]
+  Mission Mission[]
+}
+
+model Member {
+  id String @id @default(uuid())
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
 }
