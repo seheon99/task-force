@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Button,
   Heading,
@@ -8,8 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/base";
+import { useOrganizations } from "@/swr";
 
 export function OrganizationsSettings() {
+  const { data: organizations } = useOrganizations();
+
   return (
     <div>
       <div className="flex justify-between">
@@ -30,21 +35,25 @@ export function OrganizationsSettings() {
           </TableRow>
         </TableHead>
         <TableBody>
-          <TableRow>
-            <TableCell>운용대대 2생활관</TableCell>
-            <TableCell className="hidden sm:table-cell">12명 활동 중</TableCell>
-            <TableCell className="hidden sm:table-cell">
-              1개 미션 진행 중
-            </TableCell>
-            <TableCell className="flex gap-1">
-              <Button outline className="text-sm">
-                설정
-              </Button>
-              <Button outline className="text-sm !text-red-500">
-                나가기
-              </Button>
-            </TableCell>
-          </TableRow>
+          {organizations?.map((org) => (
+            <TableRow key={org.id}>
+              <TableCell>{org.name}</TableCell>
+              <TableCell className="hidden sm:table-cell">
+                {org._count.Member}명 활동 중
+              </TableCell>
+              <TableCell className="hidden sm:table-cell">
+                {org._count.Mission}개 미션 진행 중
+              </TableCell>
+              <TableCell className="flex gap-1">
+                <Button outline className="text-sm">
+                  설정
+                </Button>
+                <Button outline className="text-sm !text-red-500">
+                  나가기
+                </Button>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </div>
