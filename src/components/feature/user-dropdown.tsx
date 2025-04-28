@@ -29,7 +29,7 @@ export function UserDropdown() {
         <DropdownButton
           as={NavbarItem}
           disabled={isLoading}
-          className="w-24 h-8 flex items-center justify-end"
+          className="flex h-8 w-24 items-center justify-end"
         >
           {user.name}
           <ChevronDownIcon />
@@ -46,7 +46,7 @@ export function UserDropdown() {
         </DropdownItem>
         <DropdownItem href="/settings/organizations">
           <UserGroupIcon />
-          <DropdownLabel>내 소속</DropdownLabel>
+          <DropdownLabel>내 팀</DropdownLabel>
         </DropdownItem>
         <DropdownItem href="/settings/exempts">
           <CalendarIcon />

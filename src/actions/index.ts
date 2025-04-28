@@ -9,6 +9,7 @@ export * from "./delete-member";
 
 export * from "./get-member";
 export * from "./get-missions";
+export * from "./get-organization";
 export * from "./get-organizations";
 export * from "./get-user";
 export * from "./get-users";

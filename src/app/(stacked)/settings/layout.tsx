@@ -10,7 +10,7 @@ const tabItems = [
     href: "/settings/profile",
   },
   {
-    label: "소속",
+    label: "팀",
     href: "/settings/organizations",
   },
   {

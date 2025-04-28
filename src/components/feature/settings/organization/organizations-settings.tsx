@@ -29,7 +29,7 @@ export function OrganizationsSettings() {
       {organizations && organizations.length === 0 && (
         <div className="flex w-full flex-col items-center gap-y-2">
           <ExclamationCircleIcon className="size-12 text-yellow-400" />
-          <Strong className="mt-2">소속 없음</Strong>
+          <Strong className="mt-2">팀 없음</Strong>
           <Text>새로운 팀을 만들거나 기존 팀에 합류하세요</Text>
           <NewTeamButton outline className="mt-2">
             <PlusIcon />새 팀 만들기
@@ -39,7 +39,7 @@ export function OrganizationsSettings() {
       {organizations && organizations.length > 0 && (
         <>
           <div className="flex justify-between">
-            <Heading>소속</Heading>
+            <Heading>팀</Heading>
             <NewTeamButton outline className="text-sm">
               새 팀 만들기
             </NewTeamButton>

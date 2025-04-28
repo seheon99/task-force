@@ -3,6 +3,7 @@ export * from "./use-mission";
 export * from "./use-missions-mutation";
 export * from "./use-missions";
 export * from "./use-organization-creation";
+export * from "./use-organization";
 export * from "./use-organizations";
 export * from "./use-user";
 export * from "./use-users";
