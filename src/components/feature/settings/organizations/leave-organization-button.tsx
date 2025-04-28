@@ -1,10 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { mutate } from "swr";
-import useSWRMutation from "swr/mutation";
 
-import { deleteMember, getMember } from "@/actions";
 import {
   Button,
   Dialog,
@@ -12,30 +9,32 @@ import {
   DialogDescription,
   DialogTitle,
 } from "@/components/base";
-import { SWR_KEY_MEMBER, SWR_KEY_ORGANIZATIONS, useUser } from "@/swr";
+import { useMemberDelete, useMemberLazy } from "@/swr";
 
-import type { Organization } from "@prisma";
+import type { Organization, User } from "@prisma";
 
 export function LeaveOrganizationButton({
+  user,
   organization,
 }: {
+  user: User;
   organization: Organization;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: user } = useUser();
   const {
     data: member,
     isMutating: isLoadingMember,
     trigger: fetchMember,
-  } = useSWRMutation(
-    SWR_KEY_MEMBER({
-      userId: user?.id ?? "",
-      organizationId: organization.id,
-    }),
-    async ([, userId, organizationId]) =>
-      await getMember({ userId: userId!, organizationId: organizationId! }),
-  );
+  } = useMemberLazy({
+    userId: user.id,
+    organizationId: organization.id,
+  });
+
+  const { trigger: deleteMember } = useMemberDelete({
+    userId: user.id,
+    organizationId: organization.id,
+  });
 
   useEffect(() => {
     if (isOpen) {
@@ -68,7 +67,6 @@ export function LeaveOrganizationButton({
             onClick={() => {
               if (member) {
                 deleteMember({ memberId: member.id });
-                mutate(SWR_KEY_ORGANIZATIONS(user?.id));
                 setIsOpen(false);
               }
             }}

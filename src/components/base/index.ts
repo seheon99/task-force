@@ -15,6 +15,7 @@ export * from "./heading";
 export * from "./input";
 export * from "./link";
 export * from "./listbox";
+export * from "./loading";
 export * from "./navbar";
 export * from "./pagination";
 export * from "./radio";
