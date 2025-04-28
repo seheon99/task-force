@@ -19,7 +19,7 @@ export function ProfileSettings() {
           <div>
             <Legend>개인 정보</Legend>
             <Text>
-              5년 이하의 징역 또는 5천만원 이하의 벌금. 개인정보보호법 위반 시.
+              개인정보보호법 위반 시 5년 이하의 징역 또는 5천만원 이하의 벌금.
             </Text>
           </div>
           <FieldGroup className="grid grid-cols-1 gap-x-6 sm:max-w-xl sm:grid-cols-6 md:col-span-2">
@@ -53,7 +53,7 @@ export function ProfileSettings() {
         <Fieldset className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-3 md:gap-y-10">
           <div>
             <Legend>비밀번호 변경</Legend>
-            <Text>쉽게 추측할 수 없는 비밀번호를 사용해주세요</Text>
+            <Text>쉽게 추측할 수 없는 비밀번호를 사용해주세요.</Text>
           </div>
           <FieldGroup className="grid grid-cols-1 gap-x-6 sm:max-w-xl sm:grid-cols-6 md:col-span-2">
             <Field className="col-span-full">
