@@ -1,5 +1,6 @@
 import {
   Heading,
+  Link,
   Navbar,
   NavbarDivider,
   NavbarItem,
@@ -48,7 +49,9 @@ export default function RootLayout({
       sidebar={
         <Sidebar>
           <SidebarHeader>
-            <Heading>Cleaning TF</Heading>
+            <Link href="/">
+              <Heading>Cleaning TF</Heading>
+            </Link>
           </SidebarHeader>
           <SidebarBody>
             <SidebarSection>
