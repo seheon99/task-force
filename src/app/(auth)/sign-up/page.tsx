@@ -10,6 +10,7 @@ import useSWRMutation from "swr/mutation";
 import { createUser } from "@/actions";
 import {
   Button,
+  Description,
   ErrorMessage,
   Field,
   Heading,
@@ -28,15 +29,15 @@ import type { SubmitHandler } from "react-hook-form";
 async function signUp(
   url: string,
   {
-    arg: { name, soldierId, password, birthday, enlistedAt },
+    arg: { soldierId, unit, name, password, birthday, enlistedAt },
   }: {
     arg: Inputs;
-  }
+  },
 ) {
   const { user: firebaseUser } = await createUserWithEmailAndPassword(
     firebaseAuth,
     `${soldierId}@${emailDomain}`,
-    password
+    password,
   );
   await updateProfile(firebaseUser, {
     displayName: name,
@@ -44,6 +45,7 @@ async function signUp(
   const user = await createUser({
     id: firebaseUser.uid,
     soldierId,
+    unit,
     name,
     birthday: new Date(birthday),
     enlistedAt: new Date(enlistedAt),
@@ -87,13 +89,13 @@ export default function SignUpPage() {
           toast.error({
             title: "회원가입 실패",
             description: `알 수 없는 오류가 발생했습니다. (${JSON.stringify(
-              error
+              error,
             )})`,
           });
         }
       }
     },
-    [isLoading, router, trigger]
+    [isLoading, router, trigger],
   );
 
   return (
@@ -102,15 +104,6 @@ export default function SignUpPage() {
       onSubmit={handleSubmit(onSubmit)}
     >
       <Heading>회원가입</Heading>
-      <Field>
-        <Label>이름</Label>
-        <Input
-          type="text"
-          invalid={!!errors.name}
-          {...register("name", { required: "이름을 입력해주세요" })}
-        />
-        {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
-      </Field>
       <Field>
         <Label>군번</Label>
         <Input
@@ -121,6 +114,33 @@ export default function SignUpPage() {
         {errors.soldierId && (
           <ErrorMessage>{errors.soldierId.message}</ErrorMessage>
         )}
+      </Field>
+      <Field>
+        <Label>소속</Label>
+        <Description>
+          고유한 부대명부터 작성해주세요.
+          <br />
+          <span className="mr-2 text-red-500">&ldquo;본부중대&rdquo; (X)</span>
+          <span className="text-bold">
+            &ldquo;101정보통신단 본부중대&rdquo;
+          </span>
+          (O)
+        </Description>
+        <Input
+          type="text"
+          invalid={!!errors.unit}
+          {...register("unit", { required: "군번을 입력해주세요" })}
+        />
+        {errors.unit && <ErrorMessage>{errors.unit.message}</ErrorMessage>}
+      </Field>
+      <Field>
+        <Label>이름</Label>
+        <Input
+          type="text"
+          invalid={!!errors.name}
+          {...register("name", { required: "이름을 입력해주세요" })}
+        />
+        {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
       </Field>
       <Field>
         <Label>비밀번호</Label>
@@ -187,8 +207,9 @@ export default function SignUpPage() {
 }
 
 type Inputs = {
-  name: string;
   soldierId: string;
+  unit: string;
+  name: string;
   password: string;
   passwordConfirm: string;
   birthday: string;
