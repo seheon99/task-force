@@ -60,7 +60,10 @@ export function OrganizationSettings() {
             </TableHead>
             <TableBody>
               {organizations?.map((org) => (
-                <TableRow key={org.id}>
+                <TableRow
+                  key={org.id}
+                  href={`/settings/organizations/${org.id}`}
+                >
                   <TableCell>{org.name}</TableCell>
                   <TableCell>{org._count.Member}명 활동 중</TableCell>
                   <TableCell className="hidden sm:table-cell">
