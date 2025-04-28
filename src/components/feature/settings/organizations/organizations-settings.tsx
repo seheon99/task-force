@@ -18,6 +18,7 @@ import {
 import { useOrganizations, useUser } from "@/swr";
 
 import { LeaveOrganizationButton } from "./leave-organization-button";
+import { NewTeamButton } from "./new-team-button";
 
 export function OrganizationsSettings() {
   const { data: user } = useUser();
@@ -30,27 +31,25 @@ export function OrganizationsSettings() {
           <ExclamationCircleIcon className="size-12 text-yellow-400" />
           <Strong className="mt-2">소속 없음</Strong>
           <Text>새로운 팀을 만들거나 기존 팀에 합류하세요</Text>
-          <Button outline className="mt-2">
+          <NewTeamButton outline className="mt-2">
             <PlusIcon />새 팀 만들기
-          </Button>
+          </NewTeamButton>
         </div>
       )}
       {organizations && organizations.length > 0 && (
         <>
           <div className="flex justify-between">
             <Heading>소속</Heading>
-            <Button outline className="text-sm">
+            <NewTeamButton outline className="text-sm">
               새 팀 만들기
-            </Button>
+            </NewTeamButton>
           </div>
           {isLoading && <Loading />}
           <Table>
             <TableHead>
               <TableRow>
                 <TableHeader>팀 이름</TableHeader>
-                <TableHeader className="hidden sm:table-cell">
-                  멤버 수
-                </TableHeader>
+                <TableHeader>멤버 수</TableHeader>
                 <TableHeader className="hidden sm:table-cell">
                   미션 수
                 </TableHeader>
@@ -63,9 +62,7 @@ export function OrganizationsSettings() {
               {organizations?.map((org) => (
                 <TableRow key={org.id}>
                   <TableCell>{org.name}</TableCell>
-                  <TableCell className="hidden sm:table-cell">
-                    {org._count.Member}명 활동 중
-                  </TableCell>
+                  <TableCell>{org._count.Member}명 활동 중</TableCell>
                   <TableCell className="hidden sm:table-cell">
                     {org._count.Mission}개 미션 진행 중
                   </TableCell>
