@@ -88,9 +88,7 @@ export default function SignUpPage() {
         } else {
           toast.error({
             title: "회원가입 실패",
-            description: `알 수 없는 오류가 발생했습니다. (${JSON.stringify(
-              error,
-            )})`,
+            description: `${error}`,
           });
         }
       }
