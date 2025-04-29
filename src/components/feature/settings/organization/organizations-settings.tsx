@@ -3,7 +3,6 @@
 import { ExclamationCircleIcon, PlusIcon } from "@heroicons/react/16/solid";
 
 import {
-  Button,
   Heading,
   Loading,
   Strong,
@@ -73,10 +72,7 @@ export function OrganizationsSettings() {
                   <TableCell className="hidden sm:table-cell">
                     {org._count.Mission}개 미션 진행 중
                   </TableCell>
-                  <TableCell className="flex gap-1">
-                    <Button outline className="text-sm">
-                      설정
-                    </Button>
+                  <TableCell>
                     <LeaveOrganizationButton
                       memberId={
                         org.Member.find((m) => m.userId === user.id)!.id
