@@ -84,7 +84,7 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
     [updateOrganization],
   );
 
-  const onInvideButtonClickHandler = useCallback(
+  const onInviteButtonClickHandler = useCallback(
     async (user: User | null) => {
       if (user) {
         try {
@@ -204,7 +204,7 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
                 outline
                 disabled={!invitedUser || !!isCreatingMember}
                 className="shrink-0 text-sm"
-                onClick={() => onInvideButtonClickHandler(invitedUser)}
+                onClick={() => onInviteButtonClickHandler(invitedUser)}
               >
                 초대하기
               </Button>
