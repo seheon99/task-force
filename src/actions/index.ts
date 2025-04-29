@@ -13,3 +13,5 @@ export * from "./get-organization";
 export * from "./get-organizations";
 export * from "./get-user";
 export * from "./get-users";
+
+export * from "./update-organization";

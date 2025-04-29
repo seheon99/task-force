@@ -2,26 +2,8 @@
 
 import { prisma } from "@/utilities";
 
-import type { Member, Organization, User } from "@prisma";
+import type { Member } from "@prisma";
 
-type Props =
-  | {
-      userId: User["id"];
-      organizationId: Organization["id"];
-      memberId?: never;
-    }
-  | {
-      userId?: never;
-      organizationId?: never;
-      memberId: Member["id"];
-    };
-
-export async function getMember({ userId, organizationId, memberId }: Props) {
-  if (memberId) {
-    return await prisma.member.findUnique({ where: { id: memberId } });
-  } else if (userId && organizationId) {
-    return await prisma.member.findFirst({ where: { userId, organizationId } });
-  } else {
-    return null;
-  }
+export async function getMember({ id }: { id: Member["id"] }) {
+  return await prisma.member.findUnique({ where: { id } });
 }

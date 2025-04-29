@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import {
   Button,
@@ -10,38 +10,20 @@ import {
   DialogTitle,
   toast,
 } from "@/components/base";
-import { useMemberDelete, useMemberLazy } from "@/swr";
+import { useMemberDeletion } from "@/swr";
 
-import type { Organization, User } from "@prisma";
+import type { Member, Organization } from "@prisma";
 
 export function LeaveOrganizationButton({
-  user,
+  memberId,
   organization,
 }: {
-  user: User;
+  memberId: Member["id"];
   organization: Organization;
 }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const {
-    data: member,
-    isMutating: isLoadingMember,
-    trigger: fetchMember,
-  } = useMemberLazy({
-    userId: user.id,
-    organizationId: organization.id,
-  });
-
-  const { trigger: deleteMember } = useMemberDelete({
-    userId: user.id,
-    organizationId: organization.id,
-  });
-
-  useEffect(() => {
-    if (isOpen) {
-      fetchMember();
-    }
-  }, [fetchMember, isOpen]);
+  const { trigger: deleteMember } = useMemberDeletion();
 
   return (
     <>
@@ -64,21 +46,18 @@ export function LeaveOrganizationButton({
           </Button>
           <Button
             color="red"
-            disabled={isLoadingMember}
             onClick={async () => {
-              if (member) {
-                try {
-                  await deleteMember({ memberId: member.id });
-                  setIsOpen(false);
-                } catch (error) {
-                  toast.error({
-                    title: "떠나기 실패",
-                    description:
-                      error instanceof Error
-                        ? error.message
-                        : `알 수 없는 오류가 발생했습니다. (${error})`,
-                  });
-                }
+              try {
+                await deleteMember({ id: memberId });
+                setIsOpen(false);
+              } catch (error) {
+                toast.error({
+                  title: "떠나기 실패",
+                  description:
+                    error instanceof Error
+                      ? error.message
+                      : `알 수 없는 오류가 발생했습니다. (${error})`,
+                });
               }
             }}
           >

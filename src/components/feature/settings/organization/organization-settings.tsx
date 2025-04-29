@@ -1,15 +1,17 @@
 "use client";
 
-import { useCallback, useEffect } from "react";
+import { XMarkIcon } from "@heroicons/react/16/solid";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {
+  Badge,
   Button,
-  Combobox,
-  ComboboxDescription,
-  ComboboxLabel,
-  ComboboxOption,
   Description,
+  Dialog,
+  DialogActions,
+  DialogDescription,
+  DialogTitle,
   ErrorMessage,
   Field,
   FieldGroup,
@@ -18,16 +20,39 @@ import {
   Label,
   Legend,
   Loading,
+  Subheading,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   Text,
   Textarea,
+  toast,
 } from "@/components/base";
-import { useOrganization, useUsers } from "@/swr";
+import { UsersCombobox } from "@/components/feature";
+import {
+  useMemberDeletion,
+  useOrganization,
+  useOrganizationMutation,
+  useUser,
+} from "@/swr";
 
-import type { Organization } from "@prisma";
+import type { Member, Organization, User } from "@prisma";
+import type { SubmitHandler } from "react-hook-form";
 
 export function OrganizationSettings({ id }: { id: Organization["id"] }) {
+  const [deletionMember, setDeletionMember] = useState<
+    (Member & { user: User }) | null
+  >(null);
+
+  const { data: user } = useUser();
   const { data: organization, isLoading } = useOrganization({ id });
-  const { data: users, isLoading: isLoadingUsers } = useUsers();
+  const { trigger: updateOrganization, isMutating } = useOrganizationMutation({
+    id,
+  });
+  const { trigger: deleteMember, isMutating: isDeleting } = useMemberDeletion();
 
   const {
     register,
@@ -36,7 +61,26 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const onSubmit = useCallback(() => {}, []);
+  const onSubmit = useCallback<SubmitHandler<Inputs>>(
+    async (data) => {
+      try {
+        const organization = await updateOrganization(data);
+        toast.success({
+          title: "업데이트 성공",
+          description: organization.updatedAt.toString(),
+        });
+      } catch (error) {
+        toast.error({
+          title: "업데이트 실패",
+          description:
+            error instanceof Error
+              ? error.message
+              : `알 수 없는 오류가 발생했습니다. (${error})`,
+        });
+      }
+    },
+    [updateOrganization],
+  );
 
   useEffect(() => {
     if (organization) {
@@ -89,7 +133,9 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
               />
               <ErrorMessage>{errors.description?.message}</ErrorMessage>
             </Field>
-            <Button type="submit">저장</Button>
+            <Button type="submit" disabled={isMutating}>
+              저장
+            </Button>
           </FieldGroup>
         </Fieldset>
       </form>
@@ -99,23 +145,98 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
           <Legend>팀원 관리</Legend>
           <Text>팀원 초대는 누구나, 팀원 방출은 팀장만 할 수 있어요.</Text>
         </div>
-        <div className="grid grid-cols-1 gap-x-6 sm:max-w-xl sm:grid-cols-6 md:col-span-2">
-          <div className="col-span-full flex gap-2">
-            <Combobox
-              disabled={isLoadingUsers}
-              options={users ?? []}
-              displayValue={(user) => user?.name}
-            >
-              {(user) => (
-                <ComboboxOption value={user}>
-                  <ComboboxLabel>{user.name}</ComboboxLabel>
-                  <ComboboxDescription>{user.soldierId}</ComboboxDescription>
-                </ComboboxOption>
-              )}
-            </Combobox>
-            <Button outline className="shrink-0 text-sm">
-              초대하기
-            </Button>
+        <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:max-w-xl sm:grid-cols-6 md:col-span-2 md:gap-y-10">
+          <div className="col-span-full flex flex-col gap-4">
+            <Subheading>팀원 초대</Subheading>
+            <div className="flex gap-2">
+              <UsersCombobox />
+              <Button outline className="shrink-0 text-sm">
+                초대하기
+              </Button>
+            </div>
+          </div>
+          <div className="col-span-full flex flex-col gap-4">
+            <Subheading>팀원 목록</Subheading>
+            <div>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableHeader>소속</TableHeader>
+                    <TableHeader>계급</TableHeader>
+                    <TableHeader>이름</TableHeader>
+                    <TableHeader>
+                      <span className="sr-only">action</span>
+                    </TableHeader>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {organization?.Member.map((member) => (
+                    <TableRow key={member.user.id}>
+                      <TableCell>{member.user.unit}</TableCell>
+                      <TableCell>{member.user.rank}</TableCell>
+                      <TableCell>
+                        {member.user.name}
+                        {member.isLeader && (
+                          <Badge className="ml-1" color="lime">
+                            팀장
+                          </Badge>
+                        )}
+                      </TableCell>
+                      <TableCell>
+                        {!member.isLeader && member.user.id !== user?.id && (
+                          <Button
+                            plain
+                            onClick={() => setDeletionMember(member)}
+                          >
+                            <XMarkIcon />
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <Dialog
+                open={!!deletionMember}
+                onClose={() => setDeletionMember(null)}
+              >
+                <DialogTitle>
+                  {deletionMember?.user.name}을 {organization?.name}에서
+                  방출하시겠습니까?
+                </DialogTitle>
+                <DialogDescription>
+                  이 결정은 되돌릴 수 없습니다.
+                </DialogDescription>
+                <DialogActions>
+                  <Button plain onClick={() => setDeletionMember(null)}>
+                    아니요
+                  </Button>
+                  <Button
+                    color="red"
+                    disabled={!deletionMember || isDeleting}
+                    onClick={async () => {
+                      if (deletionMember) {
+                        try {
+                          await deleteMember({ id: deletionMember.id });
+                          toast.success({
+                            title: "방출 성공",
+                            description: `${deletionMember.user.name}은 더이상 ${organization?.name}의 맴버가 아닙니다.`,
+                          });
+                          setDeletionMember(null);
+                        } catch (error) {
+                          toast.error({
+                            title: "방출 실패",
+                            description: `${error}`,
+                          });
+                        }
+                      }
+                    }}
+                  >
+                    네
+                  </Button>
+                </DialogActions>
+              </Dialog>
+            </div>
           </div>
         </div>
       </Fieldset>

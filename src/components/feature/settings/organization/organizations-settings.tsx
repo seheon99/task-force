@@ -24,6 +24,10 @@ export function OrganizationsSettings() {
   const { data: user } = useUser();
   const { data: organizations, isLoading } = useOrganizations();
 
+  if (!user) {
+    return <Loading />;
+  }
+
   return (
     <div>
       {organizations && organizations.length === 0 && (
@@ -73,9 +77,12 @@ export function OrganizationsSettings() {
                     <Button outline className="text-sm">
                       설정
                     </Button>
-                    {user && (
-                      <LeaveOrganizationButton user={user} organization={org} />
-                    )}
+                    <LeaveOrganizationButton
+                      memberId={
+                        org.Member.find((m) => m.userId === user.id)!.id
+                      }
+                      organization={org}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
