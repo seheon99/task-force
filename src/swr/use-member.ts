@@ -3,68 +3,54 @@
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 
-import { deleteMember, getMember } from "@/actions";
+import { createMember, deleteMember, getMember } from "@/actions";
 
 import type { Member, Organization, User } from "@prisma";
 
+import { SWR_KEY_ORGANIZATION } from "./use-organization";
 import { SWR_KEY_ORGANIZATIONS } from "./use-organizations";
 
-async function fetchMember([, userId, organizationId, memberId]: ReturnType<
-  typeof SWR_KEY_MEMBER
->) {
-  if (userId && organizationId) {
-    return await getMember({ userId, organizationId });
-  } else if (memberId) {
-    return await getMember({ memberId });
-  } else {
+async function fetcher([, id]: ReturnType<typeof SWR_KEY_MEMBER>) {
+  if (!id) {
     return null;
   }
+  return await getMember({ id });
 }
 
-async function deleteMemberFetcher(
+async function createFetcher(
   _: ReturnType<typeof SWR_KEY_MEMBER>,
-  { arg: { userId, organizationId, memberId } }: { arg: Props },
+  { arg }: { arg: { userId: User["id"]; organizationId: Organization["id"] } },
 ) {
-  let member: Member | undefined;
-  if (userId && organizationId) {
-    member = await deleteMember({ userId, organizationId });
-  } else if (memberId) {
-    member = await deleteMember({ memberId });
-  }
-
-  if (member) {
-    mutate(SWR_KEY_ORGANIZATIONS(member.userId));
-  }
-  return member ?? null;
+  const member = await createMember(arg);
+  mutate(SWR_KEY_ORGANIZATIONS(member.userId));
+  mutate(SWR_KEY_ORGANIZATION(member.organizationId));
+  return member;
 }
 
-type Props =
-  | {
-      userId: User["id"];
-      organizationId: Organization["id"];
-      memberId?: never;
-    }
-  | {
-      userId?: never;
-      organizationId?: never;
-      memberId: Member["id"];
-    };
-
-export const SWR_KEY_MEMBER = ({ userId, organizationId, memberId }: Props) => [
-  "SWR_ORGANIZATIONS",
-  userId,
-  organizationId,
-  memberId,
-];
-
-export function useMember(props: Props) {
-  return useSWR(SWR_KEY_MEMBER(props), fetchMember);
+async function deleteFetcher(
+  _: ReturnType<typeof SWR_KEY_MEMBER>,
+  { arg: { id } }: { arg: { id: Member["id"] } },
+) {
+  const member = await deleteMember({ id });
+  mutate(SWR_KEY_ORGANIZATIONS(member.userId));
+  mutate(SWR_KEY_ORGANIZATION(member.organizationId));
+  return member;
 }
 
-export function useMemberLazy(props: Props) {
-  return useSWRMutation(SWR_KEY_MEMBER(props), fetchMember);
+export const SWR_KEY_MEMBER = ({ id }: { id?: string }) => ["SWR_MEMBER", id];
+
+export function useMember({ id }: { id: string }) {
+  return useSWR(SWR_KEY_MEMBER({ id }), fetcher);
 }
 
-export function useMemberDelete(props: Props) {
-  return useSWRMutation(SWR_KEY_MEMBER(props), deleteMemberFetcher);
+export function useMemberLazy({ id }: { id: string }) {
+  return useSWRMutation(SWR_KEY_MEMBER({ id }), fetcher);
+}
+
+export function useMemberCreation() {
+  return useSWRMutation(SWR_KEY_MEMBER({}), createFetcher);
+}
+
+export function useMemberDeletion() {
+  return useSWRMutation(SWR_KEY_MEMBER({}), deleteFetcher);
 }

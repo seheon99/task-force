@@ -1,3 +1,3 @@
-export * from "./exempts-settings";
-export * from "./organizations";
+export * from "./exempt-settings";
+export * from "./organization";
 export * from "./profile-settings";

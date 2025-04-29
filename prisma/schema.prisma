@@ -11,6 +11,7 @@ datasource db {
 model User {
   id         String   @id @default(uuid())
   soldierId  String
+  unit       String
   name       String
   rank       String
   birthday   DateTime
@@ -138,7 +139,9 @@ model Organization {
 }
 
 model Member {
-  id String @id @default(uuid())
+  id         String  @id @default(uuid())
+  isLeader   Boolean @default(false)
+  isAccepted Boolean @default(false)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

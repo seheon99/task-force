@@ -7,6 +7,7 @@ import type { User } from "@prisma";
 export async function getOrganizations({ userId }: { userId: User["id"] }) {
   return await prisma.organization.findMany({
     include: {
+      Member: true,
       _count: {
         select: {
           Member: {
