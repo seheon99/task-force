@@ -129,7 +129,7 @@ export default function SignUpPage() {
         <Input
           type="text"
           invalid={!!errors.unit}
-          {...register("unit", { required: "군번을 입력해주세요" })}
+          {...register("unit", { required: "소속을 입력해주세요" })}
         />
         {errors.unit && <ErrorMessage>{errors.unit.message}</ErrorMessage>}
       </Field>
