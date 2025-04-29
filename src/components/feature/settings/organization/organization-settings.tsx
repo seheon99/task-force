@@ -33,6 +33,7 @@ import {
 } from "@/components/base";
 import { UsersCombobox } from "@/components/feature";
 import {
+  useMemberCreation,
   useMemberDeletion,
   useOrganization,
   useOrganizationMutation,
@@ -43,6 +44,7 @@ import type { Member, Organization, User } from "@prisma";
 import type { SubmitHandler } from "react-hook-form";
 
 export function OrganizationSettings({ id }: { id: Organization["id"] }) {
+  const [invitedUser, setInvitedUser] = useState<User | null>(null);
   const [deletionMember, setDeletionMember] = useState<
     (Member & { user: User }) | null
   >(null);
@@ -52,7 +54,10 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
   const { trigger: updateOrganization, isMutating } = useOrganizationMutation({
     id,
   });
-  const { trigger: deleteMember, isMutating: isDeleting } = useMemberDeletion();
+  const { trigger: createMember, isMutating: isCreatingMember } =
+    useMemberCreation();
+  const { trigger: deleteMember, isMutating: isDeletingMember } =
+    useMemberDeletion();
 
   const {
     register,
@@ -77,6 +82,51 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
       }
     },
     [updateOrganization],
+  );
+
+  const onInvideButtonClickHandler = useCallback(
+    async (user: User | null) => {
+      if (user) {
+        try {
+          await createMember({
+            userId: user.id,
+            organizationId: id,
+          });
+          setInvitedUser(null);
+          toast.success({
+            title: "초대하기 성공",
+            description: "초대장은 이틀 뒤 만료됩니다.",
+          });
+        } catch (error) {
+          toast.error({
+            title: "초대하기 실패",
+            description: `${error}`,
+          });
+        }
+      }
+    },
+    [createMember, id],
+  );
+
+  const onExpulsionButtonClickHandler = useCallback(
+    async (member: (Member & { user: User }) | null) => {
+      if (member) {
+        try {
+          await deleteMember({ id: member.id });
+          toast.success({
+            title: "내보내기 성공",
+            description: `${member.user.name}은 더이상 ${organization?.name}의 맴버가 아닙니다.`,
+          });
+          setDeletionMember(null);
+        } catch (error) {
+          toast.error({
+            title: "내보내기 실패",
+            description: `${error}`,
+          });
+        }
+      }
+    },
+    [deleteMember, organization?.name],
   );
 
   useEffect(() => {
@@ -140,14 +190,22 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
       <Fieldset className="grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-3 md:gap-y-10">
         <div>
           <Legend>팀원 관리</Legend>
-          <Text>팀원 초대는 누구나, 팀원 방출은 팀장만 할 수 있어요.</Text>
+          <Text>팀원 초대는 누구나, 팀원 추방은 팀장만 할 수 있어요.</Text>
         </div>
         <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:max-w-xl sm:grid-cols-6 md:col-span-2 md:gap-y-10">
           <div className="col-span-full flex flex-col gap-4">
             <Subheading>팀원 초대</Subheading>
             <div className="flex gap-2">
-              <UsersCombobox />
-              <Button outline className="shrink-0 text-sm">
+              <UsersCombobox
+                value={invitedUser ?? undefined}
+                onChange={setInvitedUser}
+              />
+              <Button
+                outline
+                disabled={!invitedUser || !!isCreatingMember}
+                className="shrink-0 text-sm"
+                onClick={() => onInvideButtonClickHandler(invitedUser)}
+              >
                 초대하기
               </Button>
             </div>
@@ -197,12 +255,10 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
                 open={!!deletionMember}
                 onClose={() => setDeletionMember(null)}
               >
-                <DialogTitle>
-                  {deletionMember?.user.name}을 {organization?.name}에서
-                  방출하시겠습니까?
-                </DialogTitle>
+                <DialogTitle>이 결정은 되돌릴 수 없습니다.</DialogTitle>
                 <DialogDescription>
-                  이 결정은 되돌릴 수 없습니다.
+                  {deletionMember?.user.name}을 {organization?.name}에서
+                  내보내시겠습니까?
                 </DialogDescription>
                 <DialogActions>
                   <Button plain onClick={() => setDeletionMember(null)}>
@@ -210,24 +266,10 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
                   </Button>
                   <Button
                     color="red"
-                    disabled={!deletionMember || isDeleting}
-                    onClick={async () => {
-                      if (deletionMember) {
-                        try {
-                          await deleteMember({ id: deletionMember.id });
-                          toast.success({
-                            title: "방출 성공",
-                            description: `${deletionMember.user.name}은 더이상 ${organization?.name}의 맴버가 아닙니다.`,
-                          });
-                          setDeletionMember(null);
-                        } catch (error) {
-                          toast.error({
-                            title: "방출 실패",
-                            description: `${error}`,
-                          });
-                        }
-                      }
-                    }}
+                    disabled={!deletionMember || isDeletingMember}
+                    onClick={() =>
+                      onExpulsionButtonClickHandler(deletionMember)
+                    }
                   >
                     네
                   </Button>
