@@ -24,6 +24,7 @@ async function fetcher(
   await createMember({
     userId: uid,
     organizationId: organization.id,
+    isLeader: true,
   });
   return organization;
 }

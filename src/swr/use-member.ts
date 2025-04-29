@@ -3,9 +3,9 @@
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 
-import { deleteMember, getMember } from "@/actions";
+import { createMember, deleteMember, getMember } from "@/actions";
 
-import type { Member } from "@prisma";
+import type { Member, Organization, User } from "@prisma";
 
 import { SWR_KEY_ORGANIZATION } from "./use-organization";
 import { SWR_KEY_ORGANIZATIONS } from "./use-organizations";
@@ -17,32 +17,40 @@ async function fetcher([, id]: ReturnType<typeof SWR_KEY_MEMBER>) {
   return await getMember({ id });
 }
 
+async function createFetcher(
+  _: ReturnType<typeof SWR_KEY_MEMBER>,
+  { arg }: { arg: { userId: User["id"]; organizationId: Organization["id"] } },
+) {
+  const member = await createMember(arg);
+  mutate(SWR_KEY_ORGANIZATIONS(member.userId));
+  mutate(SWR_KEY_ORGANIZATION(member.organizationId));
+  return member;
+}
+
 async function deleteFetcher(
   _: ReturnType<typeof SWR_KEY_MEMBER>,
   { arg: { id } }: { arg: { id: Member["id"] } },
 ) {
   const member = await deleteMember({ id });
-  if (member) {
-    mutate(SWR_KEY_ORGANIZATIONS(member.userId));
-    mutate(SWR_KEY_ORGANIZATION(id));
-  }
-  return member ?? null;
+  mutate(SWR_KEY_ORGANIZATIONS(member.userId));
+  mutate(SWR_KEY_ORGANIZATION(member.organizationId));
+  return member;
 }
 
-export const SWR_KEY_MEMBER = ({ id }: Props) => ["SWR_MEMBER", id];
+export const SWR_KEY_MEMBER = ({ id }: { id?: string }) => ["SWR_MEMBER", id];
 
-export function useMember(props: Props) {
-  return useSWR(SWR_KEY_MEMBER(props), fetcher);
+export function useMember({ id }: { id: string }) {
+  return useSWR(SWR_KEY_MEMBER({ id }), fetcher);
 }
 
-export function useMemberLazy(props: Props) {
-  return useSWRMutation(SWR_KEY_MEMBER(props), fetcher);
+export function useMemberLazy({ id }: { id: string }) {
+  return useSWRMutation(SWR_KEY_MEMBER({ id }), fetcher);
+}
+
+export function useMemberCreation() {
+  return useSWRMutation(SWR_KEY_MEMBER({}), createFetcher);
 }
 
 export function useMemberDeletion() {
   return useSWRMutation(SWR_KEY_MEMBER({}), deleteFetcher);
 }
-
-type Props = {
-  id?: Member["id"];
-};
