@@ -18,5 +18,5 @@ jobs:
         run: |
           echo '${{ secrets.DEV_ENV }}' > .env
           pnpm exec prisma migrate dev --name init
-      - name: Build Test
+      - name: Build Project
         run: pnpm build
