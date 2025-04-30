@@ -1,0 +1,22 @@
+name: Node.js CI
+
+on: [pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+      - uses: pnpm/action-setup@v4
+      - name: Install dependencies
+        run: pnpm install
+      - name: Generate prisma database
+        run: |
+          echo '${{ secrets.DEV_ENV }}' > .env
+          pnpm exec prisma migrate dev --name init
+      - name: Build Project
+        run: pnpm build

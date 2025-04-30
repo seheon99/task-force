@@ -2,6 +2,7 @@
 
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
+import { Temporal } from "temporal-polyfill";
 
 import {
   createMission,
@@ -11,7 +12,7 @@ import {
 } from "@/actions";
 import { useUser } from "@/swr";
 
-import type { Mission, Role, User } from "@prisma";
+import type { Mission, Organization, Role, User } from "@prisma";
 
 async function fetcher([, uid]: ReturnType<typeof SWR_KEY_MISSIONS>) {
   if (!uid) {
@@ -25,17 +26,34 @@ async function fetcher([, uid]: ReturnType<typeof SWR_KEY_MISSIONS>) {
 async function createFetcher(
   _: unknown,
   {
-    arg: { title, description, roles, members },
+    arg: {
+      organizationId,
+      title,
+      description,
+      readinessTime,
+      operationTime,
+      roles,
+      members,
+    },
   }: {
     arg: {
+      organizationId: Organization["id"];
       title: Mission["title"];
       description: Mission["description"];
+      readinessTime: Temporal.PlainTime;
+      operationTime: Temporal.PlainTime;
       roles: Role["name"][];
       members: User[];
     };
   },
 ) {
-  const { id: missionId } = await createMission({ title, description });
+  const { id: missionId } = await createMission({
+    organizationId,
+    title,
+    description,
+    readinessTime,
+    operationTime,
+  });
   await Promise.all([
     ...roles.map((name) => createRole({ missionId, name })),
     ...members.map(({ id: userId }) =>

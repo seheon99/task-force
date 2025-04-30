@@ -12,7 +12,6 @@ async function fetchOrganizations([, userId]: ReturnType<
   if (!userId) {
     return [];
   }
-
   return await getOrganizations({ userId });
 }
 

@@ -6,10 +6,10 @@ import { ErrorMessage, Field, Label, Textarea } from "@/components/base";
 
 import { FormContext } from "./dialog";
 
-export function FieldDescription() {
+export function FieldDescription({ className }: { className?: string }) {
   const form = useContext(FormContext);
   return (
-    <Field>
+    <Field className={className}>
       <Label>설명</Label>
       <Textarea
         {...form?.register("description", {

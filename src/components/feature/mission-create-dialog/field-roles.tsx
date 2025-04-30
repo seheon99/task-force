@@ -7,9 +7,11 @@ import React, { useState } from "react";
 import { BadgeButton, Field, Input, Label } from "@/components/base";
 
 export function FieldRoles({
+  className,
   roles,
   setRoles,
 }: {
+  className?: string;
   roles: { id: number; name: string }[];
   setRoles: React.Dispatch<
     React.SetStateAction<{ id: number; name: string }[]>
@@ -17,7 +19,7 @@ export function FieldRoles({
 }) {
   const [role, setRole] = useState("");
   return (
-    <Field>
+    <Field className={className}>
       <Label>역할</Label>
       <Input
         value={role}
