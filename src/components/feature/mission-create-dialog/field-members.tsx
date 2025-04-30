@@ -23,9 +23,11 @@ import { useUser, useUsers } from "@/swr";
 import { User } from "@prisma";
 
 export function FieldMembers({
+  className,
   members,
   setMembers,
 }: {
+  className?: string;
   members: User[];
   setMembers: React.Dispatch<React.SetStateAction<User[]>>;
 }) {
@@ -35,7 +37,7 @@ export function FieldMembers({
   const { data: users } = useUsers();
 
   return (
-    <Field>
+    <Field className={className}>
       <Label>팀원</Label>
       <div data-slot="control" className="flex gap-1">
         <Combobox
@@ -96,7 +98,7 @@ export function FieldMembers({
                           return;
                         }
                         setMembers((members) =>
-                          members.filter((m) => m.id !== member.id)
+                          members.filter((m) => m.id !== member.id),
                         );
                       }}
                     >
