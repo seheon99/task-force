@@ -18,6 +18,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  toast,
 } from "@/components/base";
 import { useUser, useUsers } from "@/swr";
 import { User } from "@prisma";
@@ -94,7 +95,10 @@ export function FieldMembers({
                       plain
                       onClick={() => {
                         if (member.id === user?.id) {
-                          console.error("자기 자신을 삭제할 수 없습니다.");
+                          toast.error({
+                            title: "삭제 실패",
+                            description: "자기 자신을 삭제할 수 없습니다.",
+                          });
                           return;
                         }
                         setMembers((members) =>
