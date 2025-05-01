@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import React from "react";
 
 export function Card({
   className,
@@ -25,9 +26,30 @@ export function CardHeader({
   ...props
 }: { children: React.ReactNode } & React.ComponentPropsWithoutRef<"div">) {
   return (
-    <div className={clsx(className, "px-4 py-5 sm:px-6")} {...props}>
+    <div
+      className={clsx(
+        className,
+        "flex flex-wrap items-center justify-between px-4 py-5 sm:flex-nowrap sm:px-6",
+      )}
+      {...props}
+    >
       {children}
     </div>
+  );
+}
+
+export function CardHeading({
+  className,
+  children,
+  ...props
+}: { children: React.ReactNode } & React.ComponentPropsWithoutRef<"h3">) {
+  return (
+    <h3
+      className={clsx(className, "text-base font-semibold text-gray-900")}
+      {...props}
+    >
+      {children}
+    </h3>
   );
 }
 

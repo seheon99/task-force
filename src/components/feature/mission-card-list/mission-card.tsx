@@ -9,7 +9,7 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Heading,
+  CardHeading,
   Table,
   TableBody,
   TableCell,
@@ -28,21 +28,22 @@ export function MissionCard({ id }: { id: Mission["id"] }) {
   const { data: user } = useUser();
   return (
     <Card>
-      <CardHeader className="flex flex-col gap-2">
-        <Heading className="flex justify-between items-center">
-          {mission?.title}
-          {mission?.participants.find((p) => p.userId === user?.id)?.user
-            .randomSeeds.length ? (
-            <Button disabled outline>
-              <ShieldCheckIcon className="fill-lime-500" /> 완료
-            </Button>
-          ) : (
-            <VoteButton outline>
-              <ShieldExclamationIcon className="fill-rose-500" /> 난수 만들기
-            </VoteButton>
-          )}
-        </Heading>
-        <Text>{mission?.description}</Text>
+      <CardHeader className="flex gap-2">
+        <div className="shrink">
+          <CardHeading className="col-span-1">{mission?.title}</CardHeading>
+          <Text className="text-sm">{mission?.organization.name}</Text>
+        </div>
+        {mission?.participants.find((p) => p.userId === user?.id)?.user
+          .randomSeeds.length ? (
+          <Button className="shrink-0 text-sm" disabled outline>
+            <ShieldCheckIcon className="hidden fill-lime-500 sm:block" /> 완료
+          </Button>
+        ) : (
+          <VoteButton className="shrink-0 text-sm" outline>
+            <ShieldExclamationIcon className="hidden fill-rose-500 sm:block" />
+            난수 만들기
+          </VoteButton>
+        )}
       </CardHeader>
       <CardBody>
         <Table striped>
@@ -57,7 +58,7 @@ export function MissionCard({ id }: { id: Mission["id"] }) {
               return (
                 <TableRow key={p.id}>
                   <TableCell>{p.name}</TableCell>
-                  <TableCell className="flex justify-between items-center">
+                  <TableCell className="flex items-center justify-between">
                     {p.exempts.length ? (
                       <Badge color="zinc">{p.exempts[0].excuse.reason}</Badge>
                     ) : p.randomSeeds.length ? (
