@@ -88,7 +88,7 @@ export default function SignUpPage() {
         } else {
           toast.error({
             title: "회원가입 실패",
-            description: `${error}`,
+            description: error,
           });
         }
       }

@@ -7,13 +7,14 @@ import {
   XCircleIcon,
 } from "@heroicons/react/16/solid";
 import clsx from "clsx";
+import { isPlainObject, isPrimitive, isSymbol } from "es-toolkit";
 import React from "react";
 import { toast as sonnerToast } from "sonner";
 
 interface ToastProps {
   id: string | number;
   title: string;
-  description: string;
+  description: string | unknown;
   level: "info" | "warn" | "success" | "error";
   button?: {
     label: string;
@@ -43,7 +44,7 @@ function Toast({ id, title, description, level }: ToastProps) {
         level === "info" && "bg-blue-50",
         level === "warn" && "bg-yellow-50",
         level === "success" && "bg-green-50",
-        level === "error" && "bg-red-50"
+        level === "error" && "bg-red-50",
       )}
     >
       <div className="flex">
@@ -77,7 +78,7 @@ function Toast({ id, title, description, level }: ToastProps) {
               level === "info" && "text-blue-800",
               level === "warn" && "text-yellow-800",
               level === "success" && "text-green-800",
-              level === "error" && "text-red-800"
+              level === "error" && "text-red-800",
             )}
           >
             {title}
@@ -88,10 +89,16 @@ function Toast({ id, title, description, level }: ToastProps) {
               level === "info" && "text-blue-700",
               level === "warn" && "text-yellow-700",
               level === "success" && "text-green-700",
-              level === "error" && "text-red-700"
+              level === "error" && "text-red-700",
             )}
           >
-            <p>{description}</p>
+            <p>
+              {isPrimitive(description) && !isSymbol(description)
+                ? description
+                : isPlainObject(description) && "message" in description
+                  ? (description.message as string)
+                  : "알 수 없음"}
+            </p>
           </div>
         </div>
       </div>

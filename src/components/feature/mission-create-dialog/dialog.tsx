@@ -74,7 +74,7 @@ export function MissionCreateDialog({
         });
         close();
       } catch (error) {
-        toast.error({ title: "미션 생성 실패", description: `${error}` });
+        toast.error({ title: "미션 생성 실패", description: error });
       }
     },
     [close, createMission, members, roles],
