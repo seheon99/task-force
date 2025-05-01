@@ -19,10 +19,11 @@ import {
   TableRow,
   Text,
 } from "@/components/base";
-import { VoteButton } from "@/components/feature";
 import { useMission, useUser } from "@/swr";
 
 import type { Mission } from "@prisma";
+
+import { VoteButton } from "./vote-button";
 
 export function MissionCard({ id }: { id: Mission["id"] }) {
   const { data: mission } = useMission({ id });

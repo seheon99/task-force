@@ -3,8 +3,9 @@
 import clsx from "clsx";
 import { useState } from "react";
 
-import { VoteDialog } from "./";
-import { Button } from "../base";
+import { Button } from "@/components/base";
+
+import { VoteDialog } from "./vote-dialog";
 
 export function VoteButton({
   className,

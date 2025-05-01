@@ -4,5 +4,3 @@ export * from "./settings";
 
 export * from "./user-dropdown";
 export * from "./users-combobox";
-export * from "./vote-button";
-export * from "./vote-dialog";

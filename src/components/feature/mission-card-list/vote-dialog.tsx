@@ -9,7 +9,7 @@ import {
   DialogActions,
   DialogBody,
   DialogTitle,
-} from "../base";
+} from "@/components/base";
 
 export function VoteDialog({
   open,
@@ -31,9 +31,9 @@ export function VoteDialog({
             <div
               key={i}
               className={clsx(
-                "rounded-md p-1 w-[1em] h-[1.2em] shadow text-6xl text-center font-mono",
+                "h-[1.2em] w-[1em] rounded-md p-1 text-center font-mono text-6xl shadow",
                 "bg-transparent dark:bg-white/5",
-                "border border-zinc-950/10 dark:border-white/10"
+                "border border-zinc-950/10 dark:border-white/10",
               )}
               onClick={() => inputRef.current?.focus()}
             >
