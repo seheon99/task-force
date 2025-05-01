@@ -4,5 +4,6 @@ export * from "./use-organization-creation";
 export * from "./use-organization-mutation";
 export * from "./use-organization";
 export * from "./use-organizations";
+export * from "./use-random-seed";
 export * from "./use-user";
 export * from "./use-users";

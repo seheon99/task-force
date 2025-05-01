@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import {
   Button,
@@ -9,14 +9,45 @@ import {
   DialogActions,
   DialogBody,
   DialogTitle,
+  toast,
 } from "@/components/base";
+import { useRandomSeedCreation, useUser } from "@/swr";
+
+import type { Mission } from "@prisma";
 
 export function RandomSeedDialog({
+  missionId,
   open,
   onClose,
-}: Omit<React.ComponentPropsWithoutRef<typeof Dialog>, "children">) {
+}: { missionId: Mission["id"] } & Omit<
+  React.ComponentPropsWithoutRef<typeof Dialog>,
+  "children"
+>) {
   const [seed, setSeed] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const { data: user } = useUser();
+  const { trigger: createRandomSeed, isMutating: isCreating } =
+    useRandomSeedCreation({
+      userId: user?.id ?? "",
+      missionId,
+    });
+
+  const onSubmit = useCallback(
+    async (number: number) => {
+      try {
+        const randomSeed = await createRandomSeed({ number });
+        toast.success({
+          title: "난수 만들기 성공",
+          description: randomSeed.createdAt.toLocaleString(),
+        });
+        onClose(false);
+      } catch (error) {
+        toast.error({ title: "난수 만들기 실패", description: error });
+      }
+    },
+    [createRandomSeed, onClose],
+  );
 
   return (
     <Dialog
@@ -54,7 +85,12 @@ export function RandomSeedDialog({
         />
       </DialogBody>
       <DialogActions>
-        <Button disabled={seed.length < 2}>제출하기</Button>
+        <Button
+          disabled={isCreating || !user || seed.length < 2}
+          onClick={() => onSubmit(parseInt(seed))}
+        >
+          제출하기
+        </Button>
       </DialogActions>
     </Dialog>
   );

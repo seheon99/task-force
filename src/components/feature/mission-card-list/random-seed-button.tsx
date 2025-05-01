@@ -5,13 +5,18 @@ import { useState } from "react";
 
 import { Button } from "@/components/base";
 
+import type { Mission } from "@prisma";
+
 import { RandomSeedDialog } from "./random-seed-dialog";
 
 export function RandomSeedButton({
+  missionId,
   className,
   children,
   ...props
-}: React.ComponentPropsWithoutRef<typeof Button>) {
+}: { missionId: Mission["id"] } & React.ComponentPropsWithoutRef<
+  typeof Button
+>) {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
@@ -22,7 +27,11 @@ export function RandomSeedButton({
       >
         {children}
       </Button>
-      <RandomSeedDialog open={isOpen} onClose={setIsOpen} />
+      <RandomSeedDialog
+        missionId={missionId}
+        open={isOpen}
+        onClose={setIsOpen}
+      />
     </>
   );
 }
