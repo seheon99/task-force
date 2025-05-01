@@ -17,6 +17,7 @@ import {
 import { UserDropdown } from "@/components/feature";
 
 const navItems = [
+  { label: "홈", url: "/" },
   { label: "시뮬레이션", url: "/simulation" },
   { label: "통계", url: "/statistics" },
   { label: "기록", url: "/log" },
