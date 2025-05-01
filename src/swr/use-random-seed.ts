@@ -14,9 +14,13 @@ export const SWR_KEY_RANDOM_SEED = (
 
 async function createFetcher(
   [, userId, missionId]: ReturnType<typeof SWR_KEY_RANDOM_SEED>,
-  { arg: { number } }: { arg: { number: RandomSeed["number"] } },
+  { arg: { seedNumber } }: { arg: { seedNumber: RandomSeed["number"] } },
 ) {
-  const randomSeed = await createRandomSeed({ userId, missionId, number });
+  const randomSeed = await createRandomSeed({
+    userId,
+    missionId,
+    number: seedNumber,
+  });
   mutate(SWR_KEY_MISSIONS(userId));
   return randomSeed;
 }
