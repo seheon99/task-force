@@ -3,8 +3,9 @@
 import { DocumentPlusIcon } from "@heroicons/react/16/solid";
 import { useState } from "react";
 
-import { MissionCreateDialog } from "..";
-import { Button } from "../../base";
+import { Button } from "@/components/base";
+
+import { MissionCreateDialog } from "../";
 
 export function MissionCreateButton() {
   const [open, setOpen] = useState(false);
@@ -12,7 +13,7 @@ export function MissionCreateButton() {
     <>
       <Button
         outline
-        className="min-h-40 border-2 border-dashed flex-col items-center"
+        className="min-h-40 flex-col items-center border-2 border-dashed"
         onClick={() => setOpen((v) => !v)}
       >
         <div className="size-12">

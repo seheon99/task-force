@@ -77,7 +77,7 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
       } catch (error) {
         toast.error({
           title: "업데이트 실패",
-          description: `${error}`,
+          description: error,
         });
       }
     },
@@ -100,7 +100,7 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
         } catch (error) {
           toast.error({
             title: "초대하기 실패",
-            description: `${error}`,
+            description: error,
           });
         }
       }
@@ -121,7 +121,7 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
         } catch (error) {
           toast.error({
             title: "내보내기 실패",
-            description: `${error}`,
+            description: error,
           });
         }
       }

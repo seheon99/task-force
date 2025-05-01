@@ -19,10 +19,11 @@ import {
   TableRow,
   Text,
 } from "@/components/base";
-import { VoteButton } from "@/components/feature";
 import { useMission, useUser } from "@/swr";
 
 import type { Mission } from "@prisma";
+
+import { RandomSeedButton } from "./random-seed-button";
 
 export function MissionCard({ id }: { id: Mission["id"] }) {
   const { data: mission } = useMission({ id });
@@ -40,10 +41,10 @@ export function MissionCard({ id }: { id: Mission["id"] }) {
             <ShieldCheckIcon className="hidden fill-lime-500 sm:block" /> 완료
           </Button>
         ) : (
-          <VoteButton className="shrink-0 text-sm" outline>
+          <RandomSeedButton className="shrink-0 text-sm" outline missionId={id}>
             <ShieldExclamationIcon className="hidden fill-rose-500 sm:block" />
             난수 만들기
-          </VoteButton>
+          </RandomSeedButton>
         )}
       </CardHeader>
       <CardBody>
