@@ -34,9 +34,9 @@ export function RandomSeedDialog({
     });
 
   const onSubmit = useCallback(
-    async (number: number) => {
+    async (seedNumber: number) => {
       try {
-        const randomSeed = await createRandomSeed({ number });
+        const randomSeed = await createRandomSeed({ seedNumber });
         toast.success({
           title: "난수 만들기 성공",
           description: randomSeed.createdAt.toLocaleString(),
@@ -79,7 +79,6 @@ export function RandomSeedDialog({
           type="number"
           min={0}
           max={99}
-          maxLength={2}
           value={seed}
           onChange={(e) => setSeed(e.target.value.substring(0, 2))}
         />
