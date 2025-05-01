@@ -41,7 +41,7 @@ export function MissionCard({ id }: { id: Mission["id"] }) {
             <ShieldCheckIcon className="hidden fill-lime-500 sm:block" /> 완료
           </Button>
         ) : (
-          <RandomSeedButton className="shrink-0 text-sm" outline>
+          <RandomSeedButton className="shrink-0 text-sm" outline missionId={id}>
             <ShieldExclamationIcon className="hidden fill-rose-500 sm:block" />
             난수 만들기
           </RandomSeedButton>
