@@ -5,9 +5,9 @@ import { useState } from "react";
 
 import { Button } from "@/components/base";
 
-import { VoteDialog } from "./vote-dialog";
+import { RandomSeedDialog } from "./random-seed-dialog";
 
-export function VoteButton({
+export function RandomSeedButton({
   className,
   children,
   ...props
@@ -22,7 +22,7 @@ export function VoteButton({
       >
         {children}
       </Button>
-      <VoteDialog open={isOpen} onClose={setIsOpen} />
+      <RandomSeedDialog open={isOpen} onClose={setIsOpen} />
     </>
   );
 }

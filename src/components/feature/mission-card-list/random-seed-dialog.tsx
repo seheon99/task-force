@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/base";
 
-export function VoteDialog({
+export function RandomSeedDialog({
   open,
   onClose,
 }: Omit<React.ComponentPropsWithoutRef<typeof Dialog>, "children">) {
