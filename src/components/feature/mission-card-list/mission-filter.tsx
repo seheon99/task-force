@@ -14,19 +14,25 @@ export function MissionFilter() {
 
   return (
     <div className="flex gap-1 overflow-x-auto">
-      {organizations?.map((o) => (
+      {organizations?.map((organization) => (
         <Badge
           className={clsx(
             "shrink-0 transition-opacity",
             selectedOrganizationId === null && "opacity-100",
-            selectedOrganizationId === o.id ? "opacity-100" : "opacity-50",
+            selectedOrganizationId === organization.id
+              ? "opacity-100"
+              : "opacity-50",
           )}
-          key={o.id}
+          key={organization.id}
           onClick={() =>
-            selectOrganization(selectedOrganizationId === o.id ? null : o.id)
+            selectOrganization(
+              selectedOrganizationId === organization.id
+                ? null
+                : organization.id,
+            )
           }
         >
-          {o.name}
+          {organization.name}
         </Badge>
       ))}
     </div>
