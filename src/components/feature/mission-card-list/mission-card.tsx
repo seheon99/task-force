@@ -10,6 +10,7 @@ import {
   CardBody,
   CardHeader,
   CardHeading,
+  Code,
   Table,
   TableBody,
   TableCell,
@@ -50,7 +51,7 @@ export function MissionCard({ id }: { id: Mission["id"] }) {
           <TableHead>
             <TableRow>
               <TableHeader>이름</TableHeader>
-              <TableHeader>참여</TableHeader>
+              <TableHeader>난수</TableHeader>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -62,7 +63,7 @@ export function MissionCard({ id }: { id: Mission["id"] }) {
                     {p.exempts.length ? (
                       <Badge color="zinc">{p.exempts[0].excuse.reason}</Badge>
                     ) : p.randomSeeds.length ? (
-                      <Badge color="lime">난수 생성</Badge>
+                      <Code>{p.randomSeeds.at(-1)!.number}</Code>
                     ) : (
                       <Badge color="rose">난수 미생성</Badge>
                     )}
