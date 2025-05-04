@@ -10,9 +10,9 @@ datasource db {
 
 model User {
   id         String   @id @default(uuid())
-  soldierId  String
+  username   String
+  nickname   String
   unit       String
-  name       String
   rank       String
   birthday   DateTime
   enlistedAt DateTime

@@ -44,15 +44,15 @@ export function FieldMembers({
         <Combobox
           value={member}
           options={users ?? []}
-          displayValue={(u) => u?.name}
+          displayValue={(u) => u?.nickname}
           onChange={(u) => setMember(u)}
         >
           {(u) => (
             <ComboboxOption value={u}>
               <ComboboxLabel>
-                {u.rank} {u.name}
+                {u.rank} {u.nickname}
               </ComboboxLabel>
-              <ComboboxDescription>{u.soldierId}</ComboboxDescription>
+              <ComboboxDescription>{u.username}</ComboboxDescription>
             </ComboboxOption>
           )}
         </Combobox>
@@ -85,9 +85,9 @@ export function FieldMembers({
             {members.map((member) => (
               <TableRow key={member.id}>
                 <TableCell>{member.rank}</TableCell>
-                <TableCell>{member.name}</TableCell>
+                <TableCell>{member.nickname}</TableCell>
                 <TableCell className="text-zinc-500">
-                  {member.soldierId}
+                  {member.username}
                 </TableCell>
                 <TableCell>
                   <div className="-mx-3 -my-1.5 sm:-mx-2.5">

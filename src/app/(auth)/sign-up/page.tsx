@@ -29,24 +29,24 @@ import type { SubmitHandler } from "react-hook-form";
 async function signUp(
   url: string,
   {
-    arg: { soldierId, unit, name, password, birthday, enlistedAt },
+    arg: { unit, username, nickname, password, birthday, enlistedAt },
   }: {
     arg: Inputs;
   },
 ) {
   const { user: firebaseUser } = await createUserWithEmailAndPassword(
     firebaseAuth,
-    `${soldierId}@${emailDomain}`,
+    `${username}@${emailDomain}`,
     password,
   );
   await updateProfile(firebaseUser, {
-    displayName: name,
+    displayName: nickname,
   });
   const user = await createUser({
     id: firebaseUser.uid,
-    soldierId,
     unit,
-    name,
+    username,
+    nickname,
     birthday: new Date(birthday),
     enlistedAt: new Date(enlistedAt),
   });
@@ -76,7 +76,7 @@ export default function SignUpPage() {
         const user = await trigger(props);
         toast.success({
           title: "회원가입 성공",
-          description: `${user.name}님 환영합니다`,
+          description: `${user.nickname}님 환영합니다`,
         });
         router.push("/");
       } catch (error) {
@@ -103,14 +103,14 @@ export default function SignUpPage() {
     >
       <Heading>회원가입</Heading>
       <Field>
-        <Label>군번</Label>
+        <Label>아이디</Label>
         <Input
           type="text"
-          invalid={!!errors.soldierId}
-          {...register("soldierId", { required: "군번을 입력해주세요" })}
+          invalid={!!errors.username}
+          {...register("username", { required: "아이디를 입력해주세요" })}
         />
-        {errors.soldierId && (
-          <ErrorMessage>{errors.soldierId.message}</ErrorMessage>
+        {errors.username && (
+          <ErrorMessage>{errors.username.message}</ErrorMessage>
         )}
       </Field>
       <Field>
@@ -135,10 +135,12 @@ export default function SignUpPage() {
         <Label>이름</Label>
         <Input
           type="text"
-          invalid={!!errors.name}
-          {...register("name", { required: "이름을 입력해주세요" })}
+          invalid={!!errors.nickname}
+          {...register("nickname", { required: "이름을 입력해주세요" })}
         />
-        {errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
+        {errors.nickname && (
+          <ErrorMessage>{errors.nickname.message}</ErrorMessage>
+        )}
       </Field>
       <Field>
         <Label>비밀번호</Label>
@@ -205,9 +207,9 @@ export default function SignUpPage() {
 }
 
 type Inputs = {
-  soldierId: string;
   unit: string;
-  name: string;
+  username: string;
+  nickname: string;
   password: string;
   passwordConfirm: string;
   birthday: string;

@@ -31,15 +31,15 @@ export default function SignInPage() {
 
   const [isLoading, setIsLoading] = useState(false);
   const onSubmit = useCallback<SubmitHandler<Inputs>>(
-    async ({ soldierId, password }) => {
+    async ({ username, password }) => {
       if (!isLoading) {
         setIsLoading(true);
         try {
           await setPersistence(firebaseAuth, browserSessionPersistence);
           const userCredential = await signInWithEmailAndPassword(
             firebaseAuth,
-            `${soldierId}@${emailDomain}`,
-            password
+            `${username}@${emailDomain}`,
+            password,
           );
           if (userCredential.user.uid) {
             toast.success({
@@ -63,7 +63,7 @@ export default function SignInPage() {
         }
       }
     },
-    [isLoading, setIsLoading, router]
+    [isLoading, setIsLoading, router],
   );
 
   const {
@@ -83,11 +83,11 @@ export default function SignInPage() {
         <Label>군번</Label>
         <Input
           type="text"
-          invalid={!!errors.soldierId}
-          {...register("soldierId", { required: "군번을 입력해주세요" })}
+          invalid={!!errors.username}
+          {...register("username", { required: "아이디를 입력해주세요" })}
         />
-        {errors.soldierId && (
-          <ErrorMessage>{errors.soldierId.message}</ErrorMessage>
+        {errors.username && (
+          <ErrorMessage>{errors.username.message}</ErrorMessage>
         )}
       </Field>
       <Field>
@@ -115,6 +115,6 @@ export default function SignInPage() {
 }
 
 type Inputs = {
-  soldierId: string;
+  username: string;
   password: string;
 };

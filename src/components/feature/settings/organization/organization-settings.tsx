@@ -115,7 +115,7 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
           await deleteMember({ id: member.id });
           toast.success({
             title: "내보내기 성공",
-            description: `${member.user.name}은 더이상 ${organization?.name}의 멤버가 아닙니다.`,
+            description: `${member.user.nickname}은 더이상 ${organization?.name}의 멤버가 아닙니다.`,
           });
           setDeletionMember(null);
         } catch (error) {
@@ -230,7 +230,7 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
                       <TableCell>{member.user.unit}</TableCell>
                       <TableCell>{member.user.rank}</TableCell>
                       <TableCell>
-                        {member.user.name}
+                        {member.user.nickname}
                         {member.isLeader && (
                           <Badge className="ml-1" color="lime">
                             팀장
@@ -257,7 +257,7 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
               >
                 <DialogTitle>이 결정은 되돌릴 수 없습니다.</DialogTitle>
                 <DialogDescription>
-                  {deletionMember?.user.name}을 {organization?.name}에서
+                  {deletionMember?.user.nickname}을 {organization?.name}에서
                   내보내시겠습니까?
                 </DialogDescription>
                 <DialogActions>
