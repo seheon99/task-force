@@ -80,7 +80,7 @@ export default function SignInPage() {
     >
       <Heading>로그인</Heading>
       <Field>
-        <Label>군번</Label>
+        <Label>아이디</Label>
         <Input
           type="text"
           invalid={!!errors.username}
