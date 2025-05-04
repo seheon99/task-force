@@ -45,7 +45,10 @@ export function CardHeading({
 }: { children: React.ReactNode } & React.ComponentPropsWithoutRef<"h3">) {
   return (
     <h3
-      className={clsx(className, "text-base font-semibold text-gray-900")}
+      className={clsx(
+        className,
+        "text-base font-semibold text-gray-900 dark:text-gray-100",
+      )}
       {...props}
     >
       {children}
