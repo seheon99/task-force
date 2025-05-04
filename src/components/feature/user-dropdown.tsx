@@ -31,7 +31,7 @@ export function UserDropdown() {
           disabled={isLoading}
           className="flex h-8 w-24 items-center justify-end"
         >
-          {user.name}
+          {user.nickname}
           <ChevronDownIcon />
         </DropdownButton>
       ) : (

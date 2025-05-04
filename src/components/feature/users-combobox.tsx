@@ -23,11 +23,11 @@ export function UsersCombobox({
       {...props}
       disabled={disabled || isLoadingUsers}
       options={users ?? []}
-      displayValue={(user) => user?.name}
+      displayValue={(user) => user?.nickname}
     >
       {(user) => (
         <ComboboxOption value={user}>
-          <ComboboxLabel>{user.name}</ComboboxLabel>
+          <ComboboxLabel>{user.nickname}</ComboboxLabel>
           <ComboboxDescription>{user.unit}</ComboboxDescription>
         </ComboboxOption>
       )}
