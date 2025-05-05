@@ -48,7 +48,11 @@ export function ColorPicker({
   return (
     <Menu>
       <MenuButton
-        className={clsx(className, colors[value], "size-11 rounded-lg p-2")}
+        className={clsx(
+          className,
+          colors[value],
+          "size-11 shrink-0 rounded-lg p-3 sm:size-9 sm:p-2",
+        )}
       >
         <PaintBrushIcon />
       </MenuButton>
