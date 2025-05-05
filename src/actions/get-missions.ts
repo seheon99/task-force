@@ -2,7 +2,8 @@
 
 import { Temporal } from "temporal-polyfill";
 
-import { prisma } from "@/utilities";
+import { prisma } from "@/utilities/server-only";
+
 import { User } from "@prisma";
 
 export async function getMissions({ uid }: { uid: User["id"] }) {
@@ -11,6 +12,7 @@ export async function getMissions({ uid }: { uid: User["id"] }) {
   return await prisma.mission.findMany({
     include: {
       organization: true,
+      roles: true,
       participants: {
         include: {
           user: {

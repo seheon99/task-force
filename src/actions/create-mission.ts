@@ -2,7 +2,7 @@
 
 import { Temporal } from "temporal-polyfill";
 
-import { prisma } from "@/utilities";
+import { prisma } from "@/utilities/server-only";
 
 import type { Organization } from "@prisma";
 

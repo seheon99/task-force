@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/utilities";
+import { prisma } from "@/utilities/server-only";
 
 export async function createUser({
   id,
