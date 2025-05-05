@@ -1,6 +1,6 @@
 import "server-only";
 
-import { BadgeColor, badgeColors } from "@/components/base";
+import { type BadgeColor, badgeColors } from "@/components/base";
 
 import { PrismaClient } from "@prisma";
 
@@ -10,10 +10,10 @@ export const prisma = new PrismaClient().$extends({
       badgeColor: {
         needs: { color: true },
         compute(role) {
-          if (role.color in Object.keys(badgeColors)) {
+          if (role.color in badgeColors) {
             return role.color as BadgeColor;
           } else {
-            throw new Error("FATAL: Unknown color in Role Table");
+            return "zinc" as BadgeColor;
           }
         },
       },
