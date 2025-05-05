@@ -1,5 +1,7 @@
 "use server";
 
+import { flatten } from "es-toolkit";
+
 import { convertToPlainObject } from "@/utilities";
 import { prisma } from "@/utilities/server-only";
 
@@ -22,21 +24,23 @@ export async function updateRoles({
   );
 
   return convertToPlainObject(
-    await Promise.all([
-      ...deleteTargets.map((target) =>
-        prisma.role.delete({
-          where: {
-            id: target.id,
-          },
+    flatten(
+      await Promise.all([
+        deleteTargets.map((target) =>
+          prisma.role.delete({
+            where: {
+              id: target.id,
+            },
+          }),
+        ),
+        prisma.role.createManyAndReturn({
+          data: createTargets.map(({ name, color }) => ({
+            missionId,
+            name,
+            color,
+          })),
         }),
-      ),
-      prisma.role.createMany({
-        data: createTargets.map(({ name, color }) => ({
-          missionId,
-          name,
-          color,
-        })),
-      }),
-    ]),
+      ]),
+    ),
   );
 }
