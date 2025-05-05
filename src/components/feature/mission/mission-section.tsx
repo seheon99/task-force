@@ -1,5 +1,6 @@
 "use client";
 
+import { invariant, isNotNil } from "es-toolkit";
 import { useCallback } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
@@ -19,25 +20,51 @@ import {
   SettingSection,
   SettingSectionName,
 } from "@/components/feature";
-import { useMission } from "@/swr";
+import { useMission, useMissionMutation } from "@/swr";
 
 import type { Mission } from "@prisma";
 
 export function MissionSection({ id }: { id: Mission["id"] }) {
-  const { data: mission } = useMission({ id });
+  const { data: mission, isLoading } = useMission({ id });
+  const { trigger, isMutating } = useMissionMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    defaultValues: {
+      title: mission?.title,
+      description: mission?.description,
+      readinessTime: mission?.readinessTime,
+      operationTime: mission?.operationTime,
+    },
+  });
 
-  const onSubmit = useCallback<SubmitHandler<Inputs>>((data) => {
-    toast.success({
-      title: "데이터 전송 준비 완료",
-      description: JSON.stringify(data),
-    });
-  }, []);
+  const onSubmit = useCallback<SubmitHandler<Inputs>>(
+    async ({ title, description, readinessTime, operationTime }) => {
+      try {
+        invariant(isNotNil(mission), `Not Nil expected but ${mission}`);
+        const updatedMission = await trigger({
+          missionId: mission.id,
+          title,
+          description,
+          readinessTime,
+          operationTime,
+        });
+        toast.success({
+          title: "저장 성공",
+          description: updatedMission.updatedAt.toString(),
+        });
+      } catch (error) {
+        toast.error({
+          title: "저장 실패",
+          description: error,
+        });
+      }
+    },
+    [mission, trigger],
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -54,6 +81,7 @@ export function MissionSection({ id }: { id: Mission["id"] }) {
           <Field className="col-span-full">
             <Label>미션명</Label>
             <Input
+              disabled={isLoading || isMutating}
               invalid={!!errors.title}
               {...register("title", { required: "미션명을 입력해주세요." })}
             />
@@ -64,9 +92,10 @@ export function MissionSection({ id }: { id: Mission["id"] }) {
           <Field className="col-span-full">
             <Label>설명</Label>
             <Textarea
+              disabled={isLoading || isMutating}
               invalid={!!errors.description}
               {...register("description", {
-                required:"설명을 입력해주세요",
+                required: "설명을 입력해주세요",
                 minLength: { value: 10, message: "10자 이상 입력해주세요" },
               })}
             />
@@ -77,6 +106,7 @@ export function MissionSection({ id }: { id: Mission["id"] }) {
           <Field className="col-span-1 sm:col-span-3">
             <Label>역할 분담 시간</Label>
             <Input
+              disabled={isLoading || isMutating}
               type="time"
               invalid={!!errors.readinessTime}
               {...register("readinessTime", { required: "시간을 정해주세요" })}
@@ -88,6 +118,7 @@ export function MissionSection({ id }: { id: Mission["id"] }) {
           <Field className="col-span-1 sm:col-span-3">
             <Label>작전 개시 시간</Label>
             <Input
+              disabled={isLoading || isMutating}
               type="time"
               invalid={!!errors.operationTime}
               {...register("operationTime", { required: "시간을 정해주세요" })}
@@ -96,7 +127,11 @@ export function MissionSection({ id }: { id: Mission["id"] }) {
               <ErrorMessage>{errors.operationTime.message}</ErrorMessage>
             )}
           </Field>
-          <Button type="submit" className="not-sm:col-span-full">
+          <Button
+            disabled={isMutating}
+            type="submit"
+            className="not-sm:col-span-full"
+          >
             저장
           </Button>
         </SettingFieldGroup>

@@ -5,7 +5,12 @@ import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { Temporal } from "temporal-polyfill";
 
-import { createMission, createParticipant, getMissions } from "@/actions";
+import {
+  createMission,
+  createParticipant,
+  getMissions,
+  updateMission,
+} from "@/actions";
 import { useUser } from "@/swr";
 
 import type { Mission, Organization, User } from "@prisma";
@@ -49,6 +54,29 @@ async function createFetcher(
   return mission;
 }
 
+async function updateFetcher(
+  _: unknown,
+  {
+    arg: { missionId, title, description, readinessTime, operationTime },
+  }: {
+    arg: {
+      missionId: Mission["id"];
+      title: Mission["title"];
+      description: Mission["description"];
+      readinessTime: string;
+      operationTime: string;
+    };
+  },
+) {
+  return await updateMission({
+    id: missionId,
+    title,
+    description,
+    readinessTime,
+    operationTime,
+  });
+}
+
 export const SWR_KEY_MISSIONS = (uid?: User["id"]) => ["SWR_MISSIONS", uid];
 
 export function useMissions() {
@@ -64,4 +92,9 @@ export function useMission({ id }: { id: Mission["id"] }) {
 export function useMissionCreation() {
   const { data: user } = useUser();
   return useSWRMutation(SWR_KEY_MISSIONS(user?.id), createFetcher);
+}
+
+export function useMissionMutation() {
+  const { data: user } = useUser();
+  return useSWRMutation(SWR_KEY_MISSIONS(user?.id), updateFetcher);
 }
