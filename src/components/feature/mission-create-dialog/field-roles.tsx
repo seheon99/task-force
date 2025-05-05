@@ -11,6 +11,7 @@ import {
   Input,
   Label,
 } from "@/components/base";
+import { ColorPicker } from "@/components/feature";
 
 export function FieldRoles({
   className,
@@ -23,22 +24,28 @@ export function FieldRoles({
     React.SetStateAction<{ id: number; name: string; color: BadgeColor }[]>
   >;
 }) {
-  const [role, setRole] = useState("");
+  const [color, setColor] = useState<BadgeColor>("zinc");
+  const [name, setName] = useState("");
   return (
     <Field className={className}>
       <Label>역할</Label>
-      <Input
-        value={role}
-        onChange={(e) => setRole(e.target.value)}
-        onKeyUp={(e) => {
-          if (role.length && (e.code === "Enter" || e.code === "NumpadEnter")) {
-            setRoles((v) => [...v, { id: now(), name: role, color: "zinc" }]);
-            setRole("");
-          }
-        }}
-      />
+      <div data-slot="control" className="flex gap-1">
+        <ColorPicker value={color} onChange={setColor} />
+        <Input
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onKeyUp={(e) => {
+            if (
+              name.length &&
+              (e.code === "Enter" || e.code === "NumpadEnter")
+            ) {
+              setRoles((v) => [...v, { id: now(), name, color }]);
+              setName("");
+            }
+          }}
+        />
+      </div>
       <div data-slot="description" className="flex flex-wrap gap-1">
-        <input hidden />
         {roles.map((role) => (
           <BadgeButton
             key={role.id}
