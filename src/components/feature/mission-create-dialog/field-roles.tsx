@@ -2,11 +2,12 @@
 
 import { XMarkIcon } from "@heroicons/react/16/solid";
 import { now } from "es-toolkit/compat";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import {
   BadgeButton,
   type BadgeColor,
+  Button,
   Field,
   Input,
   Label,
@@ -19,13 +20,20 @@ export function FieldRoles({
   setRoles,
 }: {
   className?: string;
-  roles: { id: number; name: string }[];
-  setRoles: React.Dispatch<
-    React.SetStateAction<{ id: number; name: string; color: BadgeColor }[]>
-  >;
+  roles: Role[];
+  setRoles: React.Dispatch<React.SetStateAction<Role[]>>;
 }) {
   const [color, setColor] = useState<BadgeColor>("zinc");
   const [name, setName] = useState("");
+
+  const onRolePush = useCallback(
+    ({ id, name, color }: { id: number; name: string; color: BadgeColor }) => {
+      setRoles((v) => [...v, { id, name, color }]);
+      setName("");
+    },
+    [setRoles],
+  );
+
   return (
     <Field className={className}>
       <Label>역할</Label>
@@ -39,16 +47,23 @@ export function FieldRoles({
               name.length &&
               (e.code === "Enter" || e.code === "NumpadEnter")
             ) {
-              setRoles((v) => [...v, { id: now(), name, color }]);
-              setName("");
+              onRolePush({ id: now(), name, color });
             }
           }}
         />
+        <Button
+          outline
+          className="shrink-0"
+          onClick={() => onRolePush({ id: now(), name, color })}
+        >
+          추가
+        </Button>
       </div>
       <div data-slot="description" className="flex flex-wrap gap-1">
         {roles.map((role) => (
           <BadgeButton
             key={role.id}
+            color={role.color}
             onClick={() =>
               setRoles((roles) => roles.filter((r) => r.id !== role.id))
             }
@@ -60,3 +75,5 @@ export function FieldRoles({
     </Field>
   );
 }
+
+type Role = { id: number; name: string; color: BadgeColor };

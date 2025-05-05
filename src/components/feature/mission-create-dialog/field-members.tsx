@@ -67,7 +67,7 @@ export function FieldMembers({
             }
           }}
         >
-          등록
+          추가
         </Button>
       </div>
       <div data-slot="description">
