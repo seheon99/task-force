@@ -1,19 +1,14 @@
 "use client";
 
+import { invariant, isString } from "es-toolkit";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { Temporal } from "temporal-polyfill";
 
-import {
-  createMission,
-  createParticipant,
-  createRole,
-  getMissions,
-} from "@/actions";
-import type { BadgeColor } from "@/components/base";
+import { createMission, createParticipant, getMissions } from "@/actions";
 import { useUser } from "@/swr";
 
-import type { Mission, Organization, Role, User } from "@prisma";
+import type { Mission, Organization, User } from "@prisma";
 
 async function fetcher([, uid]: ReturnType<typeof SWR_KEY_MISSIONS>) {
   if (!uid) {
@@ -25,17 +20,9 @@ async function fetcher([, uid]: ReturnType<typeof SWR_KEY_MISSIONS>) {
 }
 
 async function createFetcher(
-  _: unknown,
+  [, userId]: ReturnType<typeof SWR_KEY_MISSIONS>,
   {
-    arg: {
-      organizationId,
-      title,
-      description,
-      readinessTime,
-      operationTime,
-      roles,
-      members,
-    },
+    arg: { organizationId, title, description, readinessTime, operationTime },
   }: {
     arg: {
       organizationId: Organization["id"];
@@ -43,24 +30,23 @@ async function createFetcher(
       description: Mission["description"];
       readinessTime: Temporal.PlainTime;
       operationTime: Temporal.PlainTime;
-      roles: { name: Role["name"]; color: BadgeColor }[];
-      members: User[];
     };
   },
 ) {
-  const { id: missionId } = await createMission({
+  invariant(
+    isString(userId),
+    `String is expected for 'userId' but ${typeof userId}`,
+  );
+
+  const mission = await createMission({
     organizationId,
     title,
     description,
     readinessTime,
     operationTime,
   });
-  await Promise.all([
-    ...roles.map(({ name, color }) => createRole({ missionId, name, color })),
-    ...members.map(({ id: userId }) =>
-      createParticipant({ userId, missionId }),
-    ),
-  ]);
+  await createParticipant({ userId, missionId: mission.id });
+  return mission;
 }
 
 export const SWR_KEY_MISSIONS = (uid?: User["id"]) => ["SWR_MISSIONS", uid];
