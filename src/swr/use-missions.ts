@@ -77,7 +77,9 @@ async function updateFetcher(
   });
 }
 
+// TODO: Change SWR_KEY_MISSIONS (uid) => [] to () => string by authorization in server action
 export const SWR_KEY_MISSIONS = (uid?: User["id"]) => ["SWR_MISSIONS", uid];
+export const SWR_KEY_MISSION = (id: Mission["id"]) => ["SWR_MISSION", id];
 
 export function useMissions() {
   const { data: user } = useUser();

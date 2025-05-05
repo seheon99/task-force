@@ -1,7 +1,5 @@
 "use server";
 
-import { isNotNil } from "es-toolkit";
-
 import { prisma } from "@/utilities/server-only";
 
 import type { Mission, Role } from "@prisma";
@@ -13,23 +11,29 @@ export async function updateRoles({
   missionId: Mission["id"];
   roles: Pick<Role, "id" | "name" | "color">[];
 }) {
-  const resolved = await Promise.all(
-    roles.map(async (r) =>
-      (await prisma.role.findUnique({
-        where: {
-          id: r.id,
-        },
-      }))
-        ? null
-        : r,
-    ),
+  const currentRoles = await prisma.role.findMany({ where: { missionId } });
+
+  const deleteTargets = currentRoles.filter(
+    (role) => !roles.find((r) => r.id === role.id),
   );
-  const unregisted = resolved.filter(isNotNil);
-  return await prisma.role.createMany({
-    data: unregisted.map(({ name, color }) => ({
-      missionId,
-      name,
-      color,
-    })),
-  });
+  const createTargets = roles.filter(
+    (role) => !currentRoles.find((r) => r.id === role.id),
+  );
+
+  return await Promise.all([
+    ...deleteTargets.map((target) =>
+      prisma.role.delete({
+        where: {
+          id: target.id,
+        },
+      }),
+    ),
+    prisma.role.createMany({
+      data: createTargets.map(({ name, color }) => ({
+        missionId,
+        name,
+        color,
+      })),
+    }),
+  ]);
 }
