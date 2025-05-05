@@ -1,5 +1,6 @@
 "use server";
 
+import { convertToPlainObject } from "@/utilities";
 import { prisma } from "@/utilities/server-only";
 
 import type { Mission, Role } from "@prisma";
@@ -20,20 +21,22 @@ export async function updateRoles({
     (role) => !currentRoles.find((r) => r.id === role.id),
   );
 
-  return await Promise.all([
-    ...deleteTargets.map((target) =>
-      prisma.role.delete({
-        where: {
-          id: target.id,
-        },
+  return convertToPlainObject(
+    await Promise.all([
+      ...deleteTargets.map((target) =>
+        prisma.role.delete({
+          where: {
+            id: target.id,
+          },
+        }),
+      ),
+      prisma.role.createMany({
+        data: createTargets.map(({ name, color }) => ({
+          missionId,
+          name,
+          color,
+        })),
       }),
-    ),
-    prisma.role.createMany({
-      data: createTargets.map(({ name, color }) => ({
-        missionId,
-        name,
-        color,
-      })),
-    }),
-  ]);
+    ]),
+  );
 }
