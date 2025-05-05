@@ -4,6 +4,7 @@ import useSWR from "swr";
 
 import { getOrganizations } from "@/actions";
 import { useUser } from "@/swr";
+
 import { User } from "@prisma";
 
 async function fetchOrganizations([, userId]: ReturnType<

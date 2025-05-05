@@ -2,6 +2,7 @@ import { invariant, isString } from "es-toolkit";
 import useSWRMutation from "swr/mutation";
 
 import { createMember, createOrganization } from "@/actions";
+
 import { Organization } from "@prisma";
 
 import { SWR_KEY_ORGANIZATIONS } from "./use-organizations";
