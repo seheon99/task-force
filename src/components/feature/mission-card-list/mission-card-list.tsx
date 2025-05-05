@@ -20,7 +20,9 @@ export function MissionCardList() {
               ? m.organizationId === selectedOrganizationId
               : true,
           )
-          .map(({ id }) => <MissionCard key={id} id={id} />)}
+          .map(({ id }) => (
+            <MissionCard key={id} id={id} href={`/missions/${id}`} />
+          ))}
         <MissionCreateButton />
       </div>
     </div>

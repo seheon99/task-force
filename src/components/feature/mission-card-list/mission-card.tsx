@@ -25,11 +25,17 @@ import type { Mission } from "@prisma";
 
 import { RandomSeedButton } from "./random-seed-button";
 
-export function MissionCard({ id }: { id: Mission["id"] }) {
+export function MissionCard({
+  id,
+  href,
+}: {
+  id: Mission["id"];
+  href?: string;
+}) {
   const { data: mission } = useMission({ id });
   const { data: user } = useUser();
   return (
-    <Card>
+    <Card href={href}>
       <CardHeader className="flex gap-2">
         <div className="shrink">
           <CardHeading className="col-span-1">{mission?.title}</CardHeading>
