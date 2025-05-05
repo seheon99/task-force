@@ -13,6 +13,7 @@ import {
   Legend,
   Loading,
   Text,
+  toast,
 } from "@/components/base";
 import { ColorPicker } from "@/components/feature";
 import {
@@ -25,16 +26,16 @@ import { useRolesMutation } from "@/swr/use-roles";
 
 import type { Mission } from "@prisma";
 
+type PartialRole = Pick<
+  NonNullable<ReturnType<typeof useMission>["data"]>["roles"][0],
+  "id" | "name" | "color" | "badgeColor"
+>;
+
 export function RoleSection({ id }: { id: Mission["id"] }) {
   const { trigger, isMutating } = useRolesMutation({ missionId: id });
   const { data: mission } = useMission({ id });
 
-  const [roles, setRoles] = useState<
-    Pick<
-      NonNullable<typeof mission>["roles"][0],
-      "id" | "name" | "color" | "badgeColor"
-    >[]
-  >([]);
+  const [roles, setRoles] = useState<PartialRole[]>([]);
   const [color, setColor] =
     useState<NonNullable<typeof mission>["roles"][0]["badgeColor"]>("zinc");
   const [name, setName] = useState("");
@@ -58,7 +59,23 @@ export function RoleSection({ id }: { id: Mission["id"] }) {
     [],
   );
 
-  const onButtonClick = useCallback(() => trigger({ roles }), [roles, trigger]);
+  const onButtonClick = useCallback(
+    async (roles: PartialRole[]) => {
+      try {
+        const result = await trigger({ roles });
+        toast.success({
+          title: "변경 성공",
+          description: `${result.length}개 역할 변경 완료`,
+        });
+      } catch (error) {
+        toast.error({
+          title: "변경 실패",
+          description: error,
+        });
+      }
+    },
+    [trigger],
+  );
 
   useEffect(() => {
     if (mission?.roles) {
@@ -111,7 +128,7 @@ export function RoleSection({ id }: { id: Mission["id"] }) {
             )}
           </div>
         </Field>
-        <Button onClick={onButtonClick}>저장</Button>
+        <Button onClick={() => onButtonClick(roles)}>저장</Button>
       </SettingFieldGroup>
     </SettingSection>
   );
