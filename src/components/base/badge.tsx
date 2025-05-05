@@ -5,7 +5,7 @@ import React, { forwardRef } from "react";
 import { TouchTarget } from "./button";
 import { Link } from "./link";
 
-const colors = {
+export const badgeColors = {
   red: "bg-red-500/15 text-red-700 group-data-hover:bg-red-500/25 dark:bg-red-500/10 dark:text-red-400 dark:group-data-hover:bg-red-500/20",
   orange:
     "bg-orange-500/15 text-orange-700 group-data-hover:bg-orange-500/25 dark:bg-orange-500/10 dark:text-orange-400 dark:group-data-hover:bg-orange-500/20",
@@ -35,7 +35,9 @@ const colors = {
   zinc: "bg-zinc-600/10 text-zinc-700 group-data-hover:bg-zinc-600/20 dark:bg-white/5 dark:text-zinc-400 dark:group-data-hover:bg-white/10",
 };
 
-type BadgeProps = { color?: keyof typeof colors };
+export type BadgeColor = keyof typeof badgeColors;
+
+type BadgeProps = { color?: BadgeColor };
 
 export function Badge({
   color = "zinc",
@@ -47,8 +49,9 @@ export function Badge({
       {...props}
       className={clsx(
         className,
-        "inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium sm:text-xs/5 forced-colors:outline",
-        colors[color],
+        "forced-badgeColors:outline inline-flex items-center gap-x-1.5 rounded-md px-1.5 py-0.5 text-sm/5 font-medium sm:text-xs/5",
+        "*:data-[slot=icon]:-mx-0.5 *:data-[slot=icon]:my-0.5 *:data-[slot=icon]:size-5 *:data-[slot=icon]:shrink-0 *:data-[slot=icon]:self-center sm:*:data-[slot=icon]:my-1 sm:*:data-[slot=icon]:size-4",
+        badgeColors[color],
       )}
     />
   );

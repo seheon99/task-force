@@ -10,6 +10,7 @@ import {
   createRole,
   getMissions,
 } from "@/actions";
+import type { BadgeColor } from "@/components/base";
 import { useUser } from "@/swr";
 
 import type { Mission, Organization, Role, User } from "@prisma";
@@ -42,7 +43,7 @@ async function createFetcher(
       description: Mission["description"];
       readinessTime: Temporal.PlainTime;
       operationTime: Temporal.PlainTime;
-      roles: Role["name"][];
+      roles: { name: Role["name"]; color: BadgeColor }[];
       members: User[];
     };
   },
@@ -55,7 +56,7 @@ async function createFetcher(
     operationTime,
   });
   await Promise.all([
-    ...roles.map((name) => createRole({ missionId, name })),
+    ...roles.map(({ name, color }) => createRole({ missionId, name, color })),
     ...members.map(({ id: userId }) =>
       createParticipant({ userId, missionId }),
     ),

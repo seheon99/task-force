@@ -4,7 +4,13 @@ import { XMarkIcon } from "@heroicons/react/16/solid";
 import { now } from "es-toolkit/compat";
 import React, { useState } from "react";
 
-import { BadgeButton, Field, Input, Label } from "@/components/base";
+import {
+  BadgeButton,
+  type BadgeColor,
+  Field,
+  Input,
+  Label,
+} from "@/components/base";
 
 export function FieldRoles({
   className,
@@ -14,7 +20,7 @@ export function FieldRoles({
   className?: string;
   roles: { id: number; name: string }[];
   setRoles: React.Dispatch<
-    React.SetStateAction<{ id: number; name: string }[]>
+    React.SetStateAction<{ id: number; name: string; color: BadgeColor }[]>
   >;
 }) {
   const [role, setRole] = useState("");
@@ -26,7 +32,7 @@ export function FieldRoles({
         onChange={(e) => setRole(e.target.value)}
         onKeyUp={(e) => {
           if (role.length && (e.code === "Enter" || e.code === "NumpadEnter")) {
-            setRoles((v) => [...v, { id: now(), name: role }]);
+            setRoles((v) => [...v, { id: now(), name: role, color: "zinc" }]);
             setRole("");
           }
         }}

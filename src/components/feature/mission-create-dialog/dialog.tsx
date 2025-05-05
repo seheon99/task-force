@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { Temporal } from "temporal-polyfill";
 
 import {
+  type BadgeColor,
   Button,
   Dialog,
   DialogActions,
@@ -40,7 +41,9 @@ export function MissionCreateDialog({
 }) {
   const { data: user } = useUser();
 
-  const [roles, setRoles] = useState<{ id: number; name: string }[]>([]);
+  const [roles, setRoles] = useState<
+    { id: number; color: BadgeColor; name: string }[]
+  >([]);
   const [members, setMembers] = useState<User[]>([]);
 
   const { trigger: createMission, isMutating: isCreating } =
@@ -69,7 +72,7 @@ export function MissionCreateDialog({
           description,
           readinessTime,
           operationTime,
-          roles: roles.map((r) => r.name),
+          roles: roles.map(({ name, color }) => ({ name, color })),
           members,
         });
         close();
