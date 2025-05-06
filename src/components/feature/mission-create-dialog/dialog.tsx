@@ -16,7 +16,7 @@ import {
   Fieldset,
   toast,
 } from "@/components/base";
-import { useMissionCreation } from "@/swr";
+import { useMissionCreation, useOrganizations } from "@/swr";
 
 import type { Organization } from "@prisma";
 import type { SubmitHandler, UseFormReturn } from "react-hook-form";
@@ -38,8 +38,13 @@ export function MissionCreateDialog({
 }) {
   const { trigger: createMission, isMutating: isCreating } =
     useMissionCreation();
+  const { data: organizations } = useOrganizations();
 
-  const form = useForm<Inputs>();
+  const form = useForm<Inputs>({
+    defaultValues: {
+      organization: organizations?.[0],
+    },
+  });
   const { handleSubmit, reset } = form;
 
   const close = useCallback(() => {
