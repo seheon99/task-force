@@ -26,7 +26,7 @@ export async function updateRoles({
   return convertToPlainObject(
     flatten(
       await Promise.all([
-        deleteTargets.map((target) =>
+        ...deleteTargets.map((target) =>
           prisma.role.delete({
             where: {
               id: target.id,
