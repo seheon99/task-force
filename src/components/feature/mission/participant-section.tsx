@@ -91,7 +91,7 @@ export function ParticipantSection({ id }: { id: Mission["id"] }) {
             </Button>
           </div>
         </Field>
-        <Field>
+        <Field className="col-span-full">
           <Label>팀원 목록</Label>
           <div data-slot="control">
             <Table
