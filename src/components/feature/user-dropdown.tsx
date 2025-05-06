@@ -53,7 +53,7 @@ export function UserDropdown() {
           <DropdownLabel>열외 관리</DropdownLabel>
         </DropdownItem>
         <DropdownDivider />
-        <DropdownItem href="/logout">
+        <DropdownItem href="/sign-out">
           <ArrowRightStartOnRectangleIcon />
           <DropdownLabel>로그아웃</DropdownLabel>
         </DropdownItem>
