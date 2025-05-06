@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 
-import { getOrganizations } from "@/actions";
+import { getOrganizations } from "@/actions/database";
 import { useUser } from "@/swr";
 
 import { User } from "@prisma";

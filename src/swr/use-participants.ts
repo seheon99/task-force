@@ -1,6 +1,6 @@
 import useSWRMutation from "swr/mutation";
 
-import { updateParticipants } from "@/actions/update-participants";
+import { updateParticipants } from "@/actions/database";
 
 import type { Mission, User } from "@prisma";
 

@@ -10,7 +10,7 @@ import {
   createParticipant,
   getMissions,
   updateMission,
-} from "@/actions";
+} from "@/actions/database";
 import { useUser } from "@/swr";
 
 import type { Mission, Organization, User } from "@prisma";

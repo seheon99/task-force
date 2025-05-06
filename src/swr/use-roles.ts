@@ -1,6 +1,6 @@
 import useSWRMutation from "swr/mutation";
 
-import { updateRoles } from "@/actions";
+import { updateRoles } from "@/actions/database";
 
 import type { Mission, Role } from "@prisma";
 

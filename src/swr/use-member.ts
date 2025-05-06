@@ -3,7 +3,7 @@
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 
-import { createMember, deleteMember, getMember } from "@/actions";
+import { createMember, deleteMember, getMember } from "@/actions/database";
 
 import type { Member, Organization, User } from "@prisma";
 

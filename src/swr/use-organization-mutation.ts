@@ -1,6 +1,6 @@
 import useSWRMutation from "swr/mutation";
 
-import { updateOrganization } from "@/actions";
+import { updateOrganization } from "@/actions/database";
 
 import type { Organization } from "@prisma";
 

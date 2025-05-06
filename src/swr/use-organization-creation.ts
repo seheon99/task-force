@@ -1,7 +1,7 @@
 import { invariant, isString } from "es-toolkit";
 import useSWRMutation from "swr/mutation";
 
-import { createMember, createOrganization } from "@/actions";
+import { createMember, createOrganization } from "@/actions/database";
 
 import { Organization } from "@prisma";
 

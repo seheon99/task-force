@@ -7,7 +7,7 @@ import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import useSWRMutation from "swr/mutation";
 
-import { createUser } from "@/actions";
+import { createUser } from "@/actions/database";
 import {
   Button,
   Description,

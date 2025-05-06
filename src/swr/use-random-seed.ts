@@ -1,7 +1,7 @@
 import { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 
-import { createRandomSeed } from "@/actions/create-random-seed";
+import { createRandomSeed } from "@/actions/database";
 
 import type { Mission, RandomSeed, User } from "@prisma";
 
