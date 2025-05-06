@@ -14,7 +14,7 @@ import { toast as sonnerToast } from "sonner";
 interface ToastProps {
   id: string | number;
   title: string;
-  description: string | unknown;
+  description?: string | unknown;
   level: "info" | "warn" | "success" | "error";
   button?: {
     label: string;
