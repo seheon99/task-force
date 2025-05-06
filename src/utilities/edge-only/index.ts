@@ -1,1 +1,1 @@
-export * from "./remote-jwk-set";
+export * from "./google-public-key";
