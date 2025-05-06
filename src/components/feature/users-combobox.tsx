@@ -14,7 +14,7 @@ export function UsersCombobox({
   disabled,
   ...props
 }: Omit<
-  React.ComponentPropsWithoutRef<typeof Combobox<User>>,
+  React.ComponentPropsWithoutRef<typeof Combobox<User | null>>,
   "options" | "displayValue" | "children"
 >) {
   const { data: users, isLoading: isLoadingUsers } = useUsers();
