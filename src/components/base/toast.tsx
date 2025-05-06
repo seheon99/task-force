@@ -97,7 +97,7 @@ function Toast({ id, title, description, level }: ToastProps) {
                 ? description
                 : isPlainObject(description) && "message" in description
                   ? (description.message as string)
-                  : "알 수 없음"}
+                  : `${description}`}
             </p>
           </div>
         </div>

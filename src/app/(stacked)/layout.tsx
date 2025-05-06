@@ -51,7 +51,7 @@ export default function RootLayout({
         <Sidebar>
           <SidebarHeader>
             <Link href="/">
-              <Heading>Cleaning TF</Heading>
+              <Heading>Random TF</Heading>
             </Link>
           </SidebarHeader>
           <SidebarBody>

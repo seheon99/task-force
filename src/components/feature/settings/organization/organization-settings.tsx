@@ -196,10 +196,7 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
           <div className="col-span-full flex flex-col gap-4">
             <Subheading>팀원 초대</Subheading>
             <div className="flex gap-2">
-              <UsersCombobox
-                value={invitedUser ?? undefined}
-                onChange={setInvitedUser}
-              />
+              <UsersCombobox value={invitedUser} onChange={setInvitedUser} />
               <Button
                 outline
                 disabled={!invitedUser || !!isCreatingMember}

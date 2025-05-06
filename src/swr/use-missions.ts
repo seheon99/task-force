@@ -1,5 +1,6 @@
 "use client";
 
+import { invariant, isString } from "es-toolkit";
 import useSWR from "swr";
 import useSWRMutation from "swr/mutation";
 import { Temporal } from "temporal-polyfill";
@@ -7,12 +8,12 @@ import { Temporal } from "temporal-polyfill";
 import {
   createMission,
   createParticipant,
-  createRole,
   getMissions,
+  updateMission,
 } from "@/actions";
 import { useUser } from "@/swr";
 
-import type { Mission, Organization, Role, User } from "@prisma";
+import type { Mission, Organization, User } from "@prisma";
 
 async function fetcher([, uid]: ReturnType<typeof SWR_KEY_MISSIONS>) {
   if (!uid) {
@@ -24,17 +25,9 @@ async function fetcher([, uid]: ReturnType<typeof SWR_KEY_MISSIONS>) {
 }
 
 async function createFetcher(
-  _: unknown,
+  [, userId]: ReturnType<typeof SWR_KEY_MISSIONS>,
   {
-    arg: {
-      organizationId,
-      title,
-      description,
-      readinessTime,
-      operationTime,
-      roles,
-      members,
-    },
+    arg: { organizationId, title, description, readinessTime, operationTime },
   }: {
     arg: {
       organizationId: Organization["id"];
@@ -42,27 +35,51 @@ async function createFetcher(
       description: Mission["description"];
       readinessTime: Temporal.PlainTime;
       operationTime: Temporal.PlainTime;
-      roles: Role["name"][];
-      members: User[];
     };
   },
 ) {
-  const { id: missionId } = await createMission({
+  invariant(
+    isString(userId),
+    `String is expected for 'userId' but ${typeof userId}`,
+  );
+
+  const mission = await createMission({
     organizationId,
     title,
     description,
     readinessTime,
     operationTime,
   });
-  await Promise.all([
-    ...roles.map((name) => createRole({ missionId, name })),
-    ...members.map(({ id: userId }) =>
-      createParticipant({ userId, missionId }),
-    ),
-  ]);
+  await createParticipant({ userId, missionId: mission.id });
+  return mission;
 }
 
+async function updateFetcher(
+  _: unknown,
+  {
+    arg: { missionId, title, description, readinessTime, operationTime },
+  }: {
+    arg: {
+      missionId: Mission["id"];
+      title: Mission["title"];
+      description: Mission["description"];
+      readinessTime: string;
+      operationTime: string;
+    };
+  },
+) {
+  return await updateMission({
+    id: missionId,
+    title,
+    description,
+    readinessTime,
+    operationTime,
+  });
+}
+
+// TODO: Change SWR_KEY_MISSIONS (uid) => [] to () => string by authorization in server action
 export const SWR_KEY_MISSIONS = (uid?: User["id"]) => ["SWR_MISSIONS", uid];
+export const SWR_KEY_MISSION = (id: Mission["id"]) => ["SWR_MISSION", id];
 
 export function useMissions() {
   const { data: user } = useUser();
@@ -77,4 +94,9 @@ export function useMission({ id }: { id: Mission["id"] }) {
 export function useMissionCreation() {
   const { data: user } = useUser();
   return useSWRMutation(SWR_KEY_MISSIONS(user?.id), createFetcher);
+}
+
+export function useMissionMutation() {
+  const { data: user } = useUser();
+  return useSWRMutation(SWR_KEY_MISSIONS(user?.id), updateFetcher);
 }

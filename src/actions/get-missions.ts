@@ -2,36 +2,41 @@
 
 import { Temporal } from "temporal-polyfill";
 
-import { prisma } from "@/utilities";
+import { convertToPlainObject } from "@/utilities";
+import { prisma } from "@/utilities/server-only";
+
 import { User } from "@prisma";
 
 export async function getMissions({ uid }: { uid: User["id"] }) {
   const today = Temporal.Now.plainDateISO();
   const yesterday = today.subtract({ days: 1 });
-  return await prisma.mission.findMany({
-    include: {
-      organization: true,
-      participants: {
-        include: {
-          user: {
-            include: {
-              randomSeeds: {
-                where: {
-                  createdAt: {
-                    gte: new Date(yesterday.toString()),
+  return convertToPlainObject(
+    await prisma.mission.findMany({
+      include: {
+        organization: true,
+        roles: true,
+        participants: {
+          include: {
+            user: {
+              include: {
+                randomSeeds: {
+                  where: {
+                    createdAt: {
+                      gte: new Date(yesterday.toString()),
+                    },
                   },
                 },
-              },
-              exempts: {
-                include: {
-                  excuse: true,
-                },
-                where: {
-                  startedAt: {
-                    lte: new Date(today.toString()),
+                exempts: {
+                  include: {
+                    excuse: true,
                   },
-                  endedAt: {
-                    gte: new Date(today.toString()),
+                  where: {
+                    startedAt: {
+                      lte: new Date(today.toString()),
+                    },
+                    endedAt: {
+                      gte: new Date(today.toString()),
+                    },
                   },
                 },
               },
@@ -39,13 +44,13 @@ export async function getMissions({ uid }: { uid: User["id"] }) {
           },
         },
       },
-    },
-    where: {
-      participants: {
-        some: {
-          userId: uid,
+      where: {
+        participants: {
+          some: {
+            userId: uid,
+          },
         },
       },
-    },
-  });
+    }),
+  );
 }

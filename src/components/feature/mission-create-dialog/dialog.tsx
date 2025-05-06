@@ -1,7 +1,7 @@
 "use client";
 
 import { sample } from "es-toolkit";
-import { createContext, useCallback, useEffect, useState } from "react";
+import { createContext, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { Temporal } from "temporal-polyfill";
 
@@ -16,17 +16,15 @@ import {
   Fieldset,
   toast,
 } from "@/components/base";
-import { useMissionCreation, useUser } from "@/swr";
+import { useMissionCreation, useOrganizations } from "@/swr";
 
-import type { Organization, User } from "@prisma";
+import type { Organization } from "@prisma";
 import type { SubmitHandler, UseFormReturn } from "react-hook-form";
 
 import { FieldDescription } from "./field-description";
-import { FieldMembers } from "./field-members";
 import { FieldOperationTime } from "./field-operation-time";
 import { FieldOrganization } from "./field-organization";
 import { FieldReadinessTime } from "./field-readiness-time";
-import { FieldRoles } from "./field-roles";
 import { FieldTitle } from "./field-title";
 
 export const FormContext = createContext<UseFormReturn<Inputs> | null>(null);
@@ -38,15 +36,15 @@ export function MissionCreateDialog({
   open: boolean;
   onClose: () => void;
 }) {
-  const { data: user } = useUser();
-
-  const [roles, setRoles] = useState<{ id: number; name: string }[]>([]);
-  const [members, setMembers] = useState<User[]>([]);
-
   const { trigger: createMission, isMutating: isCreating } =
     useMissionCreation();
+  const { data: organizations } = useOrganizations();
 
-  const form = useForm<Inputs>();
+  const form = useForm<Inputs>({
+    defaultValues: {
+      organization: organizations?.[0],
+    },
+  });
   const { handleSubmit, reset } = form;
 
   const close = useCallback(() => {
@@ -69,22 +67,14 @@ export function MissionCreateDialog({
           description,
           readinessTime,
           operationTime,
-          roles: roles.map((r) => r.name),
-          members,
         });
         close();
       } catch (error) {
         toast.error({ title: "미션 생성 실패", description: error });
       }
     },
-    [close, createMission, members, roles],
+    [close, createMission],
   );
-
-  useEffect(() => {
-    if (user) {
-      setMembers((prev) => [...prev.filter((u) => u.id !== user.id), user]);
-    }
-  }, [user]);
 
   return (
     <FormContext.Provider value={form}>
@@ -106,14 +96,12 @@ export function MissionCreateDialog({
           </DialogDescription>
           <DialogBody>
             <Fieldset>
-              <FieldGroup>
-                <FieldOrganization />
-                <FieldTitle />
-                <FieldDescription />
+              <FieldGroup className="grid-col-2 grid gap-x-4">
+                <FieldOrganization className="col-span-2" />
+                <FieldTitle className="col-span-2" />
+                <FieldDescription className="col-span-2" />
                 <FieldReadinessTime />
                 <FieldOperationTime />
-                <FieldRoles roles={roles} setRoles={setRoles} />
-                <FieldMembers members={members} setMembers={setMembers} />
               </FieldGroup>
             </Fieldset>
           </DialogBody>

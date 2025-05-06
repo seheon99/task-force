@@ -1,21 +1,28 @@
 import clsx from "clsx";
+import Link from "next/link";
 import React from "react";
 
 export function Card({
   className,
+  href,
   children,
   ...props
-}: { children: React.ReactNode } & React.ComponentPropsWithoutRef<"div">) {
+}: {
+  href?: string;
+  children: React.ReactNode;
+} & React.ComponentPropsWithoutRef<"div">) {
   return (
     <div
       className={clsx(
         className,
-        "divide-y divide-zinc-200 overflow-hidden rounded-lg bg-white shadow-sm",
+        "divide-y overflow-hidden rounded-lg",
+        "divide-zinc-200 bg-white shadow-sm",
         "dark:divide-zinc-700 dark:bg-zinc-800 dark:ring-1 dark:ring-white/10",
+        href && "transition-colors hover:bg-zinc-500/5 dark:hover:bg-white/10",
       )}
       {...props}
     >
-      {children}
+      {href ? <Link href={href}>{children}</Link> : children}
     </div>
   );
 }

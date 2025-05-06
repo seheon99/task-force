@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/utilities";
+import { prisma } from "@/utilities/server-only";
 
 import type { Member, Organization, User } from "@prisma";
 

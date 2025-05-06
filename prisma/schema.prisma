@@ -73,8 +73,9 @@ model Mission {
 }
 
 model Role {
-  id   String @id @default(uuid())
-  name String
+  id    String @id @default(uuid())
+  name  String
+  color String
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

@@ -39,6 +39,24 @@ export default [
             "type",
             ["parent", "index", "sibling", "object"],
           ],
+          pathGroups: [
+            {
+              pattern: "@/**",
+              group: "internal",
+              position: "before",
+            },
+            {
+              pattern: "server-only",
+              group: "builtin",
+              position:"before",
+            },
+            {
+              pattern: "client-only",
+              group: "builtin",
+              position:"before",
+            },
+          ],
+          pathGroupsExcludedImportTypes: ["server-only","client-only"],
 
           "newlines-between": "always",
 

@@ -14,4 +14,7 @@ export * from "./get-organizations";
 export * from "./get-user";
 export * from "./get-users";
 
+export * from "./update-mission";
 export * from "./update-organization";
+export * from "./update-participants";
+export * from "./update-roles";

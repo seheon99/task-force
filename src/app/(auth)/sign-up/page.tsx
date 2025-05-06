@@ -22,7 +22,7 @@ import {
   toast,
 } from "@/components/base";
 import { emailDomain } from "@/constants";
-import { firebaseAuth } from "@/utilities";
+import { firebaseAuth } from "@/utilities/client-only";
 
 import type { SubmitHandler } from "react-hook-form";
 
