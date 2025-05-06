@@ -1,21 +1,25 @@
 "use server";
 
-import { prisma } from "@/utilities/server-only";
+import { unauthorized } from "next/navigation";
 
-import type { Mission, User } from "@prisma";
+import { prisma, verifySession } from "@/utilities/server-only";
+
+import type { Mission } from "@prisma";
 
 export async function createRandomSeed({
-  userId,
   missionId,
   number,
 }: {
-  userId: User["id"];
   missionId: Mission["id"];
   number: number;
 }) {
+  const user = await verifySession();
+  if (!user) {
+    unauthorized();
+  }
   return await prisma.randomSeed.create({
     data: {
-      userId,
+      userId: user.id,
       missionId,
       number,
     },

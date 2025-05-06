@@ -1,15 +1,15 @@
-import { invariant, isString } from "es-toolkit";
 import useSWRMutation from "swr/mutation";
 
 import { createMember, createOrganization } from "@/actions/database";
+import { UnauthorizedError } from "@/errors";
+import { verifySession } from "@/utilities/client-only";
 
 import { Organization } from "@prisma";
 
 import { SWR_KEY_ORGANIZATIONS } from "./use-organizations";
-import { useUser } from "./use-user";
 
 async function fetcher(
-  [, uid]: ReturnType<typeof SWR_KEY_ORGANIZATIONS>,
+  _: unknown,
   {
     arg: { name, description },
   }: {
@@ -19,11 +19,14 @@ async function fetcher(
     };
   },
 ) {
-  invariant(isString(uid), `Invalid uid(${uid}) in organization creation`);
+  const userId = verifySession();
+  if (!userId) {
+    throw new UnauthorizedError();
+  }
 
   const organization = await createOrganization({ name, description });
   await createMember({
-    userId: uid,
+    userId,
     organizationId: organization.id,
     isLeader: true,
   });
@@ -31,6 +34,5 @@ async function fetcher(
 }
 
 export function useOrganizationCreation() {
-  const { data: user } = useUser();
-  return useSWRMutation(SWR_KEY_ORGANIZATIONS(user?.id), fetcher);
+  return useSWRMutation(SWR_KEY_ORGANIZATIONS, fetcher);
 }

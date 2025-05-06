@@ -1,13 +1,17 @@
 "use server";
 
+import { unauthorized } from "next/navigation";
 import { Temporal } from "temporal-polyfill";
 
 import { convertToPlainObject } from "@/utilities";
-import { prisma } from "@/utilities/server-only";
+import { prisma, verifySession } from "@/utilities/server-only";
 
-import { User } from "@prisma";
+export async function getMissions() {
+  const user = await verifySession();
+  if (!user) {
+    unauthorized();
+  }
 
-export async function getMissions({ uid }: { uid: User["id"] }) {
   const today = Temporal.Now.plainDateISO();
   const yesterday = today.subtract({ days: 1 });
   return convertToPlainObject(
@@ -47,7 +51,7 @@ export async function getMissions({ uid }: { uid: User["id"] }) {
       where: {
         participants: {
           some: {
-            userId: uid,
+            userId: user.id,
           },
         },
       },

@@ -1,10 +1,15 @@
 "use server";
 
-import { prisma } from "@/utilities/server-only";
+import { unauthorized } from "next/navigation";
 
-import type { User } from "@prisma";
+import { prisma, verifySession } from "@/utilities/server-only";
 
-export async function getOrganizations({ userId }: { userId: User["id"] }) {
+export async function getOrganizations() {
+  const user = await verifySession();
+  if (!user) {
+    return unauthorized();
+  }
+
   return await prisma.organization.findMany({
     include: {
       Member: true,
@@ -22,7 +27,7 @@ export async function getOrganizations({ userId }: { userId: User["id"] }) {
     where: {
       Member: {
         some: {
-          userId,
+          userId: user.id,
           deletedAt: null,
         },
       },
