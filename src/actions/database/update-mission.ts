@@ -1,10 +1,10 @@
 "use server";
 
-import { Temporal } from "temporal-polyfill";
+import { isNil, isNotNil } from "es-toolkit";
 
 import { prisma } from "@/utilities/server-only";
 
-import type { Mission, User } from "@prisma";
+import type { Mission, Role, User } from "@prisma";
 
 export async function updateMission({
   id,
@@ -13,6 +13,7 @@ export async function updateMission({
   readinessTime,
   operationTime,
   participantUserIds,
+  roles,
 }: {
   id: Mission["id"];
   title?: Mission["title"];
@@ -20,50 +21,15 @@ export async function updateMission({
   readinessTime?: string;
   operationTime?: string;
   participantUserIds?: User["id"][];
+  roles?: ({ id?: Role["id"] } & Pick<Role, "name" | "color">)[];
 }) {
   const promises = [];
 
   if (participantUserIds?.length) {
-    const currentParticipants = await prisma.participant.findMany({
-      select: { userId: true },
-      where: { missionId: id },
-    });
-
-    const pidsToDelete = currentParticipants
-      .map((participant) => participant.userId)
-      .filter(
-        (participantUserId) =>
-          !participantUserIds.find((userId) => userId === participantUserId),
-      );
-    if (pidsToDelete.length) {
-      promises.push(
-        prisma.participant.updateMany({
-          data: { deletedAt: Temporal.Now.plainDateTimeISO().toString() },
-          where: {
-            id: {
-              in: pidsToDelete,
-            },
-          },
-        }),
-      );
-    }
-
-    const uidsToCreate = participantUserIds.filter(
-      (userId) =>
-        !currentParticipants.find(
-          (participant) => participant.userId === userId,
-        ),
-    );
-    if (uidsToCreate.length) {
-      promises.push(
-        prisma.participant.createMany({
-          data: uidsToCreate.map((uid) => ({
-            userId: uid,
-            missionId: id,
-          })),
-        }),
-      );
-    }
+    promises.push(setParticipants({ participantUserIds, missionId: id }));
+  }
+  if (roles?.length) {
+    promises.push(setRoles({ missionId: id, roles }));
   }
   promises.push(
     prisma.mission.update({
@@ -77,4 +43,141 @@ export async function updateMission({
     }),
   );
   return Promise.all(promises);
+}
+
+async function setParticipants({
+  participantUserIds,
+  missionId,
+}: {
+  participantUserIds: User["id"][];
+  missionId: Mission["id"];
+}) {
+  const currentParticipants = await prisma.participant.findMany({
+    select: { userId: true },
+    where: { missionId },
+  });
+  const currentParticipantUserIds = currentParticipants.map(
+    (participant) => participant.userId,
+  );
+
+  return await Promise.all([
+    deleteNotRequiredParticipants({
+      requiredParticipantUserIds: participantUserIds,
+      currentParticipantUserIds,
+    }),
+    createRequiredParticipants({
+      requiredParticipantUserIds: participantUserIds,
+      currentParticipantUserIds,
+      missionId,
+    }),
+  ]);
+}
+
+async function deleteNotRequiredParticipants({
+  requiredParticipantUserIds,
+  currentParticipantUserIds,
+}: {
+  requiredParticipantUserIds: User["id"][];
+  currentParticipantUserIds: User["id"][];
+}) {
+  const pidsToDelete = currentParticipantUserIds.filter(
+    (participantUserId) =>
+      !requiredParticipantUserIds.find(
+        (userId) => userId === participantUserId,
+      ),
+  );
+  if (pidsToDelete.length) {
+    return await prisma.participant.updateMany({
+      data: { deletedAt: new Date() },
+      where: {
+        id: {
+          in: pidsToDelete,
+        },
+      },
+    });
+  }
+}
+
+async function createRequiredParticipants({
+  requiredParticipantUserIds,
+  currentParticipantUserIds,
+  missionId,
+}: {
+  requiredParticipantUserIds: User["id"][];
+  currentParticipantUserIds: User["id"][];
+  missionId: Mission["id"];
+}) {
+  const uidsToCreate = requiredParticipantUserIds.filter(
+    (userId) => !currentParticipantUserIds.find((uid) => uid === userId),
+  );
+  if (uidsToCreate.length) {
+    return prisma.participant.createMany({
+      data: uidsToCreate.map((userId) => ({
+        userId,
+        missionId,
+      })),
+    });
+  }
+}
+
+async function setRoles({
+  missionId,
+  roles,
+}: {
+  missionId: Mission["id"];
+  roles: NonNullable<Parameters<typeof updateMission>[0]["roles"]>;
+}) {
+  return await Promise.all([
+    deleteNotRequiredRoles({
+      missionId,
+      requiredRoleIds: roles.map((r) => r.id).filter((r) => isNotNil(r)),
+    }),
+    createRoles({
+      missionId,
+      roles: roles.filter((r) => isNil(r.id)),
+    }),
+  ]);
+}
+
+async function deleteNotRequiredRoles({
+  missionId,
+  requiredRoleIds,
+}: {
+  missionId: Mission["id"];
+  requiredRoleIds: Role["id"][];
+}) {
+  const currentRoles = await prisma.role.findMany({
+    select: { id: true },
+    where: { missionId },
+  });
+  const currentRoleIds = currentRoles.map((role) => role.id);
+  const ridsToDelete = currentRoleIds.filter(
+    (rid) => !requiredRoleIds.find((roleId) => roleId === rid),
+  );
+  if (ridsToDelete.length) {
+    return await prisma.role.updateMany({
+      data: { deletedAt: new Date() },
+      where: {
+        id: {
+          in: ridsToDelete,
+        },
+      },
+    });
+  }
+}
+
+async function createRoles({
+  missionId,
+  roles,
+}: {
+  missionId: Mission["id"];
+  roles: Pick<Role, "name" | "color">[];
+}) {
+  return await prisma.role.createMany({
+    data: roles.map(({ name, color }) => ({
+      name,
+      color,
+      missionId,
+    })),
+  });
 }

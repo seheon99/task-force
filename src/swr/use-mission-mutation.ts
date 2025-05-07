@@ -15,6 +15,7 @@ async function fetcher(
       readinessTime,
       operationTime,
       participantUserIds,
+      roles,
     },
   }: {
     arg: {
@@ -23,6 +24,7 @@ async function fetcher(
       readinessTime?: string;
       operationTime?: string;
       participantUserIds?: User["id"][];
+      roles: Parameters<typeof updateMission>[0]["roles"];
     };
   },
 ) {
@@ -33,6 +35,7 @@ async function fetcher(
     readinessTime,
     operationTime,
     participantUserIds,
+    roles,
   });
 }
 

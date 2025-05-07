@@ -21,8 +21,7 @@ import {
   SettingSection,
   SettingSectionName,
 } from "@/components/feature/settings";
-import { useMission } from "@/swr";
-import { useRolesMutation } from "@/swr/use-roles";
+import { useMission, useMissionMutation } from "@/swr";
 
 import type { Mission } from "@prisma";
 
@@ -32,7 +31,7 @@ type PartialRole = Pick<
 >;
 
 export function RoleSection({ id }: { id: Mission["id"] }) {
-  const { trigger, isMutating } = useRolesMutation({ missionId: id });
+  const { trigger, isMutating } = useMissionMutation(id);
   const { data: mission } = useMission({ id });
 
   const [roles, setRoles] = useState<PartialRole[]>([]);
@@ -62,10 +61,9 @@ export function RoleSection({ id }: { id: Mission["id"] }) {
   const onButtonClick = useCallback(
     async (roles: PartialRole[]) => {
       try {
-        const result = await trigger({ roles });
+        await trigger({ roles });
         toast.success({
           title: "변경 성공",
-          description: `${result.length}개 역할 변경 완료`,
         });
       } catch (error) {
         toast.error({
