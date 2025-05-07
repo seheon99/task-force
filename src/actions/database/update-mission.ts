@@ -60,49 +60,54 @@ async function setParticipants({
 
   return await Promise.all([
     deleteNotRequiredParticipants({
+      missionId,
       requiredParticipantUserIds: participantUserIds,
       currentParticipantUserIds,
     }),
     createRequiredParticipants({
+      missionId,
       requiredParticipantUserIds: participantUserIds,
       currentParticipantUserIds,
-      missionId,
     }),
   ]);
 }
 
 async function deleteNotRequiredParticipants({
+  missionId,
   requiredParticipantUserIds,
   currentParticipantUserIds,
 }: {
+  missionId: Mission["id"];
   requiredParticipantUserIds: User["id"][];
   currentParticipantUserIds: User["id"][];
 }) {
-  const pidsToDelete = currentParticipantUserIds.filter(
+  const uidsToDelete = currentParticipantUserIds.filter(
     (participantUserId) =>
       !requiredParticipantUserIds.find(
         (userId) => userId === participantUserId,
       ),
   );
-  if (pidsToDelete.length) {
+  console.log(uidsToDelete);
+  if (uidsToDelete.length) {
     return await prisma.participant.deleteMany({
       where: {
-        id: {
-          in: pidsToDelete,
+        userId: {
+          in: uidsToDelete,
         },
+        missionId,
       },
     });
   }
 }
 
 async function createRequiredParticipants({
+  missionId,
   requiredParticipantUserIds,
   currentParticipantUserIds,
-  missionId,
 }: {
+  missionId: Mission["id"];
   requiredParticipantUserIds: User["id"][];
   currentParticipantUserIds: User["id"][];
-  missionId: Mission["id"];
 }) {
   const uidsToCreate = requiredParticipantUserIds.filter(
     (userId) => !currentParticipantUserIds.find((uid) => uid === userId),
