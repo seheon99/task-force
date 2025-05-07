@@ -1,7 +1,5 @@
 "use server";
 
-import { isNil, isNotNil } from "es-toolkit";
-
 import { prisma } from "@/utilities/server-only";
 
 import type { Mission, Role, User } from "@prisma";
@@ -21,7 +19,7 @@ export async function updateMission({
   readinessTime?: string;
   operationTime?: string;
   participantUserIds?: User["id"][];
-  roles?: ({ id?: Role["id"] } & Pick<Role, "name" | "color">)[];
+  roles?: Pick<Role, "id" | "name" | "color">[];
 }) {
   const promises = [];
 
@@ -126,30 +124,31 @@ async function setRoles({
   missionId: Mission["id"];
   roles: NonNullable<Parameters<typeof updateMission>[0]["roles"]>;
 }) {
-  return await Promise.all([
-    deleteNotRequiredRoles({
-      missionId,
-      requiredRoleIds: roles.map((r) => r.id).filter((r) => isNotNil(r)),
-    }),
-    createRoles({
-      missionId,
-      roles: roles.filter((r) => isNil(r.id)),
-    }),
-  ]);
-}
-
-async function deleteNotRequiredRoles({
-  missionId,
-  requiredRoleIds,
-}: {
-  missionId: Mission["id"];
-  requiredRoleIds: Role["id"][];
-}) {
   const currentRoles = await prisma.role.findMany({
     select: { id: true },
     where: { missionId },
   });
   const currentRoleIds = currentRoles.map((role) => role.id);
+  return await Promise.all([
+    deleteNotRequiredRoles({
+      currentRoleIds,
+      requiredRoleIds: roles.map((role) => role.id),
+    }),
+    createRequiredRoles({
+      missionId,
+      currentRoleIds,
+      requiredRoles: roles,
+    }),
+  ]);
+}
+
+async function deleteNotRequiredRoles({
+  currentRoleIds,
+  requiredRoleIds,
+}: {
+  currentRoleIds: Role["id"][];
+  requiredRoleIds: Role["id"][];
+}) {
   const ridsToDelete = currentRoleIds.filter(
     (rid) => !requiredRoleIds.find((roleId) => roleId === rid),
   );
@@ -164,15 +163,20 @@ async function deleteNotRequiredRoles({
   }
 }
 
-async function createRoles({
+async function createRequiredRoles({
   missionId,
-  roles,
+  currentRoleIds,
+  requiredRoles,
 }: {
   missionId: Mission["id"];
-  roles: Pick<Role, "name" | "color">[];
+  currentRoleIds: Role["id"][];
+  requiredRoles: Pick<Role, "id" | "name" | "color">[];
 }) {
+  const rolesToCreate = requiredRoles.filter(
+    ({ id }) => !currentRoleIds.find((rid) => rid === id),
+  );
   return await prisma.role.createMany({
-    data: roles.map(({ name, color }) => ({
+    data: rolesToCreate.map(({ name, color }) => ({
       name,
       color,
       missionId,
