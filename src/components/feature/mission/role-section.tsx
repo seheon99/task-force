@@ -126,7 +126,9 @@ export function RoleSection({ id }: { id: Mission["id"] }) {
             )}
           </div>
         </Field>
-        <Button onClick={() => onButtonClick(roles)}>저장</Button>
+        <Button disabled={isMutating} onClick={() => onButtonClick(roles)}>
+          저장
+        </Button>
       </SettingFieldGroup>
     </SettingSection>
   );
