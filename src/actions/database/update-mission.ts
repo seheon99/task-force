@@ -87,8 +87,7 @@ async function deleteNotRequiredParticipants({
       ),
   );
   if (pidsToDelete.length) {
-    return await prisma.participant.updateMany({
-      data: { deletedAt: new Date() },
+    return await prisma.participant.deleteMany({
       where: {
         id: {
           in: pidsToDelete,
@@ -155,8 +154,7 @@ async function deleteNotRequiredRoles({
     (rid) => !requiredRoleIds.find((roleId) => roleId === rid),
   );
   if (ridsToDelete.length) {
-    return await prisma.role.updateMany({
-      data: { deletedAt: new Date() },
+    return await prisma.role.deleteMany({
       where: {
         id: {
           in: ridsToDelete,

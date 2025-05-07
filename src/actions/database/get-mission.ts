@@ -55,11 +55,7 @@ export async function getMission({ id }: { id: Mission["id"] }) {
             },
           },
         },
-        roles: {
-          where: {
-            deletedAt: null,
-          },
-        },
+        roles: true,
       },
       where: { id },
     }),

@@ -15,12 +15,8 @@ export async function getOrganizations() {
       Member: true,
       _count: {
         select: {
-          Member: {
-            where: {
-              deletedAt: null,
-            },
-          },
-          Mission: { where: { deletedAt: null } },
+          Member: true,
+          Mission: true,
         },
       },
     },
@@ -28,7 +24,6 @@ export async function getOrganizations() {
       Member: {
         some: {
           userId: user.id,
-          deletedAt: null,
         },
       },
     },

@@ -3,5 +3,5 @@
 import { prisma } from "@/utilities/server-only";
 
 export async function getUsers() {
-  return await prisma.user.findMany({ where: { deletedAt: null } });
+  return await prisma.user.findMany();
 }
