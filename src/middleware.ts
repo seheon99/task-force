@@ -17,7 +17,9 @@ export default async function middleware(req: NextRequest) {
 }
 
 function isProtectedRoute(req: NextRequest) {
-  return protectedRoutes.includes(req.nextUrl.pathname);
+  return protectedRoutes.some((route) =>
+    req.nextUrl.pathname.startsWith(route),
+  );
 }
 
 export const config = {
