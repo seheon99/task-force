@@ -1,4 +1,4 @@
-"use server";
+import "server-only";
 
 import { verifySession } from "@/utilities/server-only";
 
