@@ -1,9 +1,11 @@
 "use server";
 
-import { prisma } from "@/utilities/server-only";
+import { createProtection, prisma } from "@/utilities/server-only";
 
-import type { Member } from "@prisma";
+import type { Member, User } from "@prisma";
 
-export async function getMember({ id }: { id: Member["id"] }) {
-  return await prisma.member.findUnique({ where: { id } });
-}
+export const getMember = createProtection(
+  async (user: User, { id }: { id: Member["id"] }) => {
+    return await prisma.member.findUnique({ where: { id } });
+  },
+);

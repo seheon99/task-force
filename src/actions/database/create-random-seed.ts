@@ -1,27 +1,27 @@
 "use server";
 
-import { unauthorized } from "next/navigation";
+import { prisma } from "@/utilities/server-only";
+import { createProtection } from "@/utilities/server-only";
 
-import { prisma, verifySession } from "@/utilities/server-only";
+import type { Mission, User } from "@prisma";
 
-import type { Mission } from "@prisma";
-
-export async function createRandomSeed({
-  missionId,
-  number,
-}: {
-  missionId: Mission["id"];
-  number: number;
-}) {
-  const user = await verifySession();
-  if (!user) {
-    unauthorized();
-  }
-  return await prisma.randomSeed.create({
-    data: {
-      userId: user.id,
+export const createRandomSeed = createProtection(
+  async (
+    user: User,
+    {
       missionId,
       number,
+    }: {
+      missionId: Mission["id"];
+      number: number;
     },
-  });
-}
+  ) => {
+    return await prisma.randomSeed.create({
+      data: {
+        userId: user.id,
+        missionId,
+        number,
+      },
+    });
+  },
+);

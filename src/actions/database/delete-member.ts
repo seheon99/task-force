@@ -1,11 +1,13 @@
 "use server";
 
-import { prisma } from "@/utilities/server-only";
+import { createProtection, prisma } from "@/utilities/server-only";
 
-import type { Member } from "@prisma";
+import type { Member, User } from "@prisma";
 
-export async function deleteMember({ id }: { id: Member["id"] }) {
-  return await prisma.member.delete({
-    where: { id },
-  });
-}
+export const deleteMember = createProtection(
+  async (user: User, { id }: { id: Member["id"] }) => {
+    return await prisma.member.delete({
+      where: { id },
+    });
+  },
+);

@@ -1,7 +1,7 @@
 "use server";
 
-import { prisma } from "@/utilities/server-only";
+import { createProtection, prisma } from "@/utilities/server-only";
 
-export async function getUsers() {
+export const getUsers = createProtection(async () => {
   return await prisma.user.findMany();
-}
+});

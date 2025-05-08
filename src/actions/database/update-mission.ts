@@ -1,47 +1,52 @@
 "use server";
 
-import { prisma } from "@/utilities/server-only";
+import { createProtection, prisma } from "@/utilities/server-only";
 
 import type { Mission, Role, User } from "@prisma";
 
-export async function updateMission({
-  id,
-  title,
-  description,
-  readinessTime,
-  operationTime,
-  participantUserIds,
-  roles,
-}: {
-  id: Mission["id"];
-  title?: Mission["title"];
-  description?: Mission["description"];
-  readinessTime?: string;
-  operationTime?: string;
-  participantUserIds?: User["id"][];
-  roles?: Pick<Role, "id" | "name" | "color">[];
-}) {
-  const promises = [];
+export const updateMission = createProtection(
+  async (
+    user: User,
+    {
+      id,
+      title,
+      description,
+      readinessTime,
+      operationTime,
+      participantUserIds,
+      roles,
+    }: {
+      id: Mission["id"];
+      title?: Mission["title"];
+      description?: Mission["description"];
+      readinessTime?: string;
+      operationTime?: string;
+      participantUserIds?: User["id"][];
+      roles?: PartialRole;
+    },
+  ) => {
+    const promises = [];
 
-  if (participantUserIds?.length) {
-    promises.push(setParticipants({ participantUserIds, missionId: id }));
-  }
-  if (roles?.length) {
-    promises.push(setRoles({ missionId: id, roles }));
-  }
-  promises.push(
-    prisma.mission.update({
-      where: { id },
-      data: {
-        title,
-        description,
-        readinessTime,
-        operationTime,
-      },
-    }),
-  );
-  return Promise.all(promises);
-}
+    if (participantUserIds?.length) {
+      promises.push(setParticipants({ participantUserIds, missionId: id }));
+    }
+    if (roles?.length) {
+      promises.push(setRoles({ missionId: id, roles }));
+    }
+    promises.push(
+      prisma.mission.update({
+        where: { id },
+        data: {
+          title,
+          description,
+          readinessTime,
+          operationTime,
+        },
+      }),
+    );
+    return await Promise.all(promises);
+  },
+);
 
 async function setParticipants({
   participantUserIds,
@@ -127,7 +132,7 @@ async function setRoles({
   roles,
 }: {
   missionId: Mission["id"];
-  roles: NonNullable<Parameters<typeof updateMission>[0]["roles"]>;
+  roles: NonNullable<PartialRole>;
 }) {
   const currentRoles = await prisma.role.findMany({
     select: { id: true },
@@ -188,3 +193,5 @@ async function createRequiredRoles({
     })),
   });
 }
+
+type PartialRole = Pick<Role, "id" | "name" | "color">[];

@@ -1,23 +1,28 @@
 "use server";
 
-import { prisma } from "@/utilities/server-only";
+import { createProtection, prisma } from "@/utilities/server-only";
 
-import type { Organization } from "@prisma";
+import type { Organization, User } from "@prisma";
 
-export async function updateOrganization({
-  id,
-  name,
-  description,
-}: {
-  id: Organization["id"];
-  name?: Organization["name"];
-  description?: Organization["description"];
-}) {
-  return prisma.organization.update({
-    where: { id },
-    data: {
+export const updateOrganization = createProtection(
+  async (
+    user: User,
+    {
+      id,
       name,
       description,
+    }: {
+      id: Organization["id"];
+      name?: Organization["name"];
+      description?: Organization["description"];
     },
-  });
-}
+  ) => {
+    return await prisma.organization.update({
+      where: { id },
+      data: {
+        name,
+        description,
+      },
+    });
+  },
+);

@@ -1,15 +1,10 @@
 "use server";
 
-import { unauthorized } from "next/navigation";
+import { createProtection, prisma } from "@/utilities/server-only";
 
-import { prisma, verifySession } from "@/utilities/server-only";
+import { User } from "@prisma";
 
-export async function getOrganizations() {
-  const user = await verifySession();
-  if (!user) {
-    return unauthorized();
-  }
-
+export const getOrganizations = createProtection(async (user: User) => {
   return await prisma.organization.findMany({
     include: {
       Member: true,
@@ -28,4 +23,4 @@ export async function getOrganizations() {
       },
     },
   });
-}
+});
