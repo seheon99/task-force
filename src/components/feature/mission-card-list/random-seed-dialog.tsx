@@ -11,7 +11,7 @@ import {
   DialogTitle,
   toast,
 } from "@/components/base";
-import { useRandomSeedCreation, useUser } from "@/swr";
+import { useRandomSeedCreation } from "@/swr";
 
 import type { Mission } from "@prisma";
 
@@ -26,10 +26,8 @@ export function RandomSeedDialog({
   const [seed, setSeed] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { data: user } = useUser();
   const { trigger: createRandomSeed, isMutating: isCreating } =
     useRandomSeedCreation({
-      userId: user?.id ?? "",
       missionId,
     });
 
@@ -85,7 +83,7 @@ export function RandomSeedDialog({
       </DialogBody>
       <DialogActions>
         <Button
-          disabled={isCreating || !user || seed.length < 2}
+          disabled={isCreating || seed.length < 2}
           onClick={() => onSubmit(parseInt(seed))}
         >
           제출하기

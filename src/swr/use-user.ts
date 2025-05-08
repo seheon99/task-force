@@ -3,7 +3,7 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import useSWR, { mutate } from "swr";
 
-import { getUser } from "@/actions/get-user";
+import { getUser } from "@/actions/database";
 import { firebaseApp, firebaseAuth } from "@/utilities/client-only";
 
 onAuthStateChanged(firebaseAuth, () => mutate(SWR_KEY_ME));

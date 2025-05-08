@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 
-import { getUsers } from "@/actions";
+import { getUsers } from "@/actions/database";
 
 async function fetchUsers() {
   const users = await getUsers();

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+import { setAccessTokenCookie } from "@/actions/auth";
 import {
   Button,
   ErrorMessage,
@@ -41,7 +42,9 @@ export default function SignInPage() {
             `${username}@${emailDomain}`,
             password,
           );
-          if (userCredential.user.uid) {
+          if (userCredential.user) {
+            const accessToken = await userCredential.user.getIdToken();
+            await setAccessTokenCookie(accessToken);
             toast.success({
               title: "로그인 성공",
               description: `${userCredential.user.displayName}님 환영합니다`,

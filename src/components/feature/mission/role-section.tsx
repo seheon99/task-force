@@ -1,6 +1,6 @@
 "use client";
 
-import { XMarkIcon } from "@heroicons/react/16/solid";
+import { ArrowPathIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import { now } from "es-toolkit/compat";
 import { useCallback, useEffect, useState } from "react";
 
@@ -21,8 +21,7 @@ import {
   SettingSection,
   SettingSectionName,
 } from "@/components/feature/settings";
-import { useMission } from "@/swr";
-import { useRolesMutation } from "@/swr/use-roles";
+import { useMission, useMissionMutation } from "@/swr";
 
 import type { Mission } from "@prisma";
 
@@ -32,7 +31,7 @@ type PartialRole = Pick<
 >;
 
 export function RoleSection({ id }: { id: Mission["id"] }) {
-  const { trigger, isMutating } = useRolesMutation({ missionId: id });
+  const { trigger, isMutating } = useMissionMutation(id);
   const { data: mission } = useMission({ id });
 
   const [roles, setRoles] = useState<PartialRole[]>([]);
@@ -59,13 +58,18 @@ export function RoleSection({ id }: { id: Mission["id"] }) {
     [],
   );
 
+  const onResetButtonClick = useCallback(() => {
+    if (mission) {
+      setRoles(mission.roles);
+    }
+  }, [mission]);
+
   const onButtonClick = useCallback(
     async (roles: PartialRole[]) => {
       try {
-        const result = await trigger({ roles });
+        await trigger({ roles });
         toast.success({
           title: "변경 성공",
-          description: `${result.length}개 역할 변경 완료`,
         });
       } catch (error) {
         toast.error({
@@ -110,7 +114,16 @@ export function RoleSection({ id }: { id: Mission["id"] }) {
           </div>
         </Field>
         <Field className="col-span-full">
-          <Label>역할 목록</Label>
+          <Label className="flex items-center gap-1">
+            역할 목록
+            <Button
+              plain
+              className="px-1.5! py-1!"
+              onClick={onResetButtonClick}
+            >
+              <ArrowPathIcon className="size-4!" />
+            </Button>
+          </Label>
           <div data-slot="control" className="flex flex-wrap gap-1 sm:gap-2">
             {roles ? (
               roles.map((role) => (
@@ -128,7 +141,9 @@ export function RoleSection({ id }: { id: Mission["id"] }) {
             )}
           </div>
         </Field>
-        <Button onClick={() => onButtonClick(roles)}>저장</Button>
+        <Button disabled={isMutating} onClick={() => onButtonClick(roles)}>
+          저장
+        </Button>
       </SettingFieldGroup>
     </SettingSection>
   );

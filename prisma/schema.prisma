@@ -17,9 +17,8 @@ model User {
   birthday   DateTime
   enlistedAt DateTime
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   tasks        Task[]
   randomSeeds  RandomSeed[]
@@ -33,9 +32,8 @@ model Exempt {
   startedAt DateTime
   endedAt   DateTime
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   userId   String
   user     User         @relation(fields: [userId], references: [id])
@@ -47,9 +45,8 @@ model ExemptExcuse {
   id     String @id @default(uuid())
   reason String
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   exempts Exempt[]
 }
@@ -61,9 +58,8 @@ model Mission {
   readinessTime String
   operationTime String
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   organizationId String
   organization   Organization  @relation(fields: [organizationId], references: [id])
@@ -77,9 +73,8 @@ model Role {
   name  String
   color String
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   missionId String
   mission   Mission @relation(fields: [missionId], references: [id])
@@ -89,9 +84,8 @@ model Role {
 model Task {
   id String @id @default(uuid())
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
@@ -102,9 +96,8 @@ model Task {
 model Participant {
   id String @id @default(uuid())
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   userId    String
   user      User    @relation(fields: [userId], references: [id])
@@ -116,9 +109,8 @@ model RandomSeed {
   id     String @id @default(uuid())
   number Int
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   userId    String
   user      User    @relation(fields: [userId], references: [id])
@@ -131,9 +123,8 @@ model Organization {
   name        String
   description String
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   Member  Member[]
   Mission Mission[]
@@ -144,9 +135,8 @@ model Member {
   isLeader   Boolean @default(false)
   isAccepted Boolean @default(false)
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   userId         String
   user           User         @relation(fields: [userId], references: [id])

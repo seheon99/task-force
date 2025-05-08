@@ -26,7 +26,7 @@ import type { Mission } from "@prisma";
 
 export function MissionSection({ id }: { id: Mission["id"] }) {
   const { data: mission, isLoading } = useMission({ id });
-  const { trigger, isMutating } = useMissionMutation();
+  const { trigger, isMutating } = useMissionMutation(id);
 
   const {
     register,
@@ -45,8 +45,7 @@ export function MissionSection({ id }: { id: Mission["id"] }) {
     async ({ title, description, readinessTime, operationTime }) => {
       try {
         invariant(isNotNil(mission), `Not Nil expected but ${mission}`);
-        const updatedMission = await trigger({
-          missionId: mission.id,
+        await trigger({
           title,
           description,
           readinessTime,
@@ -54,7 +53,6 @@ export function MissionSection({ id }: { id: Mission["id"] }) {
         });
         toast.success({
           title: "저장 성공",
-          description: updatedMission.updatedAt.toString(),
         });
       } catch (error) {
         toast.error({

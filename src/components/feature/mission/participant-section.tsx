@@ -22,7 +22,7 @@ import {
   SettingSectionName,
   UsersCombobox,
 } from "@/components/feature";
-import { useMission, useParticipantsMutation } from "@/swr";
+import { useMission, useMissionMutation } from "@/swr";
 
 import type { Mission, User } from "@prisma";
 
@@ -31,7 +31,7 @@ export function ParticipantSection({ id }: { id: Mission["id"] }) {
   const [users, setUsers] = useState<User[]>([]);
 
   const { data: mission } = useMission({ id });
-  const { trigger, isMutating } = useParticipantsMutation({ missionId: id });
+  const { trigger, isMutating } = useMissionMutation(id);
 
   const onUserInvited = useCallback((invitedUser: User) => {
     setUsers((users) => uniqBy([...users, invitedUser], (u) => u.id));
@@ -45,10 +45,11 @@ export function ParticipantSection({ id }: { id: Mission["id"] }) {
   const onButtonClick = useCallback(
     async (users: User[]) => {
       try {
-        const result = await trigger({ userIds: users.map((user) => user.id) });
+        await trigger({
+          participantUserIds: users.map((user) => user.id),
+        });
         toast.success({
           title: "변경 성공",
-          description: result[0].updatedAt.toString(),
         });
       } catch (error) {
         toast.error({

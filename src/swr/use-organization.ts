@@ -2,7 +2,7 @@
 
 import useSWR from "swr";
 
-import { getOrganization } from "@/actions";
+import { getOrganization } from "@/actions/database";
 
 import type { Organization } from "@prisma";
 

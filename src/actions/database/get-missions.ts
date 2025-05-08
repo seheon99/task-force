@@ -3,11 +3,11 @@
 import { Temporal } from "temporal-polyfill";
 
 import { convertToPlainObject } from "@/utilities";
-import { prisma } from "@/utilities/server-only";
+import { createProtection, prisma } from "@/utilities/server-only";
 
 import { User } from "@prisma";
 
-export async function getMissions({ uid }: { uid: User["id"] }) {
+const _getMissions = createProtection(async (user: User) => {
   const today = Temporal.Now.plainDateISO();
   const yesterday = today.subtract({ days: 1 });
   return convertToPlainObject(
@@ -47,10 +47,14 @@ export async function getMissions({ uid }: { uid: User["id"] }) {
       where: {
         participants: {
           some: {
-            userId: uid,
+            userId: user.id,
           },
         },
       },
     }),
   );
+});
+
+export async function getMissions(...args: Parameters<typeof _getMissions>) {
+  return await _getMissions(...args);
 }
