@@ -22,7 +22,7 @@ async function createFetcher(
   { arg }: { arg: { userId: User["id"]; organizationId: Organization["id"] } },
 ) {
   const member = await createMember(arg);
-  mutate(SWR_KEY_ORGANIZATIONS(member.userId));
+  mutate(SWR_KEY_ORGANIZATIONS);
   mutate(SWR_KEY_ORGANIZATION(member.organizationId));
   return member;
 }
@@ -32,7 +32,7 @@ async function deleteFetcher(
   { arg: { id } }: { arg: { id: Member["id"] } },
 ) {
   const member = await deleteMember({ id });
-  mutate(SWR_KEY_ORGANIZATIONS(member.userId));
+  mutate(SWR_KEY_ORGANIZATIONS);
   mutate(SWR_KEY_ORGANIZATION(member.organizationId));
   return member;
 }
