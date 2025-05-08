@@ -4,7 +4,7 @@ import { createProtection, prisma } from "@/utilities/server-only";
 
 import type { Mission, Role, User } from "@prisma";
 
-export const updateMission = createProtection(
+const _updateMission = createProtection(
   async (
     user: User,
     {
@@ -195,3 +195,9 @@ async function createRequiredRoles({
 }
 
 type PartialRole = Pick<Role, "id" | "name" | "color">[];
+
+export async function updateMission(
+  ...args: Parameters<typeof _updateMission>
+) {
+  return await _updateMission(...args);
+}

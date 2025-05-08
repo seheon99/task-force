@@ -4,7 +4,7 @@ import { createProtection, prisma } from "@/utilities/server-only";
 
 import { User } from "@prisma";
 
-export const getOrganizations = createProtection(async (user: User) => {
+const _getOrganizations = createProtection(async (user: User) => {
   return await prisma.organization.findMany({
     include: {
       Member: true,
@@ -24,3 +24,9 @@ export const getOrganizations = createProtection(async (user: User) => {
     },
   });
 });
+
+export async function getOrganizations(
+  ...args: Parameters<typeof _getOrganizations>
+) {
+  return await _getOrganizations(...args);
+}

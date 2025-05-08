@@ -5,7 +5,7 @@ import { createProtection, prisma } from "@/utilities/server-only";
 
 import type { Mission, User } from "@prisma";
 
-export const createRole = createProtection(
+const _createRole = createProtection(
   async (
     user: User,
     {
@@ -24,3 +24,7 @@ export const createRole = createProtection(
     return role;
   },
 );
+
+export async function createRole(...args: Parameters<typeof _createRole>) {
+  return await _createRole(...args);
+}

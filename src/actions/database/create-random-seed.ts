@@ -5,7 +5,7 @@ import { createProtection } from "@/utilities/server-only";
 
 import type { Mission, User } from "@prisma";
 
-export const createRandomSeed = createProtection(
+const _createRandomSeed = createProtection(
   async (
     user: User,
     {
@@ -25,3 +25,9 @@ export const createRandomSeed = createProtection(
     });
   },
 );
+
+export async function createRandomSeed(
+  ...args: Parameters<typeof _createRandomSeed>
+) {
+  return await _createRandomSeed(...args);
+}

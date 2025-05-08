@@ -5,7 +5,7 @@ import { createProtection } from "@/utilities/server-only/protected-action-gener
 
 import type { Member, Organization, User } from "@prisma";
 
-export const createMember = createProtection(
+const _createMember = createProtection(
   (
     user: User,
     {
@@ -27,3 +27,7 @@ export const createMember = createProtection(
     });
   },
 );
+
+export async function createMember(...args: Parameters<typeof _createMember>) {
+  return await _createMember(...args);
+}

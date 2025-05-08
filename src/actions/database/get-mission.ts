@@ -8,7 +8,7 @@ import { createProtection, prisma } from "@/utilities/server-only";
 
 import type { Mission, User } from "@prisma";
 
-export const getMission = createProtection(
+const _getMission = createProtection(
   async (user: User, { id }: { id: Mission["id"] }) => {
     const participants = await prisma.participant.findMany({
       where: { missionId: id },
@@ -58,3 +58,7 @@ export const getMission = createProtection(
     );
   },
 );
+
+export async function getMission(...args: Parameters<typeof _getMission>) {
+  return await _getMission(...args);
+}

@@ -7,7 +7,7 @@ import { createProtection, prisma } from "@/utilities/server-only";
 
 import { User } from "@prisma";
 
-export const getMissions = createProtection(async (user: User) => {
+const _getMissions = createProtection(async (user: User) => {
   const today = Temporal.Now.plainDateISO();
   const yesterday = today.subtract({ days: 1 });
   return convertToPlainObject(
@@ -54,3 +54,7 @@ export const getMissions = createProtection(async (user: User) => {
     }),
   );
 });
+
+export async function getMissions(...args: Parameters<typeof _getMissions>) {
+  return await _getMissions(...args);
+}

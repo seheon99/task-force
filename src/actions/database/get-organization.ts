@@ -4,7 +4,7 @@ import { createProtection, prisma } from "@/utilities/server-only";
 
 import type { Organization, User } from "@prisma";
 
-export const getOrganization = createProtection(
+const _getOrganization = createProtection(
   async (user: User, { id }: { id: Organization["id"] }) => {
     return await prisma.organization.findUnique({
       where: { id },
@@ -16,3 +16,9 @@ export const getOrganization = createProtection(
     });
   },
 );
+
+export async function getOrganization(
+  ...args: Parameters<typeof _getOrganization>
+) {
+  return await _getOrganization(...args);
+}

@@ -5,7 +5,7 @@ import { createProtection } from "@/utilities/server-only";
 
 import type { Organization, User } from "@prisma";
 
-export const createOrganization = createProtection(
+const _createOrganization = createProtection(
   (
     user: User,
     {
@@ -24,3 +24,9 @@ export const createOrganization = createProtection(
     });
   },
 );
+
+export async function createOrganization(
+  ...args: Parameters<typeof _createOrganization>
+) {
+  return await _createOrganization(...args);
+}
