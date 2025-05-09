@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/utilities/server-only";
-import { createProtection } from "@/utilities/server-only/protected-action-generator";
+import { createProtection } from "@/utilities/server-only";
 
 import type { Member, Organization, User } from "@prisma";
 

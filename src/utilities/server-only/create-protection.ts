@@ -12,7 +12,6 @@ export function createProtection<Args extends unknown[], R>(
     if (!user) {
       throw new Error("Unauthorized");
     }
-
     return await fn(user, ...args);
   };
 }
