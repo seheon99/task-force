@@ -1,3 +1,4 @@
+export * from "./create-device";
 export * from "./create-member";
 export * from "./create-mission";
 export * from "./create-organization";
@@ -7,7 +8,9 @@ export * from "./create-role";
 export * from "./create-user";
 
 export * from "./delete-member";
+export * from "./delete-device";
 
+export * from "./get-devices";
 export * from "./get-member";
 export * from "./get-mission";
 export * from "./get-missions";

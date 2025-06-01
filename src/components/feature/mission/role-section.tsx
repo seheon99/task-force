@@ -13,6 +13,7 @@ import {
   Legend,
   Loading,
   Text,
+  badgeColors,
   toast,
 } from "@/components/base";
 import { ColorPicker } from "@/components/feature";
@@ -27,7 +28,7 @@ import type { Mission } from "@prisma";
 
 type PartialRole = Pick<
   NonNullable<ReturnType<typeof useMission>["data"]>["roles"][0],
-  "id" | "name" | "color" | "badgeColor"
+  "id" | "name" | "color"
 >;
 
 export function RoleSection({ id }: { id: Mission["id"] }) {
@@ -35,8 +36,7 @@ export function RoleSection({ id }: { id: Mission["id"] }) {
   const { data: mission } = useMission({ id });
 
   const [roles, setRoles] = useState<PartialRole[]>([]);
-  const [color, setColor] =
-    useState<NonNullable<typeof mission>["roles"][0]["badgeColor"]>("zinc");
+  const [color, setColor] = useState<keyof typeof badgeColors>("zinc");
   const [name, setName] = useState("");
 
   const onRulePush = useCallback(() => {
@@ -46,7 +46,6 @@ export function RoleSection({ id }: { id: Mission["id"] }) {
         id: now().toString(),
         name,
         color,
-        badgeColor: color,
       },
     ]);
     setName("");
@@ -129,7 +128,7 @@ export function RoleSection({ id }: { id: Mission["id"] }) {
               roles.map((role) => (
                 <BadgeButton
                   key={role.id}
-                  color={role.badgeColor}
+                  color={role.color as keyof typeof badgeColors}
                   onClick={() => onRulePop(role.id)}
                 >
                   {role.name}

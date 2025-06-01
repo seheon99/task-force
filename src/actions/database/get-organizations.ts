@@ -7,16 +7,16 @@ import { User } from "@prisma";
 const _getOrganizations = createProtection(async (user: User) => {
   return await prisma.organization.findMany({
     include: {
-      Member: true,
+      members: true,
       _count: {
         select: {
-          Member: true,
-          Mission: true,
+          members: true,
+          missions: true,
         },
       },
     },
     where: {
-      Member: {
+      members: {
         some: {
           userId: user.id,
         },

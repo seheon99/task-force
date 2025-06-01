@@ -20,11 +20,22 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  devices      Device[]
   tasks        Task[]
   randomSeeds  RandomSeed[]
   exempts      Exempt[]
   participants Participant[]
-  Member       Member[]
+  members      Member[]
+}
+
+model Device {
+  id       String @id @default(uuid())
+  endpoint String
+  auth     String
+  p256dh   String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
 }
 
 model Exempt {
@@ -65,7 +76,7 @@ model Mission {
   organization   Organization  @relation(fields: [organizationId], references: [id])
   roles          Role[]
   participants   Participant[]
-  RandomSeed     RandomSeed[]
+  randomSeeds    RandomSeed[]
 }
 
 model Role {
@@ -126,8 +137,8 @@ model Organization {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Member  Member[]
-  Mission Mission[]
+  members  Member[]
+  missions Mission[]
 }
 
 model Member {

@@ -68,14 +68,14 @@ export function OrganizationsSettings() {
                   href={`/settings/organizations/${org.id}`}
                 >
                   <TableCell>{org.name}</TableCell>
-                  <TableCell>{org._count.Member}명 활동 중</TableCell>
+                  <TableCell>{org._count.members}명 활동 중</TableCell>
                   <TableCell className="hidden sm:table-cell">
-                    {org._count.Mission}개 미션 진행 중
+                    {org._count.missions}개 미션 진행 중
                   </TableCell>
                   <TableCell>
                     <LeaveOrganizationButton
                       memberId={
-                        org.Member.find((m) => m.userId === user.id)!.id
+                        org.members.find((m) => m.userId === user.id)!.id
                       }
                       organization={org}
                     />
