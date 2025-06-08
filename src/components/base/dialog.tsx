@@ -1,5 +1,6 @@
 import * as Headless from "@headlessui/react";
-import clsx from "clsx";
+
+import { twcn } from "@/utilities";
 
 import type React from "react";
 
@@ -38,7 +39,7 @@ export function Dialog({
         <div className="grid min-h-full grid-rows-[1fr_auto] justify-items-center sm:grid-rows-[1fr_auto_3fr] sm:p-4">
           <Headless.DialogPanel
             transition
-            className={clsx(
+            className={twcn(
               className,
               sizes[size],
               "row-start-2 w-full min-w-0 rounded-t-3xl bg-white p-(--gutter) shadow-lg ring-1 ring-zinc-950/10 [--gutter:--spacing(8)] sm:mb-auto sm:rounded-2xl dark:bg-zinc-900 dark:ring-white/10 forced-colors:outline",
@@ -63,7 +64,7 @@ export function DialogTitle({
   return (
     <Headless.DialogTitle
       {...props}
-      className={clsx(
+      className={twcn(
         className,
         "text-lg/6 font-semibold text-balance text-zinc-950 sm:text-base/6 dark:text-white",
       )}
@@ -82,7 +83,7 @@ export function DialogDescription({
     <Headless.Description
       as={Text}
       {...props}
-      className={clsx(className, "mt-2 text-pretty")}
+      className={twcn(className, "mt-2 text-pretty")}
     />
   );
 }
@@ -91,7 +92,7 @@ export function DialogBody({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  return <div {...props} className={clsx(className, "mt-6")} />;
+  return <div {...props} className={twcn(className, "mt-6")} />;
 }
 
 export function DialogActions({
@@ -101,7 +102,7 @@ export function DialogActions({
   return (
     <div
       {...props}
-      className={clsx(
+      className={twcn(
         className,
         "mt-8 flex flex-col-reverse items-center justify-end gap-3 *:w-full sm:flex-row sm:*:w-auto",
       )}

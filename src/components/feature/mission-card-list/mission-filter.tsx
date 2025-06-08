@@ -1,10 +1,10 @@
 "use client";
 
-import clsx from "clsx";
 
 import { Badge } from "@/components/base";
 import { useMissionFilterStore } from "@/stores";
 import { useOrganizations } from "@/swr";
+import { twcn } from "@/utilities";
 
 export function MissionFilter() {
   const { data: organizations } = useOrganizations();
@@ -16,7 +16,7 @@ export function MissionFilter() {
     <div className="flex gap-1 overflow-x-auto">
       {organizations?.map((organization) => (
         <Badge
-          className={clsx(
+          className={twcn(
             "shrink-0 transition-opacity",
             selectedOrganizationId === null && "opacity-100",
             selectedOrganizationId === organization.id

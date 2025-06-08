@@ -1,7 +1,8 @@
 "use client";
 
-import clsx from "clsx";
 import { createContext, useContext, useState } from "react";
+
+import { twcn } from "@/utilities";
 
 import type React from "react";
 
@@ -44,13 +45,13 @@ export function Table({
       <div className="flow-root">
         <div
           {...props}
-          className={clsx(
+          className={twcn(
             className,
             "-mx-(--gutter) overflow-x-auto whitespace-nowrap",
           )}
         >
           <div
-            className={clsx(
+            className={twcn(
               "inline-block min-w-full align-middle",
               !bleed && "sm:px-(--gutter)",
             )}
@@ -72,7 +73,7 @@ export function TableHead({
   return (
     <thead
       {...props}
-      className={clsx(className, "text-zinc-500 dark:text-zinc-400")}
+      className={twcn(className, "text-zinc-500 dark:text-zinc-400")}
     />
   );
 }
@@ -112,7 +113,7 @@ export function TableRow({
     >
       <tr
         {...props}
-        className={clsx(
+        className={twcn(
           className,
           href &&
             "has-[[data-row-link][data-focus]]:outline-2 has-[[data-row-link][data-focus]]:-outline-offset-2 has-[[data-row-link][data-focus]]:outline-blue-500 dark:focus-within:bg-white/[2.5%]",
@@ -136,7 +137,7 @@ export function TableHeader({
   return (
     <th
       {...props}
-      className={clsx(
+      className={twcn(
         className,
         "border-b border-b-zinc-950/10 px-4 py-2 font-medium first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2)) dark:border-b-white/10",
         grid &&
@@ -160,7 +161,7 @@ export function TableCell({
     <td
       ref={href ? setCellRef : undefined}
       {...props}
-      className={clsx(
+      className={twcn(
         className,
         "relative px-4 first:pl-(--gutter,--spacing(2)) last:pr-(--gutter,--spacing(2))",
         !striped && "border-b border-zinc-950/5 dark:border-white/5",

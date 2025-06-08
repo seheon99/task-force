@@ -1,6 +1,7 @@
 import * as Headless from "@headlessui/react";
-import clsx from "clsx";
 import React, { forwardRef } from "react";
+
+import { twcn } from "@/utilities";
 
 export function InputGroup({
   children,
@@ -8,7 +9,7 @@ export function InputGroup({
   return (
     <span
       data-slot="control"
-      className={clsx(
+      className={twcn(
         "relative isolate block",
         "has-[[data-slot=icon]:first-child]:[&_input]:pl-10 has-[[data-slot=icon]:last-child]:[&_input]:pr-10 sm:has-[[data-slot=icon]:first-child]:[&_input]:pl-8 sm:has-[[data-slot=icon]:last-child]:[&_input]:pr-8",
         "*:data-[slot=icon]:pointer-events-none *:data-[slot=icon]:absolute *:data-[slot=icon]:top-3 *:data-[slot=icon]:z-10 *:data-[slot=icon]:size-5 sm:*:data-[slot=icon]:top-2.5 sm:*:data-[slot=icon]:size-4",
@@ -45,7 +46,7 @@ export const Input = forwardRef(function Input(
   return (
     <span
       data-slot="control"
-      className={clsx([
+      className={twcn([
         className,
         // Basic layout
         "relative block w-full",
@@ -64,7 +65,7 @@ export const Input = forwardRef(function Input(
       <Headless.Input
         ref={ref}
         {...props}
-        className={clsx([
+        className={twcn([
           // Date classes
           props.type &&
             dateTypes.includes(props.type) && [

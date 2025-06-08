@@ -1,5 +1,6 @@
 import * as Headless from "@headlessui/react";
-import clsx from "clsx";
+
+import { twcn } from "@/utilities";
 
 import type React from "react";
 
@@ -11,7 +12,7 @@ export function CheckboxGroup({
     <div
       data-slot="control"
       {...props}
-      className={clsx(
+      className={twcn(
         className,
         // Basic groups
         "space-y-3",
@@ -30,7 +31,7 @@ export function CheckboxField({
     <Headless.Field
       data-slot="field"
       {...props}
-      className={clsx(
+      className={twcn(
         className,
         // Base layout
         "grid grid-cols-[1.125rem_1fr] gap-x-4 gap-y-1 sm:grid-cols-[1rem_1fr]",
@@ -130,9 +131,9 @@ export function Checkbox({
     <Headless.Checkbox
       data-slot="control"
       {...props}
-      className={clsx(className, "group inline-flex focus:outline-hidden")}
+      className={twcn(className, "group inline-flex focus:outline-hidden")}
     >
-      <span className={clsx([base, colors[color]])}>
+      <span className={twcn([base, colors[color]])}>
         <svg
           className="size-4 stroke-(--checkbox-check) opacity-0 group-data-checked:opacity-100 sm:h-3.5 sm:w-3.5"
           viewBox="0 0 14 14"
