@@ -1,7 +1,13 @@
 "use server";
 
-import { prisma } from "@/utilities/server-only";
+import { createProtection, prisma } from "@/utilities/server-only";
 
-export async function deleteDevice({ id }: { id: string }) {
-  return await prisma.device.delete({ where: { id } });
+import { User } from "@prisma";
+
+const _deleteDevice = createProtection(async (user: User) => {
+  return await prisma.device.deleteMany({ where: { userId: user.id } });
+});
+
+export async function deleteDevice(...args: Parameters<typeof _deleteDevice>) {
+  return await _deleteDevice(...args);
 }
