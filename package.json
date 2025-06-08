@@ -27,7 +27,10 @@
     "sonner": "^2.0.3",
     "superjson": "^2.2.2",
     "swr": "^2.3.3",
+    "tailwind-merge": "^3.3.0",
     "temporal-polyfill": "^0.3.0",
+    "web-push": "^3.6.7",
+    "winston": "^3.17.0",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
@@ -36,6 +39,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/web-push": "^3.6.4",
     "eslint": "^9.26.0",
     "eslint-config-next": "15.3.2",
     "eslint-config-prettier": "^10.1.1",

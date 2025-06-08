@@ -1,9 +1,9 @@
 "use client";
 
-import clsx from "clsx";
 import { useState } from "react";
 
 import { Button } from "@/components/base";
+import { twcn } from "@/utilities";
 
 import type { Mission } from "@prisma";
 
@@ -21,7 +21,7 @@ export function RandomSeedButton({
   return (
     <>
       <Button
-        className={clsx(className)}
+        className={twcn(className)}
         onClick={() => setIsOpen((isOpen) => !isOpen)}
         {...props}
       >

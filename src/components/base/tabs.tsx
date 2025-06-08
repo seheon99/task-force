@@ -1,22 +1,27 @@
-import clsx from "clsx";
 import Link from "next/link";
 
+import { twcn } from "@/utilities";
+
 export function Tab({
+  className,
   href,
   current,
   children,
 }: {
+  className?: string;
   href: string;
   current?: boolean;
   children: React.ReactNode;
 }) {
   return (
     <li
-      className={clsx(
+      className={twcn(
         current
           ? "text-zinc-700 not-dark:bg-zinc-100 dark:text-zinc-100"
           : "text-zinc-500 hover:text-zinc-700",
         "rounded-md px-3 py-2 text-sm font-medium",
+        "**:data-[slot=icon]:size-5",
+        className,
       )}
     >
       <Link href={href} aria-current={current}>
@@ -35,7 +40,7 @@ export function Tabs({
     <nav
       {...props}
       aria-label="Tabs"
-      className={clsx(className, "flex overflow-x-auto py-4")}
+      className={twcn(className, "flex overflow-x-auto py-4")}
     >
       <ul
         role="list"

@@ -1,6 +1,6 @@
-import clsx from "clsx";
-
 import { FieldGroup, Fieldset } from "@/components/base";
+import { twcn } from "@/utilities";
+
 
 import type { ComponentPropsWithoutRef } from "react";
 
@@ -10,7 +10,7 @@ export function SettingSection({
 }: { className?: string } & ComponentPropsWithoutRef<typeof Fieldset>) {
   return (
     <Fieldset
-      className={clsx(
+      className={twcn(
         className,
         "grid grid-cols-1 gap-x-6 gap-y-4 md:grid-cols-3 md:gap-y-10",
       )}
@@ -31,7 +31,7 @@ export function SettingFieldGroup({
 }: { className?: string } & ComponentPropsWithoutRef<typeof FieldGroup>) {
   return (
     <FieldGroup
-      className={clsx(
+      className={twcn(
         className,
         "mt-0! grid grid-cols-1 gap-x-6 sm:max-w-xl sm:grid-cols-6 md:col-span-2",
       )}

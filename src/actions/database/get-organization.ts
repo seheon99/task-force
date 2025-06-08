@@ -9,7 +9,7 @@ const _getOrganization = createProtection(
     return await prisma.organization.findUnique({
       where: { id },
       include: {
-        Member: {
+        members: {
           include: { user: true },
         },
       },

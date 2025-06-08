@@ -14,7 +14,7 @@ import {
   StackedLayout,
   Strong,
 } from "@/components/base";
-import { UserDropdown } from "@/components/feature";
+import { ServiceWorkerRegister, UserDropdown } from "@/components/feature";
 
 const navItems = [
   { label: "홈", url: "/" },
@@ -66,6 +66,7 @@ export default function RootLayout({
         </Sidebar>
       }
     >
+      <ServiceWorkerRegister />
       {children}
     </StackedLayout>
   );

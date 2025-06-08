@@ -222,7 +222,7 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {organization?.Member.map((member) => (
+                  {organization?.members.map((member) => (
                     <TableRow key={member.user.id}>
                       <TableCell>{member.user.unit}</TableCell>
                       <TableCell>{member.user.rank}</TableCell>

@@ -1,7 +1,7 @@
-import clsx from "clsx";
 import { useState } from "react";
 
 import { Button } from "@/components/base";
+import { twcn } from "@/utilities";
 
 import { NewTeamDialog } from "./new-team-dialog";
 
@@ -15,7 +15,7 @@ export function NewTeamButton({
   return (
     <>
       <Button
-        className={clsx(className)}
+        className={twcn(className)}
         {...props}
         onClick={() => setIsOpen(true)}
       >

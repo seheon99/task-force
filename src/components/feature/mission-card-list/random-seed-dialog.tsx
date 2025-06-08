@@ -1,6 +1,5 @@
 "use client";
 
-import clsx from "clsx";
 import { useCallback, useRef, useState } from "react";
 
 import {
@@ -12,6 +11,7 @@ import {
   toast,
 } from "@/components/base";
 import { useRandomSeedCreation } from "@/swr";
+import { twcn } from "@/utilities";
 
 import type { Mission } from "@prisma";
 
@@ -59,7 +59,7 @@ export function RandomSeedDialog({
           {[...Array(2)].map((_, i) => (
             <div
               key={i}
-              className={clsx(
+              className={twcn(
                 "h-[1.2em] w-[1em] rounded-md p-1 text-center font-mono text-6xl shadow",
                 "bg-transparent dark:bg-white/5",
                 "border border-zinc-950/10 dark:border-white/10",

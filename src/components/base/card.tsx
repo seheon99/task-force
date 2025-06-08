@@ -1,6 +1,7 @@
-import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
+
+import { twcn } from "@/utilities";
 
 export function Card({
   className,
@@ -13,7 +14,7 @@ export function Card({
 } & React.ComponentPropsWithoutRef<"div">) {
   return (
     <div
-      className={clsx(
+      className={twcn(
         className,
         "divide-y overflow-hidden rounded-lg",
         "divide-zinc-200 bg-white shadow-sm",
@@ -34,7 +35,7 @@ export function CardHeader({
 }: { children: React.ReactNode } & React.ComponentPropsWithoutRef<"div">) {
   return (
     <div
-      className={clsx(
+      className={twcn(
         className,
         "flex flex-wrap items-center justify-between px-4 py-5 sm:flex-nowrap sm:px-6",
       )}
@@ -52,7 +53,7 @@ export function CardHeading({
 }: { children: React.ReactNode } & React.ComponentPropsWithoutRef<"h3">) {
   return (
     <h3
-      className={clsx(
+      className={twcn(
         className,
         "text-base font-semibold text-gray-900 dark:text-gray-100",
       )}
@@ -71,7 +72,7 @@ export function CardBody({
   children: React.ReactNode;
 } & React.ComponentPropsWithoutRef<"div">) {
   return (
-    <div className={clsx(className, "px-4 py-5 sm:p-6")} {...props}>
+    <div className={twcn(className, "px-4 py-5 sm:p-6")} {...props}>
       {children}
     </div>
   );
@@ -86,7 +87,7 @@ export function CardFooter({
   children: React.ReactNode;
 } & React.ComponentPropsWithoutRef<"div">) {
   return (
-    <div className={clsx(className, "px-4 py-4 sm:px-6")} {...props}>
+    <div className={twcn(className, "px-4 py-4 sm:px-6")} {...props}>
       {children}
     </div>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { Cog6ToothIcon } from "@heroicons/react/16/solid";
 import { usePathname } from "next/navigation";
 
 import { Divider, Tab, Tabs } from "@/components/base";
@@ -33,6 +34,9 @@ export default function SettingsLayout({
             {tab.label}
           </Tab>
         ))}
+        <Tab className="ml-auto" href="/settings/preferences">
+          <Cog6ToothIcon />
+        </Tab>
       </Tabs>
       <Divider className="mb-8" />
       {children}

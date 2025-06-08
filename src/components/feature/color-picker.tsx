@@ -2,7 +2,8 @@
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { CheckIcon, PaintBrushIcon } from "@heroicons/react/16/solid";
-import clsx from "clsx";
+
+import { twcn } from "@/utilities";
 
 export const colors = {
   red: "bg-red-500/15 text-red-700 group-data-hover:bg-red-500/25 dark:bg-red-500/10 dark:text-red-400 dark:group-data-hover:bg-red-500/20",
@@ -48,7 +49,7 @@ export function ColorPicker({
   return (
     <Menu>
       <MenuButton
-        className={clsx(
+        className={twcn(
           className,
           colors[value],
           "size-11 shrink-0 rounded-lg p-3 sm:size-9 sm:p-2",
@@ -86,7 +87,7 @@ function ColorBlock({
     <div
       data-focus={selected || undefined}
       data-selected={selected || undefined}
-      className={clsx(colors[color], "size-12 rounded-lg data-focus:ring-2")}
+      className={twcn(colors[color], "size-12 rounded-lg data-focus:ring-2")}
       {...props}
     >
       {selected && <CheckIcon />}

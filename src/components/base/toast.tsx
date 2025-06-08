@@ -6,10 +6,11 @@ import {
   InformationCircleIcon,
   XCircleIcon,
 } from "@heroicons/react/16/solid";
-import clsx from "clsx";
 import { isPlainObject, isPrimitive, isSymbol } from "es-toolkit";
 import React from "react";
 import { toast as sonnerToast } from "sonner";
+
+import { twcn } from "@/utilities";
 
 interface ToastProps {
   id: string | number;
@@ -39,7 +40,7 @@ function Toast({ id, title, description, level }: ToastProps) {
   return (
     <div
       id={id.toString()}
-      className={clsx(
+      className={twcn(
         "rounded-md p-4",
         level === "info" && "bg-blue-50",
         level === "warn" && "bg-yellow-50",
@@ -73,7 +74,7 @@ function Toast({ id, title, description, level }: ToastProps) {
         </div>
         <div className="ml-3">
           <h3
-            className={clsx(
+            className={twcn(
               "text-sm font-medium",
               level === "info" && "text-blue-800",
               level === "warn" && "text-yellow-800",
@@ -84,7 +85,7 @@ function Toast({ id, title, description, level }: ToastProps) {
             {title}
           </h3>
           <div
-            className={clsx(
+            className={twcn(
               "mt-2 text-sm",
               level === "info" && "text-blue-700",
               level === "warn" && "text-yellow-700",

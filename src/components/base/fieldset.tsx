@@ -1,5 +1,6 @@
 import * as Headless from "@headlessui/react";
-import clsx from "clsx";
+
+import { twcn } from "@/utilities";
 
 import type React from "react";
 
@@ -10,7 +11,7 @@ export function Fieldset({
   return (
     <Headless.Fieldset
       {...props}
-      className={clsx(
+      className={twcn(
         className,
         "*:data-[slot=text]:mt-1 [&>*+[data-slot=control]]:mt-6",
       )}
@@ -26,7 +27,7 @@ export function Legend({
     <Headless.Legend
       data-slot="legend"
       {...props}
-      className={clsx(
+      className={twcn(
         className,
         "text-base/6 font-semibold text-zinc-950 data-disabled:opacity-50 sm:text-sm/6 dark:text-white",
       )}
@@ -42,7 +43,7 @@ export function FieldGroup({
     <div
       data-slot="control"
       {...props}
-      className={clsx(className, "space-y-8")}
+      className={twcn(className, "space-y-8")}
     />
   );
 }
@@ -54,7 +55,7 @@ export function Field({
   return (
     <Headless.Field
       {...props}
-      className={clsx(
+      className={twcn(
         className,
         "[&>[data-slot=label]+[data-slot=control]]:mt-3",
         "[&>[data-slot=label]+[data-slot=description]]:mt-1",
@@ -75,7 +76,7 @@ export function Label({
     <Headless.Label
       data-slot="label"
       {...props}
-      className={clsx(
+      className={twcn(
         className,
         "text-base/6 text-zinc-950 select-none data-disabled:opacity-50 sm:text-sm/6 dark:text-white",
       )}
@@ -94,7 +95,7 @@ export function Description({
     <Headless.Description
       data-slot="description"
       {...props}
-      className={clsx(
+      className={twcn(
         className,
         "text-base/6 text-zinc-500 data-disabled:opacity-50 sm:text-sm/6 dark:text-zinc-400",
       )}
@@ -113,7 +114,7 @@ export function ErrorMessage({
     <Headless.Description
       data-slot="error"
       {...props}
-      className={clsx(
+      className={twcn(
         className,
         "text-base/6 text-red-600 data-disabled:opacity-50 sm:text-sm/6 dark:text-red-500",
       )}
