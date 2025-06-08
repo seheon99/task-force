@@ -4,6 +4,7 @@ import {
   ArrowRightStartOnRectangleIcon,
   CalendarIcon,
   ChevronDownIcon,
+  Cog6ToothIcon,
   UserGroupIcon,
   UserIcon,
 } from "@heroicons/react/16/solid";
@@ -51,6 +52,11 @@ export function UserDropdown() {
         <DropdownItem href="/settings/exempts">
           <CalendarIcon />
           <DropdownLabel>열외 관리</DropdownLabel>
+        </DropdownItem>
+        <DropdownDivider />
+        <DropdownItem href="/settings/preferences">
+          <Cog6ToothIcon />
+          <DropdownLabel>환경 설정</DropdownLabel>
         </DropdownItem>
         <DropdownDivider />
         <DropdownItem href="/sign-out">
