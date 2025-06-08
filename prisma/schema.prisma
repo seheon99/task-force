@@ -29,11 +29,10 @@ model User {
 }
 
 model Device {
-  id        String   @id @default(uuid())
-  endpoint  String
-  auth      String
-  p256dh    String
-  expiredAt DateTime
+  id       String @id @default(uuid())
+  endpoint String
+  auth     String
+  p256dh   String
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
