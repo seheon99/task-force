@@ -1,5 +1,7 @@
 import "client-only";
 
+import { environments } from "./environments";
+
 export const vapidKeys = {
-  publicKey: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+  publicKey: environments.VAPID_PUBLIC_KEY,
 };

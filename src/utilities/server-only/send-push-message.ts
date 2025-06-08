@@ -5,12 +5,13 @@ import * as webPush from "web-push";
 
 import { deleteDevice, getDevices } from "@/actions/database";
 
+import { environments } from "./environments";
 import { logAction, logError } from "./logger";
 
 const vapidKeys = {
-  subject: process.env.VAPID_SUBJECT!,
-  publicKey: process.env.VAPID_PUBLIC_KEY!,
-  privateKey: process.env.VAPID_PRIVATE_KEY!,
+  subject: environments.VAPID_SUBJECT!,
+  publicKey: environments.VAPID_PUBLIC_KEY!,
+  privateKey: environments.VAPID_PRIVATE_KEY!,
 };
 
 webPush.setVapidDetails(
