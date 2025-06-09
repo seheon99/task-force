@@ -65,7 +65,7 @@ export function MissionCard({
             {mission?.participants.map(({ user: p }) => {
               return (
                 <TableRow key={p.id}>
-                  <TableCell>{p.nickname}</TableCell>
+                  <TableCell>{p.username}</TableCell>
                   <TableCell className="flex items-center justify-between">
                     {p.exempts.length ? (
                       <Badge color="zinc">{p.exempts[0].excuse.reason}</Badge>

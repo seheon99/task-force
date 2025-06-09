@@ -112,9 +112,7 @@ export function ParticipantSection({ id }: { id: Mission["id"] }) {
               <TableBody>
                 {users.map((user) => (
                   <TableRow key={user.id}>
-                    <TableCell>{user.unit}</TableCell>
-                    <TableCell>{user.rank}</TableCell>
-                    <TableCell>{user.nickname}</TableCell>
+                    <TableCell>{user.username}</TableCell>
                     <TableCell>
                       <Button plain className="-mx-3 -my-1.5 sm:-mx-2.5">
                         <XMarkIcon onClick={() => onUserEjected(user)} />

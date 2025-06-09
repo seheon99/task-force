@@ -1,7 +1,7 @@
 "use client";
 
 import { FirebaseError } from "firebase/app";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -10,7 +10,6 @@ import useSWRMutation from "swr/mutation";
 import { createUser } from "@/actions/database";
 import {
   Button,
-  Description,
   ErrorMessage,
   Field,
   Heading,
@@ -29,7 +28,7 @@ import type { SubmitHandler } from "react-hook-form";
 async function signUp(
   url: string,
   {
-    arg: { unit, username, nickname, password, birthday, enlistedAt },
+    arg: { username, password },
   }: {
     arg: Inputs;
   },
@@ -39,16 +38,9 @@ async function signUp(
     `${username}@${emailDomain}`,
     password,
   );
-  await updateProfile(firebaseUser, {
-    displayName: nickname,
-  });
   const user = await createUser({
     id: firebaseUser.uid,
-    unit,
     username,
-    nickname,
-    birthday: new Date(birthday),
-    enlistedAt: new Date(enlistedAt),
   });
   return user;
 }
@@ -76,7 +68,7 @@ export default function SignUpPage() {
         const user = await trigger(props);
         toast.success({
           title: "회원가입 성공",
-          description: `${user.nickname}님 환영합니다`,
+          description: `${user.username}님 환영합니다`,
         });
         router.push("/");
       } catch (error) {
@@ -103,43 +95,14 @@ export default function SignUpPage() {
     >
       <Heading>회원가입</Heading>
       <Field>
-        <Label>아이디</Label>
-        <Input
-          type="text"
-          invalid={!!errors.username}
-          {...register("username", { required: "아이디를 입력해주세요" })}
-        />
-        {errors.username && (
-          <ErrorMessage>{errors.username.message}</ErrorMessage>
-        )}
-      </Field>
-      <Field>
-        <Label>소속</Label>
-        <Description>
-          고유한 부대명부터 작성해주세요.
-          <br />
-          <span className="mr-2 text-red-500">&ldquo;본부중대&rdquo; (X)</span>
-          <span className="text-bold">
-            &ldquo;101정보통신단 본부중대&rdquo;
-          </span>
-          (O)
-        </Description>
-        <Input
-          type="text"
-          invalid={!!errors.unit}
-          {...register("unit", { required: "소속을 입력해주세요" })}
-        />
-        {errors.unit && <ErrorMessage>{errors.unit.message}</ErrorMessage>}
-      </Field>
-      <Field>
         <Label>이름</Label>
         <Input
           type="text"
-          invalid={!!errors.nickname}
-          {...register("nickname", { required: "이름을 입력해주세요" })}
+          invalid={!!errors.username}
+          {...register("username", { required: "이름을 입력해주세요" })}
         />
-        {errors.nickname && (
-          <ErrorMessage>{errors.nickname.message}</ErrorMessage>
+        {errors.username && (
+          <ErrorMessage>{errors.username.message}</ErrorMessage>
         )}
       </Field>
       <Field>
@@ -171,28 +134,6 @@ export default function SignUpPage() {
           <ErrorMessage>{errors.passwordConfirm.message}</ErrorMessage>
         )}
       </Field>
-      <Field>
-        <Label>생일</Label>
-        <Input
-          type="date"
-          invalid={!!errors.birthday}
-          {...register("birthday", { required: "생일을 입력해주세요" })}
-        />
-        {errors.birthday && (
-          <ErrorMessage>{errors.birthday.message}</ErrorMessage>
-        )}
-      </Field>
-      <Field>
-        <Label>입대일</Label>
-        <Input
-          type="date"
-          invalid={!!errors.enlistedAt}
-          {...register("enlistedAt", { required: "입대일을 선택해주세요" })}
-        />
-        {errors.enlistedAt && (
-          <ErrorMessage>{errors.enlistedAt.message}</ErrorMessage>
-        )}
-      </Field>
       <Button type="submit" className="w-full" disabled={isLoading}>
         회원가입
       </Button>
@@ -209,9 +150,6 @@ export default function SignUpPage() {
 type Inputs = {
   unit: string;
   username: string;
-  nickname: string;
   password: string;
   passwordConfirm: string;
-  birthday: string;
-  enlistedAt: string;
 };

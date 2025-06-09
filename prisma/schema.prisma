@@ -9,13 +9,8 @@ datasource db {
 }
 
 model User {
-  id         String   @id @default(uuid())
-  username   String
-  nickname   String
-  unit       String
-  rank       String
-  birthday   DateTime
-  enlistedAt DateTime
+  id       String @id @default(uuid())
+  username String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
