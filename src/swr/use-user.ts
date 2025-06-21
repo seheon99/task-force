@@ -1,20 +1,17 @@
 "use client";
 
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 
 import { getUser } from "@/actions/database";
-import { firebaseApp, firebaseAuth } from "@/utilities/client-only";
-
-onAuthStateChanged(firebaseAuth, () => mutate(SWR_KEY_ME));
+import { verifySession } from "@/utilities/client-only";
 
 async function fetchUser() {
-  const firebaseUser = getAuth(firebaseApp).currentUser;
-  if (!firebaseUser) {
+  const id = verifySession();
+  if (!id) {
     return null;
   }
 
-  const user = await getUser({ id: firebaseUser.uid });
+  const user = await getUser({ id });
   return user;
 }
 
