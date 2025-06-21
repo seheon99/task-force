@@ -10,7 +10,6 @@ import {
 } from "@heroicons/react/16/solid";
 
 import {
-  Button,
   Dropdown,
   DropdownButton,
   DropdownDivider,
@@ -19,27 +18,21 @@ import {
   DropdownMenu,
   NavbarItem,
 } from "@/components/base";
-import { useUser } from "@/swr/use-user";
+import { useUser } from "@/swr";
 
 export function UserDropdown() {
   const { data: user, isLoading } = useUser();
 
   return (
     <Dropdown>
-      {user ? (
-        <DropdownButton
-          as={NavbarItem}
-          disabled={isLoading}
-          className="flex h-8 w-24 items-center justify-end"
-        >
-          {user.username}
-          <ChevronDownIcon />
-        </DropdownButton>
-      ) : (
-        <Button plain href="/sign-in">
-          로그인
-        </Button>
-      )}
+      <DropdownButton
+        as={NavbarItem}
+        disabled={isLoading}
+        className="flex h-8 w-24 items-center justify-end"
+      >
+        {user?.username}
+        <ChevronDownIcon />
+      </DropdownButton>
       <DropdownMenu className="min-w-64" anchor="bottom end">
         <DropdownItem href="/settings/profile">
           <UserIcon />
