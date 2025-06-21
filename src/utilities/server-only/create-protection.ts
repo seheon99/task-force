@@ -1,5 +1,7 @@
 import "server-only";
 
+import { notFound } from "next/navigation";
+
 import { verifySession } from "@/utilities/server-only";
 
 import { User } from "@prisma";
@@ -10,7 +12,7 @@ export function createProtection<Args extends unknown[], R>(
   return async (...args: Args): Promise<R> => {
     const user = await verifySession();
     if (!user) {
-      throw new Error("Unauthorized");
+      return notFound();
     }
     return await fn(user, ...args);
   };
