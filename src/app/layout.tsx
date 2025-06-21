@@ -1,6 +1,6 @@
 import { Toaster } from "sonner";
 
-import { ServiceWorkerRegister } from "@/components/feature";
+import { ServiceWorkerRegister, SessionRegister } from "@/components/feature";
 
 import type { Metadata } from "next";
 
@@ -21,6 +21,7 @@ export default function RootLayout({
       <body className="w-screen overflow-x-hidden">
         {children}
         <ServiceWorkerRegister />
+        <SessionRegister />
         <Toaster />
       </body>
     </html>
