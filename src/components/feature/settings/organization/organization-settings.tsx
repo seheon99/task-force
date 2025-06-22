@@ -115,7 +115,7 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
           await deleteMember({ id: member.id });
           toast.success({
             title: "내보내기 성공",
-            description: `${member.user.nickname}은 더이상 ${organization?.name}의 멤버가 아닙니다.`,
+            description: `${member.user.username}은 더이상 ${organization?.name}의 멤버가 아닙니다.`,
           });
           setDeletionMember(null);
         } catch (error) {
@@ -213,8 +213,6 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableHeader>소속</TableHeader>
-                    <TableHeader>계급</TableHeader>
                     <TableHeader>이름</TableHeader>
                     <TableHeader>
                       <span className="sr-only">action</span>
@@ -224,10 +222,8 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
                 <TableBody>
                   {organization?.members.map((member) => (
                     <TableRow key={member.user.id}>
-                      <TableCell>{member.user.unit}</TableCell>
-                      <TableCell>{member.user.rank}</TableCell>
                       <TableCell>
-                        {member.user.nickname}
+                        {member.user.username}
                         {member.isLeader && (
                           <Badge className="ml-1" color="lime">
                             팀장
@@ -254,7 +250,7 @@ export function OrganizationSettings({ id }: { id: Organization["id"] }) {
               >
                 <DialogTitle>이 결정은 되돌릴 수 없습니다.</DialogTitle>
                 <DialogDescription>
-                  {deletionMember?.user.nickname}을 {organization?.name}에서
+                  {deletionMember?.user.username}을 {organization?.name}에서
                   내보내시겠습니까?
                 </DialogDescription>
                 <DialogActions>

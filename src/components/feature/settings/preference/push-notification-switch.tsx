@@ -19,29 +19,33 @@ export function PushNotificationSwitch() {
       setLoading(false);
       return;
     }
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: vapidKeys.publicKey,
-    });
 
-    console.debug(subscription.toJSON());
+    try {
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: vapidKeys.publicKey,
+      });
 
-    const p256dhBuffer = subscription.getKey("p256dh");
-    const authBuffer = subscription.getKey("auth");
-    if (!p256dhBuffer || !authBuffer) {
+      const p256dhBuffer = subscription.getKey("p256dh");
+      const authBuffer = subscription.getKey("auth");
+      if (!p256dhBuffer || !authBuffer) {
+        throw new Error(
+          `empty subscription: ${JSON.stringify({ p256dhBuffer, authBuffer })}`,
+        );
+      }
+
+      await createDevice({
+        endpoint: subscription.endpoint,
+        p256dh: bufferToBase64(p256dhBuffer),
+        auth: bufferToBase64(authBuffer),
+      });
+    } catch (error) {
+      setEnabled(false);
       toast.error({
         title: "알림 설정 실패",
-        description: `Push subscription 생성 실패: ${subscription.toJSON()}`,
+        description: `관리자에게 문의해주세요: ${JSON.stringify(error)}`,
       });
-      return;
     }
-
-    await createDevice({
-      endpoint: subscription.endpoint,
-      p256dh: bufferToBase64(p256dhBuffer),
-      auth: bufferToBase64(authBuffer),
-    });
-
     setLoading(false);
   }, []);
 

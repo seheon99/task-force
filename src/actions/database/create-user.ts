@@ -1,24 +1,16 @@
 "use server";
 
-import { prisma } from "@/utilities/server-only";
+import { encodeJwt, prisma } from "@/utilities/server-only";
 
-export async function createUser({
-  id,
-  unit,
-  username,
-  nickname,
-  birthday,
-  enlistedAt,
-}: {
-  id: string;
-  unit: string;
-  username: string;
-  nickname: string;
-  birthday: Date;
-  enlistedAt: Date;
-}) {
+export async function createUser({ username }: { username: string }) {
+  let id = crypto.randomUUID();
+  while (await prisma.user.findUnique({ where: { id } })) {
+    id = crypto.randomUUID();
+  }
+
   const user = await prisma.user.create({
-    data: { id, unit, username, nickname, rank: "이병", birthday, enlistedAt },
+    data: { id, username },
   });
-  return user;
+  const token = await encodeJwt(id);
+  return { user, token };
 }

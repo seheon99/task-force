@@ -8,9 +8,10 @@ import {
   UserGroupIcon,
   UserIcon,
 } from "@heroicons/react/16/solid";
+import { useCallback } from "react";
 
+import { deleteAccessTokenCookie } from "@/actions/auth";
 import {
-  Button,
   Dropdown,
   DropdownButton,
   DropdownDivider,
@@ -19,27 +20,28 @@ import {
   DropdownMenu,
   NavbarItem,
 } from "@/components/base";
-import { useUser } from "@/swr/use-user";
+import { ACCESS_TOKEN } from "@/constants";
+import { useUser } from "@/swr";
 
 export function UserDropdown() {
   const { data: user, isLoading } = useUser();
 
+  const onLogoutClick = useCallback(async () => {
+    await deleteAccessTokenCookie();
+    localStorage.removeItem(ACCESS_TOKEN);
+    location.href = "/";
+  }, []);
+
   return (
     <Dropdown>
-      {user ? (
-        <DropdownButton
-          as={NavbarItem}
-          disabled={isLoading}
-          className="flex h-8 w-24 items-center justify-end"
-        >
-          {user.nickname}
-          <ChevronDownIcon />
-        </DropdownButton>
-      ) : (
-        <Button plain href="/sign-in">
-          로그인
-        </Button>
-      )}
+      <DropdownButton
+        as={NavbarItem}
+        disabled={isLoading}
+        className="flex h-8 w-24 items-center justify-end"
+      >
+        {user?.username}
+        <ChevronDownIcon />
+      </DropdownButton>
       <DropdownMenu className="min-w-64" anchor="bottom end">
         <DropdownItem href="/settings/profile">
           <UserIcon />
@@ -59,7 +61,7 @@ export function UserDropdown() {
           <DropdownLabel>환경 설정</DropdownLabel>
         </DropdownItem>
         <DropdownDivider />
-        <DropdownItem href="/sign-out">
+        <DropdownItem onClick={onLogoutClick}>
           <ArrowRightStartOnRectangleIcon />
           <DropdownLabel>로그아웃</DropdownLabel>
         </DropdownItem>

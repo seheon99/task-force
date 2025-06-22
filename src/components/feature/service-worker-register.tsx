@@ -12,11 +12,12 @@ export function ServiceWorkerRegister() {
       const registration = await navigator.serviceWorker.register(workerFile);
       const subscription = await registration.pushManager.getSubscription();
       if (!subscription) {
-        const subscription = await registration.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: vapidKeys.publicKey,
-        });
-        if (!subscription) {
+        try {
+          await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: vapidKeys.publicKey,
+          });
+        } catch {
           toast.info({
             title: "푸시 알람 해제",
             description: "설정에서 언제든지 변경할 수 있습니다",

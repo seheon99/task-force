@@ -1,11 +1,16 @@
-import { getAuth } from "firebase/auth";
+"use client";
+import "client-only";
 
-import { firebaseApp } from "./firebase";
+import { decodeJwt } from "jose";
+
+import { ACCESS_TOKEN } from "@/constants";
 
 export function verifySession() {
-  const firebaseUser = getAuth(firebaseApp).currentUser;
-  if (!firebaseUser) {
+  const token = localStorage.getItem(ACCESS_TOKEN);
+  if (!token) {
     return null;
   }
-  return firebaseUser.uid;
+
+  const { sub } = decodeJwt(token);
+  return sub;
 }

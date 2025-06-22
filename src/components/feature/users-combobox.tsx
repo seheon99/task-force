@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Combobox,
-  ComboboxDescription,
-  ComboboxLabel,
-  ComboboxOption,
-} from "@/components/base";
+import { Combobox, ComboboxLabel, ComboboxOption } from "@/components/base";
 import { useUsers } from "@/swr";
 
 import type { User } from "@prisma";
@@ -23,12 +18,11 @@ export function UsersCombobox({
       {...props}
       disabled={disabled || isLoadingUsers}
       options={users ?? []}
-      displayValue={(user) => user?.nickname}
+      displayValue={(user) => user?.username}
     >
       {(user) => (
         <ComboboxOption value={user}>
-          <ComboboxLabel>{user.nickname}</ComboboxLabel>
-          <ComboboxDescription>{user.unit}</ComboboxDescription>
+          <ComboboxLabel>{user.username}</ComboboxLabel>
         </ComboboxOption>
       )}
     </Combobox>

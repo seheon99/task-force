@@ -1,5 +1,7 @@
 import { Toaster } from "sonner";
 
+import { ServiceWorkerRegister, SessionRegister } from "@/components/feature";
+
 import type { Metadata } from "next";
 
 import "./globals.css";
@@ -18,6 +20,8 @@ export default function RootLayout({
     <html lang="ko">
       <body className="w-screen overflow-x-hidden">
         {children}
+        <ServiceWorkerRegister />
+        <SessionRegister />
         <Toaster />
       </body>
     </html>
