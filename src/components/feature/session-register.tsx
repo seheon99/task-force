@@ -34,6 +34,20 @@ export function SessionRegister() {
 
   const onSetButtonClick = useCallback(
     async (username: string) => {
+      if (username.length < 3) {
+        toast.error({
+          title: "이름이 너무 짧습니다",
+          description: "3글자 이상 입력해주세요.",
+        });
+        return;
+      } else if (username.length > 20) {
+        toast.error({
+          title: "이름이 너무 깁니다",
+          description: "20글자 이하로 입력해주세요.",
+        });
+        return;
+      }
+
       const { token } = await createUser({ username });
       setAccessTokenCookie(token);
       localStorage.setItem(ACCESS_TOKEN, token);
