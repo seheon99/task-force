@@ -29,7 +29,9 @@ export function PushNotificationSwitch() {
       const p256dhBuffer = subscription.getKey("p256dh");
       const authBuffer = subscription.getKey("auth");
       if (!p256dhBuffer || !authBuffer) {
-        throw new Error(`empty subscription: ${{ p256dhBuffer, authBuffer }}`);
+        throw new Error(
+          `empty subscription: ${JSON.stringify({ p256dhBuffer, authBuffer })}`,
+        );
       }
 
       await createDevice({
