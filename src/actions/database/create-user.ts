@@ -1,8 +1,6 @@
 "use server";
 
-import { SignJWT } from "jose";
-
-import { environments, prisma } from "@/utilities/server-only";
+import { encodeJwt, prisma } from "@/utilities/server-only";
 
 export async function createUser({ username }: { username: string }) {
   let id = crypto.randomUUID();
@@ -13,13 +11,6 @@ export async function createUser({ username }: { username: string }) {
   const user = await prisma.user.create({
     data: { id, username },
   });
-
-  const secret = new TextEncoder().encode(environments.JWT_SECRET);
-  const token = await new SignJWT({ iss: "task-force.seheon.kr", sub: id })
-    .setProtectedHeader({ alg: "HS256", typ: "JWT" })
-    .setIssuedAt()
-    .setExpirationTime("2h")
-    .sign(secret);
-
+  const token = await encodeJwt(id);
   return { user, token };
 }
