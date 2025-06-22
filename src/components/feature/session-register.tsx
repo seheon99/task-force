@@ -40,10 +40,10 @@ export function SessionRegister() {
           description: "3글자 이상 입력해주세요.",
         });
         return;
-      } else if (username.length > 20) {
+      } else if (username.length > 10) {
         toast.error({
           title: "이름이 너무 깁니다",
-          description: "20글자 이하로 입력해주세요.",
+          description: "10글자 이하로 입력해주세요.",
         });
         return;
       }
