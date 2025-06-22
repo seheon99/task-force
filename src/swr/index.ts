@@ -8,6 +8,7 @@ export * from "./use-organization-mutation";
 export * from "./use-organization";
 export * from "./use-organizations";
 export * from "./use-random-seed-creation";
+export * from "./use-token-restoration";
 export * from "./use-user-creation";
 export * from "./use-user";
 export * from "./use-users";
