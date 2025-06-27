@@ -28,7 +28,7 @@ export const useUserSessionStore = create<UserSessionStore>()((set, get) => ({
     setAccessTokenCookie(token);
     localStorage.setItem(ACCESS_TOKEN, token);
     const user = (await mutate(SWR_KEY_ME, fetchUser)) ?? null;
-    set({ user });
+    set({ user, token });
     return user;
   },
   refreshSession: async () => {
@@ -40,8 +40,9 @@ export const useUserSessionStore = create<UserSessionStore>()((set, get) => ({
 
     try {
       const newToken = await restoreToken(token);
-      setAccessTokenCookie(token);
+      setAccessTokenCookie(newToken);
       localStorage.setItem(ACCESS_TOKEN, newToken);
+      set({ token: newToken });
       return newToken;
     } catch {
       await deleteSession();
