@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { getUser } from "@/actions/database";
 import { verifySession } from "@/utilities/client-only";
 
-async function fetchUser() {
+export async function fetchUser() {
   const id = verifySession();
   if (!id) {
     return null;
