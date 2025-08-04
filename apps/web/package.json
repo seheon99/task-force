@@ -10,6 +10,8 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "database": "workspace:*",
+
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@prisma/client": "6.5.0",
