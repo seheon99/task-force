@@ -2,10 +2,11 @@
 
 import { Temporal } from "temporal-polyfill";
 
-import { prisma } from "@/utilities/server-only";
+import type { Organization, User } from "@taskforce/database";
+import { prisma } from "@taskforce/database";
+
 import { createProtection } from "@/utilities/server-only";
 
-import type { Organization, User } from "@prisma";
 
 const _createMission = createProtection(
   async (

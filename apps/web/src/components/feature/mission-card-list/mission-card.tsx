@@ -3,6 +3,8 @@ import {
   ShieldExclamationIcon,
 } from "@heroicons/react/16/solid";
 
+import type { Mission } from "@taskforce/database";
+
 import {
   Badge,
   Button,
@@ -21,7 +23,6 @@ import {
 } from "@/components/base";
 import { useMission, useUser } from "@/swr";
 
-import type { Mission } from "@prisma";
 
 import { RandomSeedButton } from "./random-seed-button";
 

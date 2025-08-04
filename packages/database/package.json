@@ -1,0 +1,27 @@
+{
+  "name": "@taskforce/database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "types": "index.ts",
+  "scripts": {
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.19.9",
+    "prisma": "^6.13.0",
+    "tsx": "^4.20.3",
+    "typescript": "^5.9.2"
+  },
+  "packageManager": "pnpm@10.14.0",
+  "dependencies": {
+    "@prisma/client": "6.13.0",
+    "server-only": "^0.0.1"
+  }
+}

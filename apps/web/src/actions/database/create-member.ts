@@ -1,9 +1,9 @@
 "use server";
 
-import { prisma } from "@/utilities/server-only";
-import { createProtection } from "@/utilities/server-only";
+import type { Member, Organization, User } from "@taskforce/database";
+import { prisma } from "@taskforce/database";
 
-import type { Member, Organization, User } from "@prisma";
+import { createProtection } from "@/utilities/server-only";
 
 const _createMember = createProtection(
   (

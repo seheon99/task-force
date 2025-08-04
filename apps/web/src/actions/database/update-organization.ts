@@ -1,8 +1,10 @@
 "use server";
 
-import { createProtection, prisma } from "@/utilities/server-only";
+import type { Organization, User } from "@taskforce/database";
+import { prisma } from "@taskforce/database";
 
-import type { Organization, User } from "@prisma";
+import { createProtection } from "@/utilities/server-only";
+
 
 const _updateOrganization = createProtection(
   async (

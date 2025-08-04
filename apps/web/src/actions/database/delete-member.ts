@@ -1,8 +1,10 @@
 "use server";
 
-import { createProtection, prisma } from "@/utilities/server-only";
+import type { Member, User } from "@taskforce/database";
+import { prisma } from "@taskforce/database";
 
-import type { Member, User } from "@prisma";
+import { createProtection } from "@/utilities/server-only";
+
 
 const _deleteMember = createProtection(
   async (user: User, { id }: { id: Member["id"] }) => {

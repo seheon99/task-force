@@ -2,10 +2,12 @@
 
 import { Temporal } from "temporal-polyfill";
 
-import { convertToPlainObject } from "@/utilities";
-import { createProtection, prisma } from "@/utilities/server-only";
+import { prisma } from "@taskforce/database";
+import { User } from "@taskforce/database";
 
-import { User } from "@prisma";
+import { convertToPlainObject } from "@/utilities";
+import { createProtection } from "@/utilities/server-only";
+
 
 const _getMissions = createProtection(async (user: User) => {
   const today = Temporal.Now.plainDateISO();

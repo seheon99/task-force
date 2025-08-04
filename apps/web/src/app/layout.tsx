@@ -1,8 +1,9 @@
 import { Toaster } from "sonner";
 
+import type { Metadata } from "next";
+
 import { ServiceWorkerRegister, SessionRegister } from "@/components/feature";
 
-import type { Metadata } from "next";
 
 import "./globals.css";
 

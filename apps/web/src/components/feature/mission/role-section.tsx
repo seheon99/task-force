@@ -4,6 +4,8 @@ import { ArrowPathIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import { now } from "es-toolkit/compat";
 import { useCallback, useEffect, useState } from "react";
 
+import type { Mission } from "@taskforce/database";
+
 import {
   BadgeButton,
   Button,
@@ -24,7 +26,6 @@ import {
 } from "@/components/feature/settings";
 import { useMission, useMissionMutation } from "@/swr";
 
-import type { Mission } from "@prisma";
 
 type PartialRole = Pick<
   NonNullable<ReturnType<typeof useMission>["data"]>["roles"][0],

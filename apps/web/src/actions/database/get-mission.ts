@@ -3,10 +3,12 @@
 import { unauthorized } from "next/navigation";
 import { Temporal } from "temporal-polyfill";
 
-import { convertToPlainObject } from "@/utilities";
-import { createProtection, prisma } from "@/utilities/server-only";
+import type { Mission, User } from "@taskforce/database";
+import { prisma } from "@taskforce/database";
 
-import type { Mission, User } from "@prisma";
+import { convertToPlainObject } from "@/utilities";
+import { createProtection } from "@/utilities/server-only";
+
 
 const _getMission = createProtection(
   async (user: User, { id }: { id: Mission["id"] }) => {

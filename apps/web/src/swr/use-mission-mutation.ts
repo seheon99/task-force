@@ -1,8 +1,9 @@
 import useSWRMutation from "swr/mutation";
 
+import type { Mission, User } from "@taskforce/database";
+
 import { updateMission } from "@/actions/database";
 
-import type { Mission, User } from "@prisma";
 
 import { SWR_KEY_MISSION } from "./use-mission";
 

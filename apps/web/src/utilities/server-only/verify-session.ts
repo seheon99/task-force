@@ -1,8 +1,8 @@
 import "server-only";
 
-import { verifySession as verifySessionAndReturnUserId } from "@/utilities/edge-only";
+import { prisma } from "@taskforce/database";
 
-import { prisma } from "./prisma-client";
+import { verifySession as verifySessionAndReturnUserId } from "@/utilities/edge-only";
 
 export async function verifySession() {
   const id = await verifySessionAndReturnUserId();

@@ -2,6 +2,8 @@
 
 import { useCallback, useRef, useState } from "react";
 
+import type { Mission } from "@taskforce/database";
+
 import {
   Button,
   Dialog,
@@ -13,7 +15,6 @@ import {
 import { useRandomSeedCreation } from "@/swr";
 import { twcn } from "@/utilities";
 
-import type { Mission } from "@prisma";
 
 export function RandomSeedDialog({
   missionId,

@@ -5,6 +5,10 @@ import { createContext, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { Temporal } from "temporal-polyfill";
 
+import type { Organization } from "@taskforce/database";
+
+import type { SubmitHandler, UseFormReturn } from "react-hook-form";
+
 import {
   Button,
   Dialog,
@@ -18,8 +22,6 @@ import {
 } from "@/components/base";
 import { useMissionCreation, useOrganizations } from "@/swr";
 
-import type { Organization } from "@prisma";
-import type { SubmitHandler, UseFormReturn } from "react-hook-form";
 
 import { FieldDescription } from "./field-description";
 import { FieldOperationTime } from "./field-operation-time";

@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String @id @default(uuid())
+  username String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  devices      Device[]
+  tasks        Task[]
+  randomSeeds  RandomSeed[]
+  exempts      Exempt[]
+  participants Participant[]
+  members      Member[]
+  Notification Notification[]
+}
+
+model Device {
+  id       String @id @default(uuid())
+  endpoint String
+  auth     String
+  p256dh   String
+
+  userId       String
+  user         User           @relation(fields: [userId], references: [id])
+  Notification Notification[]
+}
+
+model Exempt {
+  id        String   @id @default(uuid())
+  startedAt DateTime
+  endedAt   DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId   String
+  user     User         @relation(fields: [userId], references: [id])
+  excuseId String
+  excuse   ExemptExcuse @relation(fields: [excuseId], references: [id])
+}
+
+model ExemptExcuse {
+  id     String @id @default(uuid())
+  reason String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  exempts Exempt[]
+}
+
+model Mission {
+  id            String @id @default(uuid())
+  title         String
+  description   String
+  readinessTime String
+  operationTime String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  organizationId String
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  roles          Role[]
+  participants   Participant[]
+  randomSeeds    RandomSeed[]
+}
+
+model Role {
+  id    String @id @default(uuid())
+  name  String
+  color String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  missionId String
+  mission   Mission @relation(fields: [missionId], references: [id])
+  tasks     Task[]
+}
+
+model Task {
+  id String @id @default(uuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+  roleId String
+  role   Role   @relation(fields: [roleId], references: [id])
+}
+
+model Participant {
+  id String @id @default(uuid())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  missionId String
+  mission   Mission @relation(fields: [missionId], references: [id])
+}
+
+model RandomSeed {
+  id     String @id @default(uuid())
+  number Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  missionId String
+  mission   Mission @relation(fields: [missionId], references: [id])
+}
+
+model Organization {
+  id          String @id @default(uuid())
+  name        String
+  description String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members  Member[]
+  missions Mission[]
+}
+
+model Member {
+  id         String  @id @default(uuid())
+  isLeader   Boolean @default(false)
+  isAccepted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+}
+
+model Notification {
+  id      String @id @default(uuid())
+  message String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId   String
+  user     User   @relation(fields: [userId], references: [id])
+  deviceId String
+  device   Device @relation(fields: [deviceId], references: [id])
+}

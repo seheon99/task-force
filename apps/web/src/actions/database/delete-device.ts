@@ -1,8 +1,9 @@
 "use server";
 
-import { createProtection, prisma } from "@/utilities/server-only";
+import { prisma } from "@taskforce/database";
+import { User } from "@taskforce/database";
 
-import { User } from "@prisma";
+import { createProtection } from "@/utilities/server-only";
 
 const _deleteDevice = createProtection(
   async (user: User, props?: { id?: string }) => {

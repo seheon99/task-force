@@ -1,9 +1,10 @@
 import { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 
+import type { Organization } from "@taskforce/database";
+
 import { updateOrganization } from "@/actions/database";
 
-import type { Organization } from "@prisma";
 
 import { SWR_KEY_ORGANIZATION } from "./use-organization";
 import { SWR_KEY_ORGANIZATIONS } from "./use-organizations";

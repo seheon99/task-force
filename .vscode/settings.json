@@ -1,0 +1,32 @@
+{
+  "editor.renderWhitespace": "all",
+  "editor.fontFamily": "'JetBrains Mono', 'monospace', monospace",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.ts": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+
+  "typescript.suggest.autoImports": true,
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  "editor.autoClosingBrackets": "languageDefined",
+  "files.autoSave": "off",
+  "editor.linkedEditing": true,
+  "editor.fontLigatures": true,
+  "sarif-viewer.connectToGithubCodeScanning": "off",
+  "github.copilot.advanced": {},
+  "resmon.show.cpufreq": false,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "python.analysis.typeCheckingMode": "standard",
+  "files.trimTrailingWhitespace": true
+}

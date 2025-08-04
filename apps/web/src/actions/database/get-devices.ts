@@ -1,6 +1,6 @@
 "use server";
 
-import { prisma } from "@/utilities/server-only";
+import { prisma } from "@taskforce/database";
 
 export async function getDevices({ userId }: { userId: string }) {
   return await prisma.device.findMany({ where: { userId } });

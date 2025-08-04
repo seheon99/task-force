@@ -1,9 +1,10 @@
 "use client";
 
+import type { User } from "@taskforce/database";
+
 import { Combobox, ComboboxLabel, ComboboxOption } from "@/components/base";
 import { useUsers } from "@/swr";
 
-import type { User } from "@prisma";
 
 export function UsersCombobox({
   disabled,

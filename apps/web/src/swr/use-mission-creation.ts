@@ -1,11 +1,12 @@
 import useSWRMutation from "swr/mutation";
 import { Temporal } from "temporal-polyfill";
 
+import { Mission, Organization } from "@taskforce/database";
+
 import { createMission, createParticipant } from "@/actions/database";
 import { UnauthorizedError } from "@/errors";
 import { verifySession } from "@/utilities/client-only";
 
-import { Mission, Organization } from "@prisma";
 
 import { SWR_KEY_MISSIONS } from "./use-missions";
 

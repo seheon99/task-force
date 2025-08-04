@@ -2,10 +2,11 @@
 
 import { useState } from "react";
 
+import type { Mission } from "@taskforce/database";
+
 import { Button } from "@/components/base";
 import { twcn } from "@/utilities";
 
-import type { Mission } from "@prisma";
 
 import { RandomSeedDialog } from "./random-seed-dialog";
 

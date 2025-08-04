@@ -4,6 +4,10 @@ import { XMarkIcon } from "@heroicons/react/16/solid";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
+import type { Member, Organization, User } from "@taskforce/database";
+
+import type { SubmitHandler } from "react-hook-form";
+
 import {
   Badge,
   Button,
@@ -40,8 +44,6 @@ import {
   useUser,
 } from "@/swr";
 
-import type { Member, Organization, User } from "@prisma";
-import type { SubmitHandler } from "react-hook-form";
 
 export function OrganizationSettings({ id }: { id: Organization["id"] }) {
   const [invitedUser, setInvitedUser] = useState<User | null>(null);

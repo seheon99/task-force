@@ -1,9 +1,10 @@
 "use client";
 
+import type { Mission } from "@taskforce/database";
+
 import { Divider, Loading } from "@/components/base";
 import { useMission } from "@/swr";
 
-import type { Mission } from "@prisma";
 
 import { MissionSection } from "./mission-section";
 import { ParticipantSection } from "./participant-section";

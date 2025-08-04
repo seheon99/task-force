@@ -2,6 +2,8 @@ import { XMarkIcon } from "@heroicons/react/16/solid";
 import { uniqBy } from "es-toolkit";
 import { useCallback, useEffect, useState } from "react";
 
+import type { Mission, User } from "@taskforce/database";
+
 import {
   Button,
   Field,
@@ -24,7 +26,6 @@ import {
 } from "@/components/feature";
 import { useMission, useMissionMutation } from "@/swr";
 
-import type { Mission, User } from "@prisma";
 
 export function ParticipantSection({ id }: { id: Mission["id"] }) {
   const [invitedUser, setInvitedUser] = useState<User | null>(null);

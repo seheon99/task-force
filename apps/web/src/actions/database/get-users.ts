@@ -1,6 +1,8 @@
 "use server";
 
-import { createProtection, prisma } from "@/utilities/server-only";
+import { prisma } from "@taskforce/database";
+
+import { createProtection } from "@/utilities/server-only";
 
 const _getUsers = createProtection(async () => {
   return await prisma.user.findMany();

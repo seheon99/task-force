@@ -1,9 +1,10 @@
 import { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 
+import type { Mission, RandomSeed } from "@taskforce/database";
+
 import { createRandomSeed } from "@/actions/database";
 
-import type { Mission, RandomSeed } from "@prisma";
 
 import { SWR_KEY_MISSIONS } from "./use-missions";
 

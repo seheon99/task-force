@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import type { Member, Organization } from "@taskforce/database";
+
 import {
   Button,
   Dialog,
@@ -12,7 +14,6 @@ import {
 } from "@/components/base";
 import { useMemberDeletion } from "@/swr";
 
-import type { Member, Organization } from "@prisma";
 
 export function LeaveOrganizationButton({
   memberId,

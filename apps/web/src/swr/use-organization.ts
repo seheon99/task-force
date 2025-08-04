@@ -2,9 +2,10 @@
 
 import useSWR from "swr";
 
+import type { Organization } from "@taskforce/database";
+
 import { getOrganization } from "@/actions/database";
 
-import type { Organization } from "@prisma";
 
 async function fetchOrganization([, id]: ReturnType<
   typeof SWR_KEY_ORGANIZATION

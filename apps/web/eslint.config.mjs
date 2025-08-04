@@ -41,8 +41,13 @@ export default [
           ],
           pathGroups: [
             {
+              pattern: "@taskforce/**",
+              group:"internal",
+              position:"before",
+            },
+            {
               pattern: "@/**",
-              group: "internal",
+              group: "parent",
               position: "before",
             },
             {

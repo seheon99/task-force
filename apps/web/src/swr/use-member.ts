@@ -3,9 +3,10 @@
 import useSWR, { mutate } from "swr";
 import useSWRMutation from "swr/mutation";
 
+import type { Member, Organization, User } from "@taskforce/database";
+
 import { createMember, deleteMember, getMember } from "@/actions/database";
 
-import type { Member, Organization, User } from "@prisma";
 
 import { SWR_KEY_ORGANIZATION } from "./use-organization";
 import { SWR_KEY_ORGANIZATIONS } from "./use-organizations";

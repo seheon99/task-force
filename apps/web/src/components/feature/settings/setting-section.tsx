@@ -1,8 +1,9 @@
+import type { ComponentPropsWithoutRef } from "react";
+
 import { FieldGroup, Fieldset } from "@/components/base";
 import { twcn } from "@/utilities";
 
 
-import type { ComponentPropsWithoutRef } from "react";
 
 export function SettingSection({
   className,

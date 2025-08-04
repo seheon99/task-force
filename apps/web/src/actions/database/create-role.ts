@@ -1,9 +1,11 @@
 "use server";
 
-import { BadgeColor } from "@/components/base";
-import { createProtection, prisma } from "@/utilities/server-only";
+import type { Mission, User } from "@taskforce/database";
+import { prisma } from "@taskforce/database";
 
-import type { Mission, User } from "@prisma";
+import { BadgeColor } from "@/components/base";
+import { createProtection } from "@/utilities/server-only";
+
 
 const _createRole = createProtection(
   async (

@@ -1,6 +1,8 @@
 import { mutate } from "swr";
 import { create } from "zustand";
 
+import { User } from "@taskforce/database";
+
 import {
   deleteAccessTokenCookie,
   restoreToken,
@@ -9,7 +11,6 @@ import {
 import { ACCESS_TOKEN } from "@/constants";
 import { SWR_KEY_ME, fetchUser } from "@/swr";
 
-import { User } from "@prisma";
 
 type UserSessionStore = {
   token: string | null;

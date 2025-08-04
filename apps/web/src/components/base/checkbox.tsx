@@ -1,8 +1,9 @@
 import * as Headless from "@headlessui/react";
 
+import type React from "react";
+
 import { twcn } from "@/utilities";
 
-import type React from "react";
 
 export function CheckboxGroup({
   className,

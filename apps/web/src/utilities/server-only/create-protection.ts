@@ -2,9 +2,9 @@ import "server-only";
 
 import { notFound } from "next/navigation";
 
-import { verifySession } from "@/utilities/server-only";
+import { User } from "@taskforce/database";
 
-import { User } from "@prisma";
+import { verifySession } from "@/utilities/server-only";
 
 export function createProtection<Args extends unknown[], R>(
   fn: (user: User, ...args: Args) => R | Promise<R>,

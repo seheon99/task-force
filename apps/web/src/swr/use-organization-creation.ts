@@ -1,10 +1,11 @@
 import useSWRMutation from "swr/mutation";
 
+import { Organization } from "@taskforce/database";
+
 import { createMember, createOrganization } from "@/actions/database";
 import { UnauthorizedError } from "@/errors";
 import { verifySession } from "@/utilities/client-only";
 
-import { Organization } from "@prisma";
 
 import { SWR_KEY_ORGANIZATIONS } from "./use-organizations";
 

@@ -1,8 +1,9 @@
 import useSWR from "swr";
 
+import { Mission } from "@taskforce/database";
+
 import { getMission } from "@/actions/database";
 
-import { Mission } from "@prisma";
 
 async function fetcher([, id]: ReturnType<typeof SWR_KEY_MISSION>) {
   return await getMission({ id });

@@ -1,6 +1,8 @@
 "use server";
 
-import { encodeJwt, prisma } from "@/utilities/server-only";
+import { prisma } from "@taskforce/database";
+
+import { encodeJwt } from "@/utilities/server-only";
 
 export async function createUser({ username }: { username: string }) {
   let id = crypto.randomUUID();

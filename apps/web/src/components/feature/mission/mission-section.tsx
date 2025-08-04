@@ -4,6 +4,8 @@ import { invariant, isNotNil } from "es-toolkit";
 import { useCallback } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
+import type { Mission } from "@taskforce/database";
+
 import {
   Button,
   ErrorMessage,
@@ -22,7 +24,6 @@ import {
 } from "@/components/feature";
 import { useMission, useMissionMutation } from "@/swr";
 
-import type { Mission } from "@prisma";
 
 export function MissionSection({ id }: { id: Mission["id"] }) {
   const { data: mission, isLoading } = useMission({ id });
